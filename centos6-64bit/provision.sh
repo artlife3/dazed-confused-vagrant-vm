@@ -1,3 +1,11 @@
+# Timezone
+echo << EOT > /etc/sysconfig/clock
+ZONE="Asia/Tokyo"
+UTC="false"
+EOT
+source /etc/sysconfig/clock
+/bin/cp -f /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
 # Firewall、SELinux OFF
 /etc/rc.d/init.d/iptables stop
 chkconfig iptables off
@@ -9,6 +17,17 @@ sed -i -e "s|^SELINUX=.*|SELINUX=disabled|" /etc/selinux/config
 #Apache
 sudo yum -y install httpd
 sudo yum -y install mod_ssl
+
+echo << EOT > /etc/httpd/conf.d/vhost.conf
+DocumentRoot "/var/www/html"
+<Directory "/var/www/html">
+  Options Indexes FollowSymLinks
+  AllowOverride all
+  Order allow,deny
+  Allow from all
+</Directory>
+EOT
+
 sudo /etc/init.d/httpd start
 sudo chkconfig  httpd on
 
@@ -33,7 +52,7 @@ sudo yum -y install colordiff
 
 
 #vim
-sudo yum -y install vim
+sudo yum -y install vim-enhanced
 #scm
 sudo yum -y install git
 sudo yum -y install svn
@@ -61,11 +80,31 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 sudo yum -y install epel-release
 sudo rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 
-sudo yum install -y --enablerepo=remi,remi-php56 php php-cli php-common php-devel php-gd \
-php-intl php-mbstring php-pdo php-mysqlnd php-pear.noarch php-xml php-mcrypt php-php-pecl-apcu php-pecl-memcache php-pecl-memcached
+sudo yum install -y --enablerepo=remi,remi-php56 php \
+php-cli \
+php-common \
+php-devel \
+php-gd \
+php-intl \
+php-mbstring \
+php-pdo \
+php-mysqlnd \
+php-pear \ 
+php-xml \
+php-mcrypt \
+php-opcache
 
-pecl install xdebug
+# PECL
+sudo yum install -y --enablerepo=remi,remi-php56 \
+php-pecl-memcache \
+php-pecl-apcu \
+php-pecl-xdebug
+
 sudo sed -i -e "/AddType text\/html \.php/i\AddType application\/x-httpd-php \.php \.html" /etc/httpd/conf.d/php.conf
+sudo /etc/init.d/httpd restart
+
+#ImageMagick
+sudo yum -y install ImageMagick
 
 # Composer
 cd ~/
@@ -108,7 +147,6 @@ sudo chkconfig --add elasticsearch
 sed -i -e 's/2g/512m/g' /etc/elasticsearch/jvm.options
 sudo -i service elasticsearch start
 
-sudo /etc/init.d/httpd restart
 
 
 
