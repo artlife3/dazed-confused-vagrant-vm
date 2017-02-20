@@ -19,6 +19,18 @@ sudo rm -rf /var/lib/mysql/
 
 #wget
 sudo yum -y install wget
+#links
+sudo yum -y install links
+#tree
+sudo yum -y install tree
+#unzip
+sudo yum -y install unzip
+#telnet
+sudo yum -y install telnet
+#colordiff
+sudo yum -y install colordiff
+
+
 
 #vim
 sudo yum -y install vim
@@ -26,6 +38,12 @@ sudo yum -y install vim
 sudo yum -y install git
 sudo yum -y install svn
 sudo yum -y install hg
+
+# Memcached
+sudo yum -y install memcached
+sudo chkconfig memcached on
+sudo /etc/init.d/memcached start
+
 
 #MySQL
 yum -y install http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
@@ -44,7 +62,7 @@ sudo yum -y install epel-release
 sudo rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 
 sudo yum install -y --enablerepo=remi,remi-php56 php php-cli php-common php-devel php-gd \
-php-intl php-mbstring php-pdo php-mysqlnd php-pear.noarch php-xml php-mcrypt
+php-intl php-mbstring php-pdo php-mysqlnd php-pear.noarch php-xml php-mcrypt php-php-pecl-apcu php-pecl-memcache php-pecl-memcached
 
 pecl install xdebug
 sudo sed -i -e "/AddType text\/html \.php/i\AddType application\/x-httpd-php \.php \.html" /etc/httpd/conf.d/php.conf
@@ -56,6 +74,21 @@ mv composer.phar /usr/local/bin/composer
 
 #Java
 sudo yum install -y java-1.8.0-openjdk-devel.x86_64
+
+# Tomcat
+sudo useradd -s /sbin/nologin tomcat
+wget http://ftp.kddilabs.jp/infosystems/apache/tomcat/tomcat-8/v8.5.11/bin/apache-tomcat-8.5.11.tar.gz
+tar xvzf apache-tomcat-8.5.11.tar.gz
+sudo  mkdir /opt/apache-tomcat
+sudo  mv ~/apache-tomcat-8.5.11 /opt/apache-tomcat
+sudo chown -R tomcat:tomcat /opt/apache-tomcat
+cat << EOT >> /etc/profile
+JRE_HOME=/usr/java/default
+CATALINA_HOME=/opt/apache-tomcat/apache-tomcat-8.5.11
+export JRE_HOME CATALINA_HOME
+EOT
+sudo -u tomcat /opt/apache-tomcat/apache-tomcat-8.5.11/bin/startup.sh
+
 
 #Elasitcsearch
 useradd -c 'elasticsearch' -d /var/empty/elasticsearch -s /sbin/nologin elasticsearch
@@ -77,9 +110,6 @@ sudo -i service elasticsearch start
 
 sudo /etc/init.d/httpd restart
 
-#links
-sudo yum -y install links
-sudo yum -y install tree
 
 
 # chmod

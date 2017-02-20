@@ -15,5 +15,5 @@ cd ${vagrant}/${os_name}
 vagrant init ${os_name}
 vagrant box add ${os_name} ${box_url}
 
-#sudo echo "192.168.88.88 vagrant-vm.dev" >> /etc/hosts
+#sudo echo "192.168.33.10 vagrant-vm.dev" >> /etc/hosts
 
