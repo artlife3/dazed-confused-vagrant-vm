@@ -58,11 +58,6 @@ sudo yum -y install git
 sudo yum -y install svn
 sudo yum -y install hg
 
-# Memcached
-sudo yum -y install memcached
-sudo chkconfig memcached on
-sudo /etc/init.d/memcached start
-
 
 #MySQL
 yum -y install http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
@@ -74,6 +69,11 @@ service mysqld start
 mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('root') WHERE User='root';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON *.* to user@\"%\" IDENTIFIED BY 'password' WITH GRANT OPTION;"
 mysql -u root -e "FLUSH PRIVILEGES;"
+
+# Memcached
+sudo yum -y  install memcached memcached-devel
+sudo chkconfig memcached on
+sudo /etc/init.d/memcached start
 
 
 #PHP
@@ -96,6 +96,7 @@ php-opcache
 
 # PECL
 sudo yum install -y --enablerepo=remi,remi-php56 \
+php-pecl-memcached \
 php-pecl-memcache \
 php-pecl-apcu \
 php-pecl-xdebug
