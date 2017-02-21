@@ -12,7 +12,21 @@ DocumentRoot "/var/www/html"
 </Directory>
 EOT
 
-#mv vhost.conf /etc/httpd/conf.d/
+cat << EOT > /etc/httpd/conf.d/server-status.conf
+<Location /admin/server-status>
+    SetHandler server-status
+</Location>
+EOT
+
+cat << EOT > /etc/httpd/conf.d/server-info.conf
+<Location /admin/server-info>
+    SetHandler server-info
+</Location>
+EOT
+
+
+
 sudo /etc/init.d/httpd start
 sudo chkconfig  httpd on
+
 
