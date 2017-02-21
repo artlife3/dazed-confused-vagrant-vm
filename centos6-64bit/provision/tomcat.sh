@@ -15,12 +15,9 @@ EOT
 sudo -u tomcat /opt/apache-tomcat/apache-tomcat-8.5.11/bin/startup.sh
 
 cat << EOT > /etc/httpd/conf.d/tomcat.conf
-<VirtualHost *:80>
-  ServerName tomcat.vagrant-vm.dev
-  <Location />
+<Location /tomcat>
     ProxyPass ajp://localhost:8009
-  </Location>
-</VirtualHost>
+</Location>
 EOT
 
 sudo /etc/init.d/httpd restart
