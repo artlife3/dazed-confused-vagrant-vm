@@ -13,11 +13,11 @@ php-pdo \
 php-mysqlnd \
 php-pear \ 
 php-xml \
-php-mcrypt \
-php-opcache
+php-mcrypt
 
 # PECL
 sudo yum install -y --enablerepo=remi,remi-php56 \
+php-opcache \
 php-pecl-memcache \
 php-pecl-memcached \
 php-pecl-apcu \
