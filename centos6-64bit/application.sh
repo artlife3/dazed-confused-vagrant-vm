@@ -44,7 +44,8 @@ cat << EOT > /var/www/html/admin/index.php
     <h2>CMS</h2>
   </header>
   <ul>
-    <li><h4><a href="../drupal" target="_blank">Drupal</a></h4></li>
+    <li><h4><a href="../drupal8" target="_blank">Drupal8</a></h4></li>
+    <li><h4><a href="../drupal7" target="_blank">Drupal7</a></h4></li>
     <li><h4><a href="../wordpress" target="_blank">Wordpress</a></h4></li>
   </ul>
 </article>

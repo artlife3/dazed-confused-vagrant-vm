@@ -3,13 +3,16 @@ sudo yum -y install httpd
 sudo yum -y install mod_ssl
 
 cat << EOT > /etc/httpd/conf.d/vhost.conf
-DocumentRoot "/var/www/html"
-<Directory "/var/www/html">
-  Options Indexes FollowSymLinks
-  AllowOverride all
-  Order allow,deny
-  Allow from all
-</Directory>
+<VirtualHost *:80>
+  ServerName vagrant-vm.dev
+  DocumentRoot "/var/www/html"
+  <Directory "/var/www/html">
+    Options Indexes FollowSymLinks
+    AllowOverride all
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
 EOT
 
 cat << EOT > /etc/httpd/conf.d/server-status.conf

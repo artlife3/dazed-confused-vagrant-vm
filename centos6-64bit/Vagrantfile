@@ -14,6 +14,12 @@ Vagrant.configure("2") do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "centos6-64bit"
 
+  config.vm.hostname = "vagrant-vm.dev"
+#  config.hostmanager.enabled = true
+#  config.hostmanager.manage_host = true
+#  config.hostmanager.aliases = aliases
+  config.hostsupdater.aliases = ["tomcat.vagrant-vm.dev"]
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -70,7 +76,7 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
-  
+
   # Middleware
   config.vm.provision :shell, :path => "provision/basic.sh"
   config.vm.provision :shell, :path => "provision/location.sh"
