@@ -13,7 +13,7 @@ JRE_HOME=/usr/java/default
 CATALINA_HOME=/opt/tomcat/apache-tomcat-8.5.11
 export JRE_HOME CATALINA_HOME
 EOT
-cat << EOT >> /opt/tomcat/apache-tomcat-8.5.11/conf/tomcat-users.xml
+cat << EOT > /opt/tomcat/apache-tomcat-8.5.11/conf/tomcat-users.xml
 <?xml version="1.0" encoding="UTF-8"?>
 
 <tomcat-users xmlns="http://tomcat.apache.org/xml"
@@ -27,6 +27,7 @@ cat << EOT >> /opt/tomcat/apache-tomcat-8.5.11/conf/tomcat-users.xml
 
 </tomcat-users>
 EOT
+
 cat << EOT >> /opt/tomcat/apache-tomcat-8.5.11/conf/Catalina/localhost/manager.xml
 <Context privileged="true" antiResourceLocking="false" docBase="\${catalina.home}/webapps/manager">
 <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="^.*$" /></Context>
