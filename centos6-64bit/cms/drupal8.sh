@@ -3,7 +3,7 @@ umask 002
 
 
 #Drupal
-mysql -u root -proot -e "CREATE DATABASE drupal;"
+mysql -u root -proot -e "CREATE DATABASE drupal8;"
 cd /var/www/html/
 wget https://ftp.drupal.org/files/projects/drupal-8.2.6.tar.gz
 tar xvzf drupal-8.2.6.tar.gz
