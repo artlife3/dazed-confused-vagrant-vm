@@ -28,14 +28,14 @@ cat << EOT > /opt/tomcat/apache-tomcat-8.5.11/conf/tomcat-users.xml
 </tomcat-users>
 EOT
 
+sudo chown -R tomcat:vagrant /opt/tomcat
+sudo chmod -R g+rw /opt/tomcat
+sudo find /opt/tomcat -type d -exec chmod g+x {} \;
+
 sudo cat << EOT >> /opt/tomcat/apache-tomcat-8.5.11/conf/Catalina/localhost/manager.xml
 <Context privileged="true" antiResourceLocking="false" docBase="\${catalina.home}/webapps/manager">
 <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="^.*$" /></Context>
 EOT
-
-sudo chown -R tomcat:vagrant /opt/tomcat
-sudo chmod -R g+rw /opt/tomcat
-sudo find /opt/tomcat -type d -exec chmod g+x {} \;
 
 
 sudo -u tomcat /opt/tomcat/apache-tomcat-8.5.11/bin/startup.sh
