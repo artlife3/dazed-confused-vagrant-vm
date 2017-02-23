@@ -4,6 +4,7 @@ umask 002
 
 # Admin
 cd /var/www/html
+
 mkdir admin
 cd admin
 wget http://getbootstrap.com/2.3.2/assets/bootstrap.zip
@@ -113,7 +114,7 @@ cd /var/www/html/admin
 git clone https://github.com/rlerdorf/opcache-status.git
 
 # Permission
-sudo chown -R apache:vagrant /var/www/html/admin
+sudo chown -R apache:vagrant /var/www/html
 
 # Home
 ln -s /var/www/html /home/vagrant/html

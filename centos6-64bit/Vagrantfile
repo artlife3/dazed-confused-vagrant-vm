@@ -86,12 +86,13 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, :path => "provision/mysql.sh"
   config.vm.provision :shell, :path => "provision/memcached.sh"
   config.vm.provision :shell, :path => "provision/php56.sh"
-  config.vm.provision :shell, :path => "provision/tomcat.sh"
-  config.vm.provision :shell, :path => "provision/elasitcsearch.sh"
+#  config.vm.provision :shell, :path => "provision/tomcat.sh"
+#  config.vm.provision :shell, :path => "provision/elasitcsearch.sh"
   # Application
   config.vm.provision :shell, :path => "application.sh"
   # CMS
   config.vm.provision :shell, :path => "cms/drupal8.sh"
+  config.vm.provision :shell, :path => "cms/drupal7.sh"
   config.vm.provision :shell, :path => "cms/wordpress.sh"
 
 end
