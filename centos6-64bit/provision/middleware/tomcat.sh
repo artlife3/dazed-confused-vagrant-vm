@@ -13,6 +13,7 @@ JRE_HOME=/usr/java/default
 CATALINA_HOME=/opt/tomcat/apache-tomcat-8.5.11
 export JRE_HOME CATALINA_HOME
 EOT
+
 cat << EOT > /opt/tomcat/apache-tomcat-8.5.11/conf/tomcat-users.xml
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -28,6 +29,7 @@ cat << EOT > /opt/tomcat/apache-tomcat-8.5.11/conf/tomcat-users.xml
 </tomcat-users>
 EOT
 
+mkdir -p /opt/tomcat/apache-tomcat-8.5.11/conf/Catalina/localhost
 sudo chown -R tomcat:vagrant /opt/tomcat
 sudo chmod -R g+rw /opt/tomcat
 sudo find /opt/tomcat -type d -exec chmod g+x {} \;
