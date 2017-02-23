@@ -28,7 +28,7 @@ cat << EOT > /opt/tomcat/apache-tomcat-8.5.11/conf/tomcat-users.xml
 </tomcat-users>
 EOT
 
-cat << EOT >> /opt/tomcat/apache-tomcat-8.5.11/conf/Catalina/localhost/manager.xml
+sudo cat << EOT >> /opt/tomcat/apache-tomcat-8.5.11/conf/Catalina/localhost/manager.xml
 <Context privileged="true" antiResourceLocking="false" docBase="\${catalina.home}/webapps/manager">
 <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="^.*$" /></Context>
 EOT
