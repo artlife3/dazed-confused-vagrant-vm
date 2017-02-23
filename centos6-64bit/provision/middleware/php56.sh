@@ -42,6 +42,8 @@ cat << EOT > /etc/logrotate.d/php
 }
 EOT
 
+sudo sed -i -e "s/\;date.timezone =/date.timezone = \"Asia\/Tokyo\"/g" /etc/php.ini
+
 sudo /etc/init.d/httpd restart
 
 # Composer
