@@ -6,8 +6,10 @@ DRUPAL="drupal-8.2.6"
 #Drupal
 mysql -u root -proot -e "CREATE DATABASE drupal8;"
 cd /var/www/html/
-wget https://ftp.drupal.org/files/projects/${DRUPAL}.tar.gz
+wget -q https://ftp.drupal.org/files/projects/${DRUPAL}.tar.gz
 tar xvzf ${DRUPAL}.tar.gz
+rm ${DRUPAL}.tar.gz
+
 ln -s ${DRUPAL} drupal8
 
 cd /var/www/html/drupal8

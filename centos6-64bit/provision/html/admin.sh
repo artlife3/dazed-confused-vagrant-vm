@@ -7,8 +7,8 @@ cd /var/www/html
 
 mkdir admin
 cd admin
-wget http://getbootstrap.com/2.3.2/assets/bootstrap.zip
-unzip bootstrap.zip
+wget -q http://getbootstrap.com/2.3.2/assets/bootstrap.zip
+unzip -q bootstrap.zip
 
 cat << EOT > /var/www/html/admin/index.php
 <html lang="ja">
@@ -64,8 +64,8 @@ phpinfo();
 EOT
 
 # phpMyAdmin
-wget https://files.phpmyadmin.net/phpMyAdmin/4.6.6/phpMyAdmin-4.6.6-all-languages.zip
-unzip phpMyAdmin-4.6.6-all-languages.zip
+wget -q https://files.phpmyadmin.net/phpMyAdmin/4.6.6/phpMyAdmin-4.6.6-all-languages.zip
+unzip -q phpMyAdmin-4.6.6-all-languages.zip
 rm phpMyAdmin-4.6.6-all-languages.zip
 ln -s phpMyAdmin-4.6.6-all-languages phpmyadmin
 #- cd phpmyadmin

@@ -1,7 +1,7 @@
 # Tomcat
 sudo useradd -s /sbin/nologin tomcat
 
-wget http://ftp.kddilabs.jp/infosystems/apache/tomcat/tomcat-8/v8.5.11/bin/apache-tomcat-8.5.11.tar.gz
+wget -q http://ftp.kddilabs.jp/infosystems/apache/tomcat/tomcat-8/v8.5.11/bin/apache-tomcat-8.5.11.tar.gz
 
 tar xvzf apache-tomcat-8.5.11.tar.gz
 rm apache-tomcat-8.5.11.tar.gz
