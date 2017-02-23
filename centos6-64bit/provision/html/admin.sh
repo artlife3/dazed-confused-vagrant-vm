@@ -37,6 +37,7 @@ cat << EOT > /var/www/html/admin/index.php
     <li><a href="./server-status" target="_blank">Apache Server Status</a></li>
     <li><a href="./server-info" target="_blank">Apache Server Information</a></li>
     <li><a href="//tomcat.vagrant-vm.dev/" target="_blank">Tomcat</a></li>
+    <li><a href="//mailcatcher.vagrant-vm.dev/" target="_blank">MailCatcher</a></li>
   </ul>
 </article>
 <hr>
