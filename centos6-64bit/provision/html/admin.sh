@@ -38,6 +38,7 @@ cat << EOT > /var/www/html/admin/index.php
     <li><a href="./server-info" target="_blank">Apache Server Information</a></li>
     <li><a href="//tomcat.vagrant-vm.dev/" target="_blank">Tomcat</a></li>
     <li><a href="//mailcatcher.vagrant-vm.dev/" target="_blank">MailCatcher</a></li>
+    <li><a href="./mail_test.php" target="_blank">Mail send test</a></li>
   </ul>
 </article>
 <hr>
@@ -59,7 +60,7 @@ cat << EOT > /var/www/html/admin/index.php
 EOT
 
 # phpinfo.php
-cat << EOT > //var/www/html/admin/phpinfo.php
+cat << EOT > /var/www/html/admin/phpinfo.php
 <?php
 phpinfo();
 EOT
@@ -113,6 +114,23 @@ git clone https://github.com/krakjoe/apcu.git
 #opcache
 cd /var/www/html/admin
 git clone https://github.com/rlerdorf/opcache-status.git
+
+# mail_test.php
+cat << EOT > /var/www/html/admin/mail_test.php
+<?php
+mb_language("ja");
+mb_internal_encoding("UTF-8");
+
+\$to = "taro@example.com";
+\$from = "jiro@example.com";
+\$subject = "テストのサブジェクト";
+\$body = "テスト\nテストテスト\nテストテストテスト\nテストテスト\nテスト";
+
+mb_send_mail(\$to,\$subject,\$body,"From:".\$from);
+
+echo "Send";
+EOT
+
 
 # Permission
 sudo chown -R apache:vagrant /var/www/html

@@ -1,6 +1,6 @@
 gem install mailcatcher
-#yum install sqlite-devel
-mailcatcher --http-ip 192.168.33.10
+yum install sqlite-devel
+mailcatcher --http-ip 192.168.33.10 --no-quit
 setsebool -P httpd_can_network_connect 1
 
 sudo cat << EOT > /etc/httpd/conf.d/mailcatcher.conf
@@ -20,9 +20,9 @@ sudo cat << EOT > /etc/httpd/conf.d/mailcatcher.conf
 
 </VirtualHost>
 EOT
+sudo sed -i -e "s/sendmail_path = \/usr\/sbin\/sendmail -t -i/sendmail_path = \/usr\/bin\/env \/opt\/rbenv\/shims\/catchmail/g" /etc/php.ini
+
 sudo /etc/init.d/httpd restart
 
-#php.ini sendmail_path = "/usr/bin/env catchmail"
-#mailcatcher --http-ip 192.168.33.10
-#http://192.168.33.10:1080
+
 
