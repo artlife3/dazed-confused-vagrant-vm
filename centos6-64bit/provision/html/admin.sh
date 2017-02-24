@@ -118,17 +118,27 @@ git clone https://github.com/rlerdorf/opcache-status.git
 # mail_test.php
 cat << EOT > /var/www/html/admin/mail_test.php
 <?php
+/*
 mb_language("ja");
 mb_internal_encoding("UTF-8");
 
-\$to = "taro@example.com";
-\$from = "jiro@example.com";
+\$to = "artlife3@mac.com";
+\$from = "artlife3@mac.com";
 \$subject = "テストのサブジェクト";
 \$body = "テスト\nテストテスト\nテストテストテスト\nテストテスト\nテスト";
 
 mb_send_mail(\$to,\$subject,\$body,"From:".\$from);
+*/
+
+\$to = "artlife3@mac.com";
+\$from = "artlife3@mac.com";
+\$subject = "TEST SUBJECT";
+\$body = "TEST BODY";
+
+mail(\$to,\$subject,\$body,"From:".\$from);
 
 echo "Send";
+
 EOT
 
 
