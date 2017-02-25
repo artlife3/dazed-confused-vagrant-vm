@@ -18,3 +18,5 @@ vagrant box add ${os_name} ${box_url}
 
 #sudo echo "192.168.33.10 vagrant-vm.dev" >> /etc/hosts
 
+vagrant ssh-config
+
