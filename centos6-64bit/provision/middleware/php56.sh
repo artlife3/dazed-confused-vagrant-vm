@@ -17,6 +17,7 @@ php-mcrypt
 
 # PECL
 sudo yum install -y --enablerepo=remi,remi-php56 \
+php-pecl-imagick \
 php-opcache \
 php-pecl-memcache \
 php-pecl-memcached \

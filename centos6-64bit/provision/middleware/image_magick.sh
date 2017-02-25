@@ -1,4 +1,4 @@
 #ImageMagick
-sudo yum -y install ImageMagick
+sudo yum install -y ImageMagick ImageMagick-devel
 
 
