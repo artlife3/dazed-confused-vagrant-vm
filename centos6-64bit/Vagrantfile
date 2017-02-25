@@ -31,6 +31,7 @@ Vagrant.configure("2") do |config|
    config.vm.network "forwarded_port", guest: 80, host: 30000
    config.vm.network "forwarded_port", guest: 9200, host: 39200
    config.vm.network "forwarded_port", guest: 3306, host: 33306
+   config.vm.network "forwarded_port", host: 1080, guest: 1080
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -78,7 +79,7 @@ Vagrant.configure("2") do |config|
   # SHELL
 
   # Middleware
-  config.vm.provision :shell, :path => "provision/middleware/basic.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/basic.sh"
   config.vm.provision :shell, :path => "provision/middleware/location.sh"
   config.vm.provision :shell, :path => "provision/middleware/firewall_selinux.sh"
   config.vm.provision :shell, :path => "provision/middleware/apache.sh"

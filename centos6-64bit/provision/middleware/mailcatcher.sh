@@ -1,7 +1,11 @@
 gem install mailcatcher
-yum install sqlite-devel
-mailcatcher --http-ip 192.168.33.10 --no-quit
-setsebool -P httpd_can_network_connect 1
+sudo yum -y install sqlite-devel
+#mailcatcher --http-ip 192.168.33.10  --smtp-ip 192.168.33.10 --no-quit
+mailcatcher --http-ip 192.168.33.10 --smtp-ip 192.168.33.10
+#mailcatcher --http-ip 192.168.33.10 --smtp-ip 192.168.33.10 -v -f > /var/log/mailcatcher.log
+sudo setsebool -P httpd_can_network_connect on
+sudo setsebool -P httpd_can_sendmail on
+sudo  setenforce Permissive
 
 sudo cat << EOT > /etc/httpd/conf.d/mailcatcher.conf
 <VirtualHost *:80>
@@ -20,7 +24,7 @@ sudo cat << EOT > /etc/httpd/conf.d/mailcatcher.conf
 
 </VirtualHost>
 EOT
-sudo sed -i -e "s/sendmail_path = \/usr\/sbin\/sendmail -t -i/sendmail_path = \/usr\/bin\/env \/opt\/rbenv\/shims\/catchmail/g" /etc/php.ini
+sudo sed -i -e "s/sendmail_path = \/usr\/sbin\/sendmail -t -i/sendmail_path = \/usr\/bin\/env \/opt\/rbenv\/shims\/catchmail --smtp-ip 192.168.33.10 --smtp-port 1025/g" /etc/php.ini
 
 sudo /etc/init.d/httpd restart
 
