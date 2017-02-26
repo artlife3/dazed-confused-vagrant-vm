@@ -20,13 +20,14 @@
  1. Opcache
  1. APC
 1. Ruby - v2.3.3
- 1. Mailcatcher
+ 1. [Mailcatcher](https://mailcatcher.me)
 1. Memcached - v1.4
 
 ### SCM
 1. SVN - v1.6.11
 1. GIT - v1.7.1
 1. HG - v1.4
+1. [Bash-it](https://github.com/Bash-it/bash-it)
 
 ### CMS
 1. Drupal - v7.54
@@ -36,5 +37,6 @@
 
 ## How to insall
 
-
+```
 $ sh install/MacOSX/vagrant-install-forMacOS.sh
+```
