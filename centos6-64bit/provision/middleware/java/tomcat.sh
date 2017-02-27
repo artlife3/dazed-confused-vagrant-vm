@@ -40,6 +40,8 @@ sudo find /opt/tomcat -type d -exec chmod g+x {} \;
 
 
 # Added start up script
+# @url https://gist.github.com/MasahiroSaito/fafc0fdb9de49d5661c45e9ba4e59d0f
+# 
 cat << EOT > /etc/init.d/tomcat8
 #!/bin/bash
 
