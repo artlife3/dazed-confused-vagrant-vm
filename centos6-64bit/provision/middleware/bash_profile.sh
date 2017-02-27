@@ -1,6 +1,11 @@
 # Bash profile
 
 cat << EOT > /home/vagrant/.bash_profile
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
 umask 002
 
 export PATH
