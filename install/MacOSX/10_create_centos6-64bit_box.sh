@@ -6,15 +6,20 @@ box_url="https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/
 
 
 
-#vagrant init ${os_name}
-#vagrant box add ${os_name} ${box_url}
-#rm Vagrantfile
-#mv .vagrant/ ../../centos6-64bit/
-#cd ../../centos6-64bit/
-#mkdir share
+vagrant init ${os_name}
+vagrant box add ${os_name} ${box_url}
 
-#sudo echo "192.168.33.10 vagrant-vm.dev" | sudo tee -a /etc/hosts
+rm Vagrantfile
+mv .vagrant/ ../../centos6-64bit/
+cd ../../centos6-64bit/
+mkdir share
 
-echo "Execute these commands."
-echo "cd ../../centos6-64bit/ && sh refresh_vagrant.sh"
+sudo echo "192.168.33.10 vagrant-vm.dev" | sudo tee -a /etc/hosts
+
+echo " Completion of virtual box creation."
+echo ""
+echo "==== Execute these commands. ==="
+echo ""
+echo " cd ../../centos6-64bit/"
+echo " sh refresh_vagrant.sh"
 

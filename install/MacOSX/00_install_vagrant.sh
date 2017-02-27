@@ -6,3 +6,9 @@ brew cask install vagrant-manager
 vagrant --version
 vagrant plugin install vagrant-hostsupdater
 
+echo " Installation of vagrant command completed."
+echo ""
+echo "==== Then execute these. ==="
+echo ""
+echo " sh 10_create_centos6-64bit_box.sh"
+

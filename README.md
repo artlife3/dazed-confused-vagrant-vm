@@ -37,6 +37,29 @@
 
 ## How to insall
 
+### Install vagrant command
 ```
-$ sh install/MacOSX/vagrant-install-forMacOS.sh
+$ cd install/MacOSX/
+$ sh 00_install_vagrant.sh
 ```
+
+### Create Virtualbox
+```
+$ sh 10_create_centos6-64bit_box.sh
+```
+
+### Replace Vagrant & vagrant up
+
+```
+# cd ../../centos6-64bit/
+$ sh centos6-64bit/refresh_vagrant.sh
+```
+
+### Usual vagrant operation
+
+* cd centos6-64-bit/
+* vagrant up
+* vagrant halt
+* vagrant destroy
+* vagrant suspend
+* vagrant resume etc...
