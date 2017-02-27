@@ -3,95 +3,55 @@ sudo setsebool -P httpd_can_sendmail on
 sudo  setenforce Permissive
 
 gem install mailcatcher
-#sudo yum -y install sqlite-devel
 
-#wget -q  http://blog.starcklin.com/files/dpkg_1.17.6.tar.xz
-
-#
-# https://gist.github.com/EHLOVader/9233230
+# Reference source
+# @url https://gist.github.com/oppara/c4233b289c86e2b3cb66
 #
 sudo cat << EOT > /etc/init.d/mailcatcher
-#!/bin/bash
-#chkconfig: 2345 85 15
-#descpriction: apache(httpd) Web Server
-
-PID_FILE=/var/run/mailcatcher.pid
-NAME=mailcatcher
-PROG="/usr/bin/env mailcatcher"
-USER=mailcatcher
-GROUP=mailcatcher
+#!/bin/sh
+# chkconfig: 345 99 1
+# description: mailcatcher
+# processname: mailcatcher
 
 start() {
-        echo -n "Starting MailCatcher"
-        if start-stop-daemon --stop --quiet --pidfile \$PID_FILE --signal 0
-        then
-                echo " already running."
-                exit
-        fi
-        start-stop-daemon \
-                --start \
-                --pidfile \$PID_FILE \
-                --make-pidfile \
-                --background \
-                --exec \$PROG \
-                --user \$USER \
-                --group \$GROUP \
-                --chuid \$USER \
-                -- \
-                --foreground \
-                --http-ip=0.0.0.0 \
-                --http-port=1080 \
-                --smtp-port=1025
-        echo "."
-        return \$?
+    echo -n "starting mailcatcher:"
+    /opt/rbenv/shims/mailcatcher --http-ip 0.0.0.0 --smtp-ip 0.0.0.0 -v -f > /var/log/mailcatcher/mailcatcher.log&
+    return 0
 }
 
 stop() {
-        echo -n "Stopping MailCatcher"
-        start-stop-daemon \
-                --stop \
-                --oknodo \
-                --pidfile \$PID_FILE
-        echo "."
-        return \$?
-}
-
-restart() {
-        stop
-        start
+    killall mailcatcher
+    return 0
 }
 
 case "\$1" in
-        start)
-                start
-                ;;
-        stop)
-                stop
-                ;;
-        restart)
-                restart
-                ;;
-        *)
-                echo "Usage: \$0 {start|stop|restart}"
-                exit 1
-                ;;
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    *)
+        echo $"Usage: \$0 {start|stop}"
+        exit 2
 esac
+
+exit 0
 EOT
-#sudo chmod +x mailcatcher
-#sudo chkconfig --add mailcatcher
-#sudo chkconfig mailcatcher on
 
+sudo chmod +x /etc/init.d/mailcatcher
+sudo chkconfig --add mailcatcher
+sudo chkconfig mailcatcher on
 
+# Added log setting
 sudo mkdir /var/log/mailcatcher
 sudo chmod 775 /var/log/mailcatcher
 sudo touch /var/log/mailcatcher/mailcatcher.log
 sudo chown -R vagrant:vagrant /var/log/mailcatcher
 
-#mailcatcher --http-ip 192.168.33.10  --smtp-ip 192.168.33.10 --no-quit
-#mailcatcher --http-ip 192.168.33.10 --smtp-ip 127.0.0.1 --smtp-port 1025
-#mailcatcher --http-ip 192.168.33.10 --smtp-ip 127.0.0.1  --smtp-port 1025 -v -f > /var/log/mailcatcher.log
-/opt/rbenv/shims/mailcatcher --http-ip 0.0.0.0 --smtp-ip 0.0.0.0 -v -f > /var/log/mailcatcher/mailcatcher.log&
+sudo /etc/init.d/mailcatcher start
 
+# Added setting to httpd
 sudo cat << EOT > /etc/httpd/conf.d/mailcatcher.conf
 <VirtualHost *:80>
   ServerName mailcatcher.vagrant-vm.dev
@@ -107,6 +67,8 @@ sudo cat << EOT > /etc/httpd/conf.d/mailcatcher.conf
 
 </VirtualHost>
 EOT
+
+# Added setting to php.ini
 sudo sed -i -e "s/sendmail_path = \/usr\/sbin\/sendmail -t -i/sendmail_path = \/usr\/bin\/env \/opt\/rbenv\/shims\/catchmail/g" /etc/php.ini
 
 sudo /etc/init.d/httpd restart
