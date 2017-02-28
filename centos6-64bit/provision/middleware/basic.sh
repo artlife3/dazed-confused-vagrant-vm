@@ -24,7 +24,5 @@ sudo yum -y install colordiff
 sudo yum -y install vim-enhanced
 
 sudo chown vagrant:vagrant /opt
-sudo chown -R vagrant:vagrant /var/www
-sudo chmod -R 775 /var/www
 
 

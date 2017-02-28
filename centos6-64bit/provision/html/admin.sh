@@ -1,7 +1,6 @@
 su vagrant
 umask 002
 
-
 # Admin
 cd /var/www/html
 
