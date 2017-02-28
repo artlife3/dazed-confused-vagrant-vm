@@ -13,7 +13,7 @@ NameVirtualHost *:80
 
 <VirtualHost *:80>
 
-  ServerName vagrant-vm.dev
+  ServerName dazed-vagrant.vm
   DocumentRoot "/var/www/html"
 
   <Directory "/var/www/html">

@@ -9,7 +9,7 @@ echo ""
 echo " You will be prompted for a password only once."
 echo ""
 
-sudo echo "192.168.33.10 vagrant-vm.dev" | sudo tee -a /etc/hosts
+sudo echo "192.168.33.10 dazed-vagrant.vm" | sudo tee -a /etc/hosts
 echo ""
 echo ""
 

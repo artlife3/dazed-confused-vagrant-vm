@@ -54,7 +54,7 @@ sudo /etc/init.d/mailcatcher start
 # Added setting to httpd
 sudo cat << EOT > /etc/httpd/conf.d/mailcatcher.conf
 <VirtualHost *:80>
-  ServerName mailcatcher.vagrant-vm.dev
+  ServerName mailcatcher.dazed-vagrant.vm
 
   ProxyPass /assets http://192.168.33.10:1080/assets
   ProxyPass /messages http://192.168.33.10:1080/messages

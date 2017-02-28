@@ -107,7 +107,7 @@ sudo /etc/init.d/tomcat8 start
 
 cat << EOT > /etc/httpd/conf.d/tomcat.conf
 <VirtualHost *:80>
-  ServerName tomcat.vagrant-vm.dev
+  ServerName tomcat.dazed-vagrant.vm
 
   <Directory />
     Options FollowSymLinks
