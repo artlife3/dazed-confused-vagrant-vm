@@ -2,22 +2,31 @@ su vagrant
 umask 002
 
 DRUPAL="drupal-7.54"
+PATH="/var/www/html/"
+DIR="drupal7"
 
 #Drupal
-mysql -u root -proot -e "CREATE DATABASE drupal7;"
-cd /var/www/html/
-wget -q https://ftp.drupal.org/files/projects/${DRUPAL}.tar.gz
-tar xvzf ${DRUPAL}.tar.gz
-rm ${DRUPAL}.tar.gz
+mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS drupal7;"
 
-ln -s ${DRUPAL} drupal7
+if [ ! -e ${PATH}${DIR} ]; then
 
-cd /var/www/html/drupal7
-mkdir sites/default/files
-sudo chmod g+w sites/default/files
-cp sites/default/default.settings.php sites/default/settings.php
-sudo chown -R vagrant:vagrant /var/www/html/${DRUPAL}
+  cd ${PATH}
+  wget -q https://ftp.drupal.org/files/projects/${DRUPAL}.tar.gz
+  tar xvzf ${DRUPAL}.tar.gz
+  rm ${DRUPAL}.tar.gz
 
-cd profiles/standard/translations
-wget -q http://ftp.drupal.org/files/translations/7.x/drupal/${DRUPAL}.ja.po
+  mv ${DRUPAL} ${DIR}
+
+  cd ${PATH}${DIR}
+  mkdir sites/default/files
+  sudo chmod g+w sites/default/files
+  cp sites/default/default.settings.php sites/default/settings.php
+  sudo chown -R vagrant:vagrant ${PATH}${DIR}
+
+  cd profiles/standard/translations
+  wget -q http://ftp.drupal.org/files/translations/7.x/drupal/${DRUPAL}.ja.po
+
+else
+  echo "CMS '${DIR}' already exists. Skip the process."
+fi
 

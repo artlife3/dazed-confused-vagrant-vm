@@ -1,13 +1,23 @@
 su vagrant
 umask 002
 
-#Wordpress
-mysql -u root -proot -e "CREATE DATABASE wordpress;"
-cd /var/www/html/
-wget -q https://ja.wordpress.org/wordpress-4.7.2-ja.zip
-unzip -q wordpress-4.7.2-ja.zip
-rm wordpress-4.7.2-ja.zip
+WORDPRESS="wordpress-4.7.2"
+PATH="/var/www/html/"
+DIR="wordpress"
 
-sudo chown -R apache:vagrant wordpress
+#Wordpress
+mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS wordpress;"
+
+if [ ! -e ${PATH}${DIR} ]; then
+
+  cd ${PATH}$
+  wget -q https://ja.wordpress.org/${WORDPRESS}-ja.zip
+  unzip -q ${WORDPRESS}-ja.zip
+  rm ${WORDPRESS}-ja.zip
+
+  sudo chown -R apache:vagrant ${DIR}
+else
+  echo "CMS '${DIR}' already exists. Skip the process."
+fi
 
 
