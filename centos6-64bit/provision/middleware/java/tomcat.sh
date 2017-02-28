@@ -34,6 +34,8 @@ cat << EOT > /opt/tomcat/tomcat8/conf/Catalina/localhost/manager.xml
 <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="^.*$" /></Context>
 EOT
 
+sed -i '114s/^/\nCATALINA_OPTS="-server -Xmx128M -Xms64M -XX:MaxPermSize=256m -Xloggc:\/opt\/tomcat\/tomcat8\/logs\/tomcat-gc.log -XX:+PrintGCDetails"\n/' /opt/tomcat/tomcat8/bin/catalina.sh
+
 sudo chown -R tomcat:vagrant /opt/tomcat
 sudo chmod -R g+rw /opt/tomcat
 sudo find /opt/tomcat -type d -exec chmod g+x {} \;
