@@ -268,6 +268,8 @@ EOT
 sudo chown -R apache:vagrant /var/www/html
 
 # Home
-ln -s /var/www/html /home/vagrant/html
-ln -s /var/www/html/admin /home/vagrant/admin
-ln -s /var/log /home/vagrant/log
+cd /home/vagrant
+ln -s /var/www/html .
+ln -s /var/www/html/admin .
+ln -s /var/log .
+
