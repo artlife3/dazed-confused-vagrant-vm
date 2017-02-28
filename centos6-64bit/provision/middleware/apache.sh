@@ -2,6 +2,9 @@
 sudo yum -y install httpd
 sudo yum -y install mod_ssl
 
+sudo chown -R vagrant:vagrant /var/log/httpd
+sudo chmod -R g+wrx /var/log/httpd
+
 sudo sed -i -e "s/User apache/User vagrant/g" /etc/httpd/conf/httpd.conf
 sudo sed -i -e "s/Group apache/Group vagrant/g" /etc/httpd/conf/httpd.conf
 

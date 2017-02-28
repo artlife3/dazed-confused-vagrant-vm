@@ -16,6 +16,6 @@ cd /var/www/html/drupal8
 mkdir sites/default/files
 sudo chmod g+w sites/default/files
 cp sites/default/default.settings.php sites/default/settings.php
-sudo chown -R apache:vagrant /var/www/html/${DRUPAL}
+sudo chown -R vagrant:vagrant /var/www/html/${DRUPAL}
 
 

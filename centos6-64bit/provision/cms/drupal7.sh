@@ -16,7 +16,7 @@ cd /var/www/html/drupal7
 mkdir sites/default/files
 sudo chmod g+w sites/default/files
 cp sites/default/default.settings.php sites/default/settings.php
-sudo chown -R apache:vagrant /var/www/html/${DRUPAL}
+sudo chown -R vagrant:vagrant /var/www/html/${DRUPAL}
 
 cd profiles/standard/translations
 wget -q http://ftp.drupal.org/files/translations/7.x/drupal/${DRUPAL}.ja.po

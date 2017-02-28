@@ -264,7 +264,7 @@ cat << EOT > /var/www/html/admin/mail-test.php
 EOT
 
 # Permission
-sudo chown -R apache:vagrant /var/www/html
+sudo chown -R vagrant:vagrant /var/www/html
 
 # Home
 cd /home/vagrant

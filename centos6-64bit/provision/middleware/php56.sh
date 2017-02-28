@@ -1,4 +1,5 @@
 #PHP
+
 sudo yum -y install epel-release
 sudo rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 
@@ -29,7 +30,7 @@ sudo sed -i -e "/AddType text\/html \.php/i\AddType application\/x-httpd-php \.p
 # Error log
 sudo mkdir -p /var/log/php/
 sudo touch /var/log/php/php_errors.log
-sudo chown -R vagrant:vagrant /var/log/php/
+sudo chown -R vagrant:vagrant /var/log/php /var/lib/php
 sudo sed -i -e "s/\;error_log = php_errors.log/error_log = \/var\/log\/php\/php_errors.log/g" /etc/php.ini
 cat << EOT > /etc/logrotate.d/php
 /var/log/php/php_errors.log
