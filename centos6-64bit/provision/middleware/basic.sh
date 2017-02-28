@@ -23,6 +23,10 @@ sudo yum -y install colordiff
 #vim
 sudo yum -y install vim-enhanced
 
+#htop
+sudo yum -y install htop
+
+
 sudo chown vagrant:vagrant /opt
 
 
