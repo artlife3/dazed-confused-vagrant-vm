@@ -12,7 +12,7 @@ php-intl \
 php-mbstring \
 php-pdo \
 php-mysqlnd \
-php-pear \ 
+php-pear \
 php-xml \
 php-mcrypt
 

@@ -78,33 +78,33 @@ Vagrant.configure("2") do |config|
   # SHELL
 
   # Middleware
-  config.vm.provision :shell, :path => "provision/middleware/basic.sh"
-  config.vm.provision :shell, :path => "provision/middleware/bash_profile.sh"
-  config.vm.provision :shell, :path => "provision/middleware/location.sh"
-  config.vm.provision :shell, :path => "provision/middleware/firewall_selinux.sh"
-  config.vm.provision :shell, :path => "provision/middleware/apache.sh"
-
-  config.vm.provision :shell, :path => "provision/middleware/scm/scm.sh"
-  config.vm.provision :shell, :path => "provision/middleware/scm/bash_it.sh", privileged: false
-
-  config.vm.provision :shell, :path => "provision/middleware/mysql.sh"
-  config.vm.provision :shell, :path => "provision/middleware/memcached.sh"
-  config.vm.provision :shell, :path => "provision/middleware/image_magick.sh"
-  config.vm.provision :shell, :path => "provision/middleware/php56.sh"
-
-  config.vm.provision :shell, :path => "provision/middleware/java/java8.sh"
-  config.vm.provision :shell, :path => "provision/middleware/java/tomcat.sh"
-  config.vm.provision :shell, :path => "provision/middleware/java/elasitcsearch.sh"
-
-  config.vm.provision :shell, :path => "provision/middleware/ruby/ruby.sh"
-  config.vm.provision :shell, :path => "provision/middleware/ruby/mailcatcher.sh"
-
+#  config.vm.provision :shell, :path => "provision/middleware/basic.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/bash_profile.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/location.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/firewall_selinux.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/apache.sh"
+#
+#  config.vm.provision :shell, :path => "provision/middleware/scm/scm.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/scm/bash_it.sh", privileged: false
+#
+#  config.vm.provision :shell, :path => "provision/middleware/mysql.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/memcached.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/image_magick.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/php56.sh"
+#
+#  config.vm.provision :shell, :path => "provision/middleware/java/java8.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/java/tomcat.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/java/elasitcsearch.sh"
+#
+#  config.vm.provision :shell, :path => "provision/middleware/ruby/ruby.sh"
+#  config.vm.provision :shell, :path => "provision/middleware/ruby/mailcatcher.sh"
+#
   # Application
-  config.vm.provision :shell, :path => "provision/html/admin.sh"
+#  config.vm.provision :shell, :path => "provision/html/admin.sh", privileged: false
 
   # CMS
-  config.vm.provision :shell, :path => "provision/cms/drupal8.sh"
+#  config.vm.provision :shell, :path => "provision/cms/drupal8.sh", privileged: false
   config.vm.provision :shell, :path => "provision/cms/drupal7.sh"
-  config.vm.provision :shell, :path => "provision/cms/wordpress.sh"
+#  config.vm.provision :shell, :path => "provision/cms/wordpress.sh", privileged: false
 
 end

@@ -1,6 +1,5 @@
 #!/bin/sh
 
-vagrant="vagrant"
 os_name="centos6-64bit"
 box_url="https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.0.0/centos-6.6-x86_64.box"
 

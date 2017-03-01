@@ -1,6 +1,3 @@
-su vagrant
-umask 002
-
 # Admin
 cd /var/www/html
 
@@ -263,12 +260,18 @@ cat << EOT > /var/www/html/admin/mail-test.php
 
 EOT
 
-# Permission
-sudo chown -R vagrant:vagrant /var/www/html
-
 # Home
 cd /home/vagrant
+
+if [ ! -L /home/vagrant/html ]; then
 ln -s /var/www/html .
+fi
+
+if [ ! -L /home/vagrant/admin ]; then
 ln -s /var/www/html/admin .
+fi
+
+if [ ! -L /home/vagrant/log ]; then
 ln -s /var/log .
+fi
 

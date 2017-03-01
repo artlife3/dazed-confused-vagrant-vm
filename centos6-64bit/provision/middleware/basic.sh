@@ -1,7 +1,3 @@
-#MariaDB
-sudo yum -y remove mariadb*
-sudo rm -rf /var/lib/mysql/
-
 #wget
 sudo yum -y install wget
 
@@ -28,5 +24,8 @@ sudo yum -y install htop
 
 
 sudo chown vagrant:vagrant /opt
+sudo chown -R vagrant:vagrant /var/www/html
+sudo chmod -R g+w /var/www/html
+
 
 

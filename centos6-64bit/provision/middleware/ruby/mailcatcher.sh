@@ -1,6 +1,5 @@
 sudo setsebool -P httpd_can_network_connect on
 sudo setsebool -P httpd_can_sendmail on
-sudo  setenforce Permissive
 
 gem install mailcatcher
 

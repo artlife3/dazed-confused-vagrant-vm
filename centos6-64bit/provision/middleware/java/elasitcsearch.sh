@@ -34,5 +34,5 @@ EOT
 
 sudo chown -R elasticsearch:vagrant /etc/elasticsearch/
 sudo chmod -R g+w /etc/elasticsearch/
-sudo -i service elasticsearch start
-s
+sudo /etc/init.d/elasticsearch start
+

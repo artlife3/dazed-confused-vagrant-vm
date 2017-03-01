@@ -7,7 +7,6 @@ echo ""
 
 vagrant up
 
-echo `vagrant ssh-config` >> ~/.ssh/config
 echo "Add to ~/.ssh/config"
 vagrant ssh-config
 
