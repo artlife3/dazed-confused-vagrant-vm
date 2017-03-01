@@ -1,4 +1,6 @@
 # Memcached
+echo "---------- Memcached ----------"
+
 sudo yum -y  install memcached memcached-devel
 sudo chkconfig memcached on
 

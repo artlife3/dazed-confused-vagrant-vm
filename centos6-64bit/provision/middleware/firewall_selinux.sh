@@ -1,4 +1,6 @@
-# Firewall、SELinux OFF
+# Firewall, SELinux
+echo "---------- Firewall, SELinux ----------"
+
 /etc/rc.d/init.d/iptables stop
 chkconfig iptables off
 chkconfig ip6tables off

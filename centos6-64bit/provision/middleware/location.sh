@@ -1,4 +1,6 @@
 # Timezone
+echo "---------- Location ----------"
+
 cat << EOT > /etc/sysconfig/clock
 ZONE="Asia/Tokyo"
 UTC="false"

@@ -45,7 +45,12 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "share", "/var/www/html", owner: "vagrant", group: "vagrant", mount_options: ['dmode=777','fmode=755']
+  config.vm.synced_folder "share", "/var/www/html",
+     :create => true,
+     owner: "vagrant",
+     group: "vagrant",
+     mount_options: ['dmode=777','fmode=666'],
+     :nfs => false
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -76,35 +81,53 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+  
+  PATH_WWW="/var/www/html"
+  PATH_OPT="/opt"
+  ADMIN="admin"
+  PATH_HOME="/home/vagrant"
+  PHP_TIMEZONE="Asia\/Tokyo"
+  DOMAINNAME="dazed-vagrant.vm"
 
   # Middleware
-#  config.vm.provision :shell, :path => "provision/middleware/basic.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/bash_profile.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/location.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/firewall_selinux.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/apache.sh"
-#
-#  config.vm.provision :shell, :path => "provision/middleware/scm/scm.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/scm/bash_it.sh", privileged: false
-#
-#  config.vm.provision :shell, :path => "provision/middleware/mysql.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/memcached.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/image_magick.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/php56.sh"
-#
-#  config.vm.provision :shell, :path => "provision/middleware/java/java8.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/java/tomcat.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/java/elasitcsearch.sh"
-#
-#  config.vm.provision :shell, :path => "provision/middleware/ruby/ruby.sh"
-#  config.vm.provision :shell, :path => "provision/middleware/ruby/mailcatcher.sh"
-#
+  config.vm.provision :shell, :path => "provision/middleware/basic.sh", :args => [PATH_WWW,PATH_OPT]
+  config.vm.provision :shell, :path => "provision/middleware/bash_profile.sh"
+  config.vm.provision :shell, :path => "provision/middleware/location.sh"
+  config.vm.provision :shell, :path => "provision/middleware/firewall_selinux.sh"
+  config.vm.provision :shell, :path => "provision/middleware/apache.sh", :args => [PATH_WWW,ADMIN,DOMAINNAME]
+
+  config.vm.provision :shell, :path => "provision/middleware/scm/scm.sh"
+  config.vm.provision :shell, :path => "provision/middleware/scm/bash_it.sh", :args => [PATH_OPT,PATH_HOME], privileged: false
+
+  config.vm.provision :shell, :path => "provision/middleware/mysql.sh"
+  config.vm.provision :shell, :path => "provision/middleware/memcached.sh"
+  config.vm.provision :shell, :path => "provision/middleware/image_magick.sh"
+  config.vm.provision :shell, :path => "provision/middleware/php56.sh", :args => [PHP_TIMEZONE]
+
+  config.vm.provision :shell, :path => "provision/middleware/java/java8.sh"
+  config.vm.provision :shell, :path => "provision/middleware/java/tomcat.sh", :args => [PATH_OPT,"-server -Xmx128M -Xms64M -XX:MaxPermSize=256m",DOMAINNAME]
+  config.vm.provision :shell, :path => "provision/middleware/java/elasitcsearch.sh", :args => ["128m","-XX:ParallelGCThreads=5"]
+
+  config.vm.provision :shell, :path => "provision/middleware/ruby/ruby.sh", :args => [PATH_OPT]
+  config.vm.provision :shell, :path => "provision/middleware/ruby/mailcatcher.sh", :args => [PATH_OPT,DOMAINNAME]
+
+  config.vm.provision :shell, :path => "provision/middleware/enhancement.sh"
+
   # Application
-#  config.vm.provision :shell, :path => "provision/html/admin.sh", privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/index.sh", :args => [PATH_WWW,ADMIN,DOMAINNAME], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/phpinfo.sh", :args => [PATH_WWW,ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/phpmyadmin.sh", :args => [PATH_WWW,ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/phpMemcachedAdmin.sh", :args => [PATH_WWW,ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/opcache.sh", :args => [PATH_WWW,ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/memcache-test.sh", :args => [PATH_WWW,ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/mail-test.sh", :args => [PATH_WWW,ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/apcu.sh", :args => [PATH_WWW,ADMIN], privileged: false
 
   # CMS
-#  config.vm.provision :shell, :path => "provision/cms/drupal8.sh", privileged: false
-  config.vm.provision :shell, :path => "provision/cms/drupal7.sh"
-#  config.vm.provision :shell, :path => "provision/cms/wordpress.sh", privileged: false
+  config.vm.provision :shell, :path => "provision/cms/drupal8.sh", :args => [PATH_WWW], privileged: false
+  config.vm.provision :shell, :path => "provision/cms/drupal7.sh", :args => [PATH_WWW], privileged: false
+  config.vm.provision :shell, :path => "provision/cms/wordpress.sh", :args => [PATH_WWW], privileged: false
+
+  config.vm.provision :shell, :path => "provision/home.sh", :args => [PATH_HOME,PATH_WWW,ADMIN], privileged: false
 
 end

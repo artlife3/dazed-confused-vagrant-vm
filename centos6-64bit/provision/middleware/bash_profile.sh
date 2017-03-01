@@ -1,4 +1,5 @@
 # Bash profile
+echo "---------- .bash_profile ----------"
 
 cat << EOT > /home/vagrant/.bash_profile
 # Get the aliases and functions
@@ -6,7 +7,7 @@ if [ -f ~/.bashrc ]; then
         . ~/.bashrc
 fi
 
-umask 002
+umask 022
 
 export PATH
 export TERM=xterm-color

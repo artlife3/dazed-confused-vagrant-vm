@@ -1,3 +1,11 @@
+# Mailcatcher
+echo "---------- Mailcatcher ----------"
+PATH_OPT=$1
+DOMAINNAME=$2
+echo "Args PATH_OPT:$PATH_OPT"
+echo "Args DOMAINNAME:$DOMAINNAME"
+echo "================================================================================"
+
 sudo setsebool -P httpd_can_network_connect on
 sudo setsebool -P httpd_can_sendmail on
 
@@ -14,7 +22,7 @@ sudo cat << EOT > /etc/init.d/mailcatcher
 
 start() {
     echo -n "starting mailcatcher:"
-    /opt/rbenv/shims/mailcatcher --http-ip 0.0.0.0 --smtp-ip 0.0.0.0 -v -f > /var/log/mailcatcher/mailcatcher.log&
+    $PATH_OPT/rbenv/shims/mailcatcher --http-ip 0.0.0.0 --smtp-ip 0.0.0.0 -v -f > /var/log/mailcatcher/mailcatcher.log&
     return 0
 }
 
@@ -53,7 +61,7 @@ sudo /etc/init.d/mailcatcher start
 # Added setting to httpd
 sudo cat << EOT > /etc/httpd/conf.d/mailcatcher.conf
 <VirtualHost *:80>
-  ServerName mailcatcher.dazed-vagrant.vm
+  ServerName mailcatcher.$DOMAINNAME
 
   ProxyPass /assets http://192.168.33.10:1080/assets
   ProxyPass /messages http://192.168.33.10:1080/messages

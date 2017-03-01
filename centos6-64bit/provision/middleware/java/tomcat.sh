@@ -1,17 +1,28 @@
 # Tomcat
+echo "---------- Tomcat8 ----------"
+PATH_OPT=$1
+CATALINA_OPTS=$2
+DOMAINNAME=$3
+echo "Args PATH_OPT:$PATH_OPT"
+echo "Args CATALINA_OPTS:$CATALINA_OPTS"
+echo "Args DOMAINNAME:$DOMAINNAME"
+echo "================================================================================"
+
+PATH_TOMCAT=$PATH_OPT/tomcat
+
 sudo useradd -s /bin/bash tomcat
+sudo mkdir $PATH_TOMCAT
+cd $PATH_TOMCAT
 
 wget -q http://ftp.kddilabs.jp/infosystems/apache/tomcat/tomcat-8/v8.5.11/bin/apache-tomcat-8.5.11.tar.gz
-
 tar xvzf apache-tomcat-8.5.11.tar.gz
 rm apache-tomcat-8.5.11.tar.gz
-sudo  mkdir /opt/tomcat
-sudo  mv /home/vagrant/apache-tomcat-8.5.11 /opt/tomcat
-sudo ln -s /opt/tomcat/apache-tomcat-8.5.11 /opt/tomcat/tomcat8
+
+sudo ln -s $PATH_TOMCAT/apache-tomcat-8.5.11 $PATH_TOMCAT/tomcat8
 
 
 # Replace tomcat-users.xml
-cat << EOT > /opt/tomcat/apache-tomcat-8.5.11/conf/tomcat-users.xml
+cat << EOT > $PATH_TOMCAT/apache-tomcat-8.5.11/conf/tomcat-users.xml
 <?xml version="1.0" encoding="UTF-8"?>
 
 <tomcat-users xmlns="http://tomcat.apache.org/xml"
@@ -28,17 +39,17 @@ EOT
 
 
 # Added manager.xml
-mkdir -p /opt/tomcat/tomcat8/conf/Catalina/localhost
-cat << EOT > /opt/tomcat/tomcat8/conf/Catalina/localhost/manager.xml
+mkdir -p $PATH_TOMCAT/tomcat8/conf/Catalina/localhost
+cat << EOT > $PATH_TOMCAT/tomcat8/conf/Catalina/localhost/manager.xml
 <Context privileged="true" antiResourceLocking="false" docBase="\${catalina.home}/webapps/manager">
 <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="^.*$" /></Context>
 EOT
 
-sed -i '114s/^/\nCATALINA_OPTS="-server -Xmx128M -Xms64M -XX:MaxPermSize=256m -Xloggc:\/opt\/tomcat\/tomcat8\/logs\/tomcat-gc.log -XX:+PrintGCDetails"\n/' /opt/tomcat/tomcat8/bin/catalina.sh
+sed -i "114s/^/\nCATALINA_OPTS=\"$CATALINA_OPTS -Xloggc:\/opt\/tomcat\/tomcat8\/logs\/tomcat-gc.log -XX:+PrintGCDetails\"\n/" $PATH_TOMCAT/tomcat8/bin/catalina.sh
 
-sudo chown -R tomcat:vagrant /opt/tomcat
-sudo chmod -R g+rw /opt/tomcat
-sudo find /opt/tomcat -type d -exec chmod g+x {} \;
+sudo chown -R tomcat:vagrant $PATH_TOMCAT
+sudo chmod -R g+rw $PATH_TOMCAT
+sudo find $PATH_TOMCAT -type d -exec chmod g+x {} \;
 
 
 # Added start up script
@@ -55,7 +66,7 @@ cat << EOT > /etc/init.d/tomcat8
 . /etc/init.d/functions
 . /etc/sysconfig/network
 
-CATALINA_HOME=/opt/tomcat/tomcat8
+CATALINA_HOME=$PATH_TOMCAT/tomcat8
 TOMCAT_USER=tomcat
 
 LOCKFILE=/var/lock/subsys/tomcat8
@@ -107,7 +118,7 @@ sudo /etc/init.d/tomcat8 start
 
 cat << EOT > /etc/httpd/conf.d/tomcat.conf
 <VirtualHost *:80>
-  ServerName tomcat.dazed-vagrant.vm
+  ServerName tomcat.$DOMAINNAME
 
   <Directory />
     Options FollowSymLinks

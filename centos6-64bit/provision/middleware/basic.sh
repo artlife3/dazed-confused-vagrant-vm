@@ -1,31 +1,21 @@
+# Basic
+echo "---------- Basic ----------"
+PATH_WWW=$1
+PATH_OPT=$2
+echo "Args PATH_WWW:$PATH_WWW"
+echo "Args PATH_OPT:$PATH_OPT"
+echo "================================================================================"
+
 #wget
 sudo yum -y install wget
-
-#links
-sudo yum -y install links
-
-#tree
-sudo yum -y install tree
 
 #unzip
 sudo yum -y install unzip
 
-#telnet
-sudo yum -y install telnet
 
-#colordiff
-sudo yum -y install colordiff
-
-#vim
-sudo yum -y install vim-enhanced
-
-#htop
-sudo yum -y install htop
-
-
-sudo chown vagrant:vagrant /opt
-sudo chown -R vagrant:vagrant /var/www/html
-sudo chmod -R g+w /var/www/html
+sudo chown vagrant:vagrant $PATH_OPT
+sudo chown -R vagrant:vagrant $PATH_WWW
+sudo chmod -R g+w $PATH_WWW
 
 
 

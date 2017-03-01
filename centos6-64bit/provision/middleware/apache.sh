@@ -1,4 +1,16 @@
-#Apache
+# Apache
+echo "---------- Apache ----------"
+PATH_WWW=$1
+ADMIN=$2
+DOMAINNAME=$3
+echo "Args PATH_WWW:$PATH_WWW"
+echo "Args ADMIN:$ADMIN"
+echo "Args DOMAINNAME:$DOMAINNAME"
+echo "================================================================================"
+
+sudo chown -R vagrant:vagrant $PATH_WWW
+sudo chmod -R g+w $PATH_WWW
+
 sudo yum -y install httpd
 sudo yum -y install mod_ssl
 
@@ -13,10 +25,10 @@ NameVirtualHost *:80
 
 <VirtualHost *:80>
 
-  ServerName dazed-vagrant.vm
-  DocumentRoot "/var/www/html"
+  ServerName $DOMAINNAME
+  DocumentRoot "$PATH_WWW"
 
-  <Directory "/var/www/html">
+  <Directory "$PATH_WWW">
     Options Indexes FollowSymLinks
     AllowOverride all
     Order allow,deny
@@ -27,20 +39,18 @@ NameVirtualHost *:80
 EOT
 
 cat << EOT > /etc/httpd/conf.d/server-status.conf
-<Location /admin/server-status>
+<Location /$ADMIN/server-status>
     SetHandler server-status
 </Location>
 EOT
 
 cat << EOT > /etc/httpd/conf.d/server-info.conf
-<Location /admin/server-info>
+<Location /$ADMIN/server-info>
     SetHandler server-info
 </Location>
 EOT
 
 
-
 sudo /etc/init.d/httpd start
 sudo chkconfig  httpd on
-
 

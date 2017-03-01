@@ -1,23 +1,24 @@
-su vagrant
-umask 002
+# Wordpress
+echo "---------- Wordpress ----------"
+PATH_WWW=$1
+echo "Args PATH_WWW:$PATH_WWW"
+echo "================================================================================"
 
 WORDPRESS="wordpress-4.7.2"
-PATH="/var/www/html/"
 DIR="wordpress"
 
-#Wordpress
 mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS wordpress;"
 
-if [ ! -e ${PATH}${DIR} ]; then
+if [ ! -e $PATH_WWW/$DIR ]; then
 
-  cd ${PATH}$
-  wget -q https://ja.wordpress.org/${WORDPRESS}-ja.zip
-  unzip -q ${WORDPRESS}-ja.zip
-  rm ${WORDPRESS}-ja.zip
+  cd $PATH_WWW
+  wget -q https://ja.wordpress.org/$WORDPRESS-ja.zip
+  unzip -q $WORDPRESS-ja.zip
+  rm $WORDPRESS-ja.zip
 
-  sudo chown -R apache:vagrant ${DIR}
+  sudo chown -R apache:vagrant $DIR
 else
-  echo "CMS '${DIR}' already exists. Skip the process."
+  echo "CMS '$DIR' already exists. Skip the process."
 fi
 
 
