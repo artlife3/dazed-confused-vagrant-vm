@@ -13,6 +13,7 @@ sudo echo "192.168.33.10 dazed-vagrant.vm" | sudo tee -a /etc/hosts
 echo ""
 echo ""
 
+vagrant plugin install vagrant-hostsupdater
 vagrant init ${os_name}
 vagrant box add ${os_name} ${box_url}
 

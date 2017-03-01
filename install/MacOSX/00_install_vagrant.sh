@@ -4,7 +4,6 @@ brew cask install virtualbox
 brew cask install vagrant
 brew cask install vagrant-manager
 vagrant --version
-vagrant plugin install vagrant-hostsupdater
 
 echo " Installation of vagrant command completed."
 echo ""
