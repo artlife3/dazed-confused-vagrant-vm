@@ -15,6 +15,8 @@
 1. **Java** - v1.8.0
  * **Tomcat** - v8.5.11
  * **Elasticsearch** - v5.x
+ * **Kibana**
+ * **Logstash**
 1. **MySQL** - v5.6
 1. **PHP** - v5.6
  * **Opcache**
@@ -52,7 +54,7 @@ $ sh 10_create_centos6-64bit_box.sh
 
 ```
 # cd ../../centos6-64bit/
-$ sh centos6-64bit/refresh_vagrant.sh
+$ sh refresh_vagrant.sh
 ```
 
 ### Usual vagrant operation
