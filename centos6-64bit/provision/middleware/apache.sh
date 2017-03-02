@@ -1,9 +1,11 @@
 # Apache
 echo "---------- Apache ----------"
 PATH_WWW=$1
-ADMIN=$2
-DOMAINNAME=$3
+DIR_HTML=$2
+ADMIN=$3
+DOMAINNAME=$4
 echo "Args PATH_WWW:$PATH_WWW"
+echo "Args DIR_HTML:$DIR_HTML"
 echo "Args ADMIN:$ADMIN"
 echo "Args DOMAINNAME:$DOMAINNAME"
 echo "================================================================================"
@@ -26,9 +28,9 @@ NameVirtualHost *:80
 <VirtualHost *:80>
 
   ServerName $DOMAINNAME
-  DocumentRoot "$PATH_WWW"
+  DocumentRoot "$PATH_WWW/$DIR_HTML"
 
-  <Directory "$PATH_WWW">
+  <Directory "$PATH_WWW/$DIR_HTML">
     Options Indexes FollowSymLinks
     AllowOverride all
     Order allow,deny

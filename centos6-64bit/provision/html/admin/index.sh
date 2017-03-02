@@ -1,15 +1,22 @@
 # Admin
 echo "---------- Admin ----------"
 PATH_WWW=$1
-ADMIN=$2
-DOMAINNAME=$3
+DIR_HTML=$2
+ADMIN=$3
+DOMAINNAME=$4
 echo "Args PATH_WWW:$PATH_WWW"
+echo "Args DIR_HTML:$DIR_HTML"
 echo "Args ADMIN:$ADMIN"
 echo "Args DOMAINNAME:$DOMAINNAME"
 echo "================================================================================"
-PATH_ADMIN=$PATH_WWW/$ADMIN
+PATH_ADMIN=$PATH_WWW/$DIR_HTML/$ADMIN
 
-cd $PATH_WWW
+if [ ! -e $PATH_WWW/$DIR_HTML ]; then
+  mkdir -p  $PATH_WWW/$DIR_HTML
+fi
+
+cd $PATH_WWW/$DIR_HTML
+
 if [ ! -e $PATH_ADMIN ]; then
 mkdir $ADMIN
 fi

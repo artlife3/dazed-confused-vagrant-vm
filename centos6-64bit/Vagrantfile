@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "share", "/var/www/html",
+  config.vm.synced_folder "share", "/var/www",
      :create => true,
      owner: "vagrant",
      group: "vagrant",
@@ -82,9 +82,10 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
   
-  PATH_WWW="/var/www/html"
+  PATH_WWW="/var/www"
+  DIR_HTML="html"
   PATH_OPT="/opt"
-  ADMIN="admin"
+  DIR_ADMIN="admin"
   PATH_HOME="/home/vagrant"
   PHP_TIMEZONE="Asia\/Tokyo"
   DOMAINNAME="dazed-vagrant.vm"
@@ -94,7 +95,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, :path => "provision/middleware/bash_profile.sh"
   config.vm.provision :shell, :path => "provision/middleware/location.sh"
   config.vm.provision :shell, :path => "provision/middleware/firewall_selinux.sh"
-  config.vm.provision :shell, :path => "provision/middleware/apache.sh", :args => [PATH_WWW,ADMIN,DOMAINNAME]
+  config.vm.provision :shell, :path => "provision/middleware/apache.sh", :args => [PATH_WWW,DIR_HTML,DIR_ADMIN,DOMAINNAME]
 
   config.vm.provision :shell, :path => "provision/middleware/scm/scm.sh"
   config.vm.provision :shell, :path => "provision/middleware/scm/bash_it.sh", :args => [PATH_OPT,PATH_HOME], privileged: false
@@ -114,20 +115,20 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, :path => "provision/middleware/enhancement.sh"
 
   # Application
-  config.vm.provision :shell, :path => "provision/html/admin/index.sh", :args => [PATH_WWW,ADMIN,DOMAINNAME], privileged: false
-  config.vm.provision :shell, :path => "provision/html/admin/phpinfo.sh", :args => [PATH_WWW,ADMIN], privileged: false
-  config.vm.provision :shell, :path => "provision/html/admin/phpmyadmin.sh", :args => [PATH_WWW,ADMIN], privileged: false
-  config.vm.provision :shell, :path => "provision/html/admin/phpMemcachedAdmin.sh", :args => [PATH_WWW,ADMIN], privileged: false
-  config.vm.provision :shell, :path => "provision/html/admin/opcache.sh", :args => [PATH_WWW,ADMIN], privileged: false
-  config.vm.provision :shell, :path => "provision/html/admin/memcache-test.sh", :args => [PATH_WWW,ADMIN], privileged: false
-  config.vm.provision :shell, :path => "provision/html/admin/mail-test.sh", :args => [PATH_WWW,ADMIN], privileged: false
-  config.vm.provision :shell, :path => "provision/html/admin/apcu.sh", :args => [PATH_WWW,ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/index.sh", :args => [PATH_WWW,DIR_HTML,DIR_ADMIN,DOMAINNAME], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/phpinfo.sh", :args => [PATH_WWW,DIR_HTML,DIR_ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/phpmyadmin.sh", :args => [PATH_WWW,DIR_HTML,DIR_ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/phpMemcachedAdmin.sh", :args => [PATH_WWW,DIR_HTML,DIR_ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/opcache.sh", :args => [PATH_WWW,DIR_HTML,DIR_ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/memcache-test.sh", :args => [PATH_WWW,DIR_HTML,DIR_ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/mail-test.sh", :args => [PATH_WWW,DIR_HTML,DIR_ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/html/admin/apcu.sh", :args => [PATH_WWW,DIR_HTML,DIR_ADMIN], privileged: false
 
   # CMS
-  config.vm.provision :shell, :path => "provision/cms/drupal8.sh", :args => [PATH_WWW], privileged: false
-  config.vm.provision :shell, :path => "provision/cms/drupal7.sh", :args => [PATH_WWW], privileged: false
-  config.vm.provision :shell, :path => "provision/cms/wordpress.sh", :args => [PATH_WWW], privileged: false
+  config.vm.provision :shell, :path => "provision/cms/drupal8.sh", :args => [PATH_WWW,DIR_HTML], privileged: false
+  config.vm.provision :shell, :path => "provision/cms/drupal7.sh", :args => [PATH_WWW,DIR_HTML], privileged: false
+  config.vm.provision :shell, :path => "provision/cms/wordpress.sh", :args => [PATH_WWW,DIR_HTML], privileged: false
 
-  config.vm.provision :shell, :path => "provision/home.sh", :args => [PATH_HOME,PATH_WWW,ADMIN], privileged: false
+  config.vm.provision :shell, :path => "provision/home.sh", :args => [PATH_HOME,PATH_WWW,DIR_HTML,DIR_ADMIN], privileged: false
 
 end
