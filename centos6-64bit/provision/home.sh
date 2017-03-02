@@ -1,5 +1,5 @@
-# apcu
-echo "---------- apcu ----------"
+# Home directory
+echo "---------- Home directory ----------"
 PATH_HOME=$1
 PATH_WWW=$2
 ADMIN=$3
@@ -23,3 +23,5 @@ fi
 if [ ! -L $PATH_HOME/log ]; then
 ln -s /var/log .
 fi
+
+
