@@ -35,10 +35,15 @@ EOT
 tee -a /etc/elasticsearch/elasticsearch.yml << EOT
 cluster.name: vagrant-cluster
 node.name: $HOSTNAME
-network.host: 0.0.0.0
+network.host: 127.0.0.1
 EOT
 
-sudo chown -R elasticsearch:vagrant /etc/elasticsearch/
-sudo chmod -R g+w /etc/elasticsearch/
+sudo chown -R elasticsearch:vagrant /etc/elasticsearch/ /var/log/elasticsearch
+sudo chmod -R g+w /etc/elasticsearch/ /var/log/elasticsearch
 sudo /etc/init.d/elasticsearch start
+
+sleep 10s
+
+curl -X GET 'http://localhost:9200/_cluster/health?pretty'
+
 
