@@ -73,6 +73,7 @@ HEADER {
     </ul>
     <li><a href="./mail_test.php" target="_blank">Mail send test</a></li>
     <li><a href="//tomcat.$DOMAINNAME/" target="_blank">Managing Tomcat</a></li>
+    <li><a href="//kibana.$DOMAINNAME/" target="_blank">Kibana</a> Start visualizing, analyzing, and exploring your data with Elasticsearch</li>
   </ul>
 </article>
 
