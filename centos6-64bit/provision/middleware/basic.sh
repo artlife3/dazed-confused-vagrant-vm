@@ -12,6 +12,8 @@ sudo yum -y install wget
 #unzip
 sudo yum -y install unzip
 
+# Ansible
+sudo yum -y install ansible
 
 sudo chown vagrant:vagrant $PATH_OPT
 sudo chown -R vagrant:vagrant $PATH_WWW

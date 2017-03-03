@@ -2,3 +2,4 @@
 *.swp
 .vagrant
 centos6-64bit/share/
+centos6-64bit/vagrant.log

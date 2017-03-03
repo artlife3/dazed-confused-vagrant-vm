@@ -12,9 +12,7 @@ sudo chown -R mysql:vagrant /var/log/mysqld
 chkconfig mysqld on
 service mysqld start
 
-mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
-sudo sed -i -e "5 s/^/default-time-zone = \'Asia\/Tokyo\'\n/g" /etc/my.cnf
-sudo sed -i -e 's/log-error=\/var\/log\/mysqld.log/log-error=\/var\/log\/mysqld\/error.log/g'vi /etc/my.cnf
+sudo sed -i -e 's/log-error=\/var\/log\/mysqld.log/log-error=\/var\/log\/mysqld\/error.log/g' /etc/my.cnf
 
 
 mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('root') WHERE User='root';"

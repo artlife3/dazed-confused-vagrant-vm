@@ -5,9 +5,9 @@ box_url="https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/
 
 vagrant plugin install vagrant-hostsupdater
 
-if [  -e ../../centos6-64bit/.vagrant ]; then
+if [ ! -e ../../centos6-64bit/.vagrant ]; then
     vagrant init ${os_name}
-    vagrant box add ${os_name} ${box_url}
+    vagrant box add --force ${os_name} ${box_url}
 
     rm Vagrantfile
     mv .vagrant/ ../../centos6-64bit/
@@ -16,7 +16,7 @@ if [  -e ../../centos6-64bit/.vagrant ]; then
 else
     echo ""
     echo " Already exists.No change."
-    echo " Or delete the \". Vagrant\" folder."
+    echo " Or delete the \". vgrant\" folder."
 fi
 
 echo ""

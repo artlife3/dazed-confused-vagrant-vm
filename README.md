@@ -24,6 +24,7 @@
 1. **Ruby** - v2.3.3
  * **[Mailcatcher](https://mailcatcher.me)**
 1. **Memcached** - v1.4
+1. **Ansible**
 
 ### SCM
 1. **SVN** - v1.6.11
