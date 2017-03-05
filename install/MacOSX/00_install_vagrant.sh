@@ -7,7 +7,7 @@ if [[ $? != 0 ]] ; then
     # https://github.com/mxcl/homebrew/wiki/installation
     /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"
 else
-    brew update
+    brew --version
 fi
 
 # Brew cask
