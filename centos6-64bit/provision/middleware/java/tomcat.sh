@@ -47,7 +47,7 @@ EOT
 
 sed -i "114s/^/\nCATALINA_OPTS=\"$CATALINA_OPTS -Xloggc:\/opt\/tomcat\/tomcat8\/logs\/tomcat-gc.log -XX:+PrintGCDetails\"\n/" $PATH_TOMCAT/tomcat8/bin/catalina.sh
 
-sudo chown -R tomcat:vagrant $PATH_TOMCAT
+sudo chown -R vagrant:vagrant $PATH_TOMCAT
 sudo chmod -R g+rw $PATH_TOMCAT
 sudo find $PATH_TOMCAT -type d -exec chmod g+x {} \;
 
@@ -67,7 +67,7 @@ cat << EOT > /etc/init.d/tomcat8
 . /etc/sysconfig/network
 
 CATALINA_HOME=$PATH_TOMCAT/tomcat8
-TOMCAT_USER=tomcat
+TOMCAT_USER=vagrant
 
 LOCKFILE=/var/lock/subsys/tomcat8
 
