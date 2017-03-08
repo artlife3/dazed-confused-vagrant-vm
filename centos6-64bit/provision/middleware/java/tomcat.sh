@@ -37,6 +37,16 @@ cat << EOT > $PATH_TOMCAT/apache-tomcat-8.5.11/conf/tomcat-users.xml
 </tomcat-users>
 EOT
 
+# Replace context.xml
+cat << EOT > $PATH_TOMCAT/apache-tomcat-8.5.11/conf/context.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Resources className="org.apache.catalina.webresources.StandardRoot" allowLinking="true"/>
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <WatchedResource>\${catalina.base}/conf/web.xml</WatchedResource>
+</Context>
+EOT
+
 
 # Added manager.xml
 mkdir -p $PATH_TOMCAT/tomcat8/conf/Catalina/localhost
