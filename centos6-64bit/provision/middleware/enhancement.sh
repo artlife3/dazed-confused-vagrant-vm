@@ -19,4 +19,5 @@ sudo yum -y install vim-enhanced
 #htop
 sudo yum -y install htop
 
-
+#multitail
+sudo yum -y install multitail

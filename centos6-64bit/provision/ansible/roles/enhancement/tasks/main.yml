@@ -1,0 +1,29 @@
+# Install
+
+- name: Install [ links ]
+  yum: name=links state=present
+  tags: install
+
+- name: Install [ tree ]
+  yum: name=tree state=present
+  tags: install
+
+- name: Install [ telnet ]
+  yum: name=telnet state=present
+  tags: install
+
+- name: Install [ colordiff ]
+  yum: name=colordiff state=present
+  tags: install
+
+- name: Install [ vim-enhanced ]
+  yum: name=vim-enhanced state=present
+  tags: install
+
+- name: Install [ htop ]
+  yum: name=htop state=present
+  tags: install
+
+- name: Install [ multitail ]
+  yum: name=multitail state=present
+  tags: install

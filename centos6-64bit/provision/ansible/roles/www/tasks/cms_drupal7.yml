@@ -1,0 +1,60 @@
+# CMS Drupal7
+
+- name: Existence of Drupal7 directory
+  stat: path={{ httpd_document_root }}/drupal7
+  register: drupal7
+  tags: admin
+
+- name: Create a new database with name 'drupal7'
+  become_user: vagrant
+  mysql_db:
+    name: drupal7
+    state: present
+  when: not drupal7.stat.exists
+  tags: admin
+
+- name: Download drupal7 source code
+  get_url: url="https://ftp.drupal.org/files/projects/{{ drupal7_version }}.tar.gz" dest={{ httpd_document_root }}/
+  when: not drupal7.stat.exists
+  tags: admin
+
+- name: Unarchive drupal-7.*.tar.gz
+  unarchive: src={{ httpd_document_root }}/{{ drupal7_version }}.tar.gz dest={{ httpd_document_root }}/ copy=no
+  when: not drupal7.stat.exists
+  tags: admin
+
+- name: Move drupal7
+  shell: mv {{ httpd_document_root }}/{{ drupal7_version }} {{ httpd_document_root }}/drupal7
+  when: not drupal7.stat.exists
+  tags: admin
+
+- name: Remove drupal-7.*.tar.gz
+  file: path={{ httpd_document_root }}/{{ drupal7_version }}.tar.gz state=absent
+  when: not drupal7.stat.exists
+  tags: admin
+
+- name: Create drupal7/sites/default/files folder
+  file: path={{ httpd_document_root }}/drupal7/sites/default/files
+         state=directory
+         owner={{ owner }}
+         group={{ group }}
+         mode={{ permission_dir }}
+  when: not drupal7.stat.exists
+  tags: admin
+
+- name: Copy drupal7 settings.php
+  copy: src={{ httpd_document_root }}/drupal7/sites/default/default.settings.php
+        dest={{ httpd_document_root }}/drupal7/sites/default/settings.php
+        owner={{ owner }}
+        group={{ group }}
+        mode={{ permission_file }}
+        remote_src=true
+  when: not drupal7.stat.exists
+  tags: admin
+
+- name: Download drupal7 translations
+  get_url: url="http://ftp.drupal.org/files/translations/7.x/drupal/{{ drupal7_version }}.ja.po"
+           dest={{ httpd_document_root }}//drupal7/profiles/standard/translations/
+  when: not drupal7.stat.exists
+  tags: admin
+

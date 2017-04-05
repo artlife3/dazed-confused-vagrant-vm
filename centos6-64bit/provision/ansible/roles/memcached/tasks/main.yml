@@ -1,0 +1,31 @@
+- name: Install memcached
+  yum: name={{ item }} state=latest
+  with_items:
+  - memcached
+  - memcached-devel
+  notify: Restart memcached
+  tags: install
+
+- name: Config memcached
+  copy: src={{ templates_path }}/memcached
+            dest=/etc/sysconfig/memcached
+            mode=0664
+  notify: Restart memcached
+  tags: settings
+
+# log
+- name: Create folder [memcached log]
+  file: path={{ log_dir }}/memcached
+         state=directory
+         mode=775
+  tags: install
+
+- name: Touch [memcached/memcached.log]
+  file: path={{ log_dir }}/memcached/memcached.log
+         state=touch
+         mode=644
+  tags: install
+
+- name: Be sure Memcached is running and enabled
+  service: name=memcached state=running enabled=yes
+  tags: install

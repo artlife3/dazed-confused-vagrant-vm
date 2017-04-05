@@ -1,0 +1,4 @@
+- include: tasks/admin.yml
+- include: tasks/cms_drupal7.yml
+- include: tasks/cms_drupal8.yml
+- include: tasks/cms_wordpress.yml
