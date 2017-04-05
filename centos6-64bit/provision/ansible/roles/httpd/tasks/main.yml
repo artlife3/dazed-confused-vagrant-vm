@@ -1,0 +1,62 @@
+# Install
+
+- name: Install [ httpd ]
+  yum: name=httpd state=present
+  tags: install
+
+- name: Install [ mod_ssl ]
+  yum: name=mod_ssl state=present
+  tags: install
+
+- name: Change modify [ Conf directory ]
+  file: path={{ httpd_conf_dir }}
+        owner={{ apache_user }}
+        group={{ apache_group }}
+        mode={{ permission }}
+        recurse=yes
+  tags: install
+
+- name: Create [ Log directory ]
+  file: path={{ log_dir }}/httpd
+        state=directory
+        owner={{ apache_user }}
+        group={{ apache_group }}
+        mode=0755
+
+# Settings
+
+- name: Transfer [httpd.conf]
+  copy: src={{ templates_path }}/httpd.conf
+        dest={{ httpd_conf_dir }}/conf/httpd.conf
+  notify: Restart httpd
+  tags: settings
+
+- name: Transfer [vhost.conf]
+  copy: src={{ templates_path }}/conf.d/vhost.conf
+        dest={{ httpd_conf_dir }}/conf.d/vhost.conf
+  notify: Restart httpd
+  tags: settings
+
+- name: Transfer [ssl.conf]
+  copy: src={{ templates_path }}/conf.d/ssl.conf
+        dest={{ httpd_conf_dir }}/conf.d/ssl.conf
+  notify: Restart httpd
+  tags: settings
+
+- name: Transfer [server-info.conf]
+  copy: src={{ templates_path }}/conf.d/server-info.conf
+        dest={{ httpd_conf_dir }}/conf.d/server-info.conf
+  notify: Restart httpd
+  tags: settings
+
+- name: Transfer [server-status.conf]
+  copy: src={{ templates_path }}/conf.d/server-status.conf
+        dest={{ httpd_conf_dir }}/conf.d/server-status.conf
+  notify: Restart httpd
+  tags: settings
+
+
+- name: Httpd is running and enabled
+  service: name=httpd state=running enabled=yes
+  tags: install
+

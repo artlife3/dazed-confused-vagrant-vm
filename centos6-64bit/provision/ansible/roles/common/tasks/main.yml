@@ -1,0 +1,45 @@
+# Install
+
+- name: Add [ epel-release ]
+  yum: name=epel-release
+  tags: install
+
+- name: Add [ remi-release-6.rpm ]
+  yum: name=http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+  tags: install
+
+- name: Install [ wget ]
+  yum: name=wget state=present
+  tags: install
+
+- name: Install [ unzip ]
+  yum: name=unzip state=present
+  tags: install
+
+- name: Install [ ansible ]
+  yum: name=ansible state=present
+  tags: install
+
+- name: Install [ libselinux-python ] (For ansible)
+  yum: name=libselinux-python state=present
+  tags: install
+
+
+
+# Settings
+
+- name: Transfer [ /etc/security/limits.conf ]
+  copy: src={{ templates_path }}/security_limits.conf
+           dest=/etc/security/limits.conf
+  tags: settings
+
+- name: Transfer [ /etc/sysconfig/clock ]
+  copy: src={{ templates_path }}/sysconfig_clock
+           dest=/etc/sysconfig/clock
+  tags: settings
+
+- name: Transfer [ /etc/sysconfig/i18n ]
+  copy: src={{ templates_path }}/sysconfig_i18n
+           dest=/etc/sysconfig/i18n
+  tags: settings
+

@@ -1,0 +1,54 @@
+# CMS Drupal8
+
+- name: Existence of Drupal8 directory
+  stat: path={{ httpd_document_root }}/drupal8
+  register: drupal8
+  tags: admin
+
+- name: Create a new database with name 'drupal8'
+  become_user: vagrant
+  mysql_db:
+    name: drupal8
+    state: present
+  when: not drupal8.stat.exists
+
+
+- name: Download drupal8 source code
+  get_url: url="https://ftp.drupal.org/files/projects/{{ drupal8_version }}.tar.gz" dest={{ httpd_document_root }}/
+  when: not drupal8.stat.exists
+  tags: admin
+
+- name: "Unarchive drupal-8.*.tar.gz"
+  unarchive: src={{ httpd_document_root }}/{{ drupal8_version }}.tar.gz dest={{ httpd_document_root }}/ copy=no
+  when: not drupal8.stat.exists
+  tags: admin
+
+- name: Move drupal8
+  shell: mv {{ httpd_document_root }}/{{ drupal8_version }} {{ httpd_document_root }}/drupal8
+  when: not drupal8.stat.exists
+  tags: admin
+
+- name: Remove drupal-8.*.tar.gz
+  file: path={{ httpd_document_root }}/{{ drupal8_version }}.tar.gz state=absent
+  when: not drupal8.stat.exists
+  tags: admin
+
+- name: Create drupal8/sites/default/files folder
+  file: path={{ httpd_document_root }}/drupal8/sites/default/files
+         state=directory
+         owner={{ owner }}
+         group={{ group }}
+         mode={{ permission_dir }}
+  when: not drupal8.stat.exists
+  tags: admin
+
+- name: Copy drupal8 settings.php
+  copy: src={{ httpd_document_root }}/drupal8/sites/default/default.settings.php
+        dest={{ httpd_document_root }}/drupal8/sites/default/settings.php
+        owner={{ owner }}
+        group={{ group }}
+        mode={{ permission_file }}
+        remote_src=true
+  when: not drupal8.stat.exists
+  tags: admin
+

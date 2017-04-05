@@ -1,0 +1,77 @@
+# Java
+
+- include: ../../../java.yml
+
+# Elasitcsearch
+
+- name: add group "Elasticsearch"
+  group: name={{ elastic_group }}
+  tags: install
+
+- name: add user "Elasticsearch"
+  user: name={{ elastic_user }} group={{ elastic_group }} home=/home/{{ elastic_user }} createhome=no
+  tags: install
+
+
+- name: Add Elasticsearch repo
+  copy: src={{ templates_path }}/elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
+  notify: Restart elasticsearch
+  tags: install
+
+- name: "Install GPG-KEY-elasticsearch"
+  rpm_key:
+    key: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+  notify: Restart elasticsearch
+  tags: install
+
+- name: Install Elasticsearch
+  yum: name=elasticsearch
+  notify: Restart elasticsearch
+  tags: install
+
+- name: Change directory permission
+  file: path={{ item }} mode=0775 owner={{ elastic_user }} group={{ elastic_group }}
+  with_items: 
+    - /var/log/elasticsearch 
+    - /etc/elasticsearch 
+    - /etc/elasticsearch/scripts
+  tags: install
+
+- name: Change file permission
+  file: path={{ item }} mode=0664 owner={{ elastic_user }} group={{ elastic_group }}
+  with_items: 
+    - /etc/elasticsearch/elasticsearch.yml
+    - /etc/elasticsearch/jvm.options
+    - /etc/elasticsearch/log4j2.properties
+    - /etc/sysconfig/elasticsearch
+  tags: install
+
+
+  # Settings
+  
+- name: Transfer [elasticsearch.yml]
+  copy: src={{ templates_path }}/etc/elasticsearch.yml 
+           dest={{ elastic_conf_dir }}/elasticsearch.yml
+  notify: Restart elasticsearch
+  tags: settings
+
+- name: Transfer [jvm.options]
+  copy: src={{ templates_path }}/etc/jvm.options
+           dest={{ elastic_conf_dir }}/jvm.options
+  notify: Restart elasticsearch
+  tags: settings
+
+- name: Transfer [log4j2.properties]
+  copy: src={{ templates_path }}/etc/log4j2.properties
+           dest={{ elastic_conf_dir }}/log4j2.properties
+  notify: Restart elasticsearch
+  tags: settings
+
+- name: Transfer [sysconfig/elasticsearch]
+  copy: src={{ templates_path }}/sysconfig/elasticsearch
+           dest=/etc/sysconfig/elasticsearch
+  notify: Restart elasticsearch
+  tags: settings
+
+- name: Elasticsearch helth check
+  debug: msg="curl -X GET 'http://localhost:9200/_cluster/health?pretty'"

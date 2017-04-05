@@ -1,0 +1,54 @@
+syntax on
+
+set lcs=tab:>.,eol:$,trail:_,extends:\
+
+" Specify information to be displayed on the status line
+set laststatus=2
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+
+" Double-byte highlight
+highlight JpSpace cterm=underline ctermfg=Blue guifg=Blue
+au BufRead,BufNew * match JpSpace / /
+
+" Easily view search results
+highlight Search ctermbg=Yellow ctermfg=Black
+
+" Set history
+set history=100
+
+" It does not lose the effect of undo even if switching buffers
+set hidden
+highlight TabSpace ctermbg=DarkBlue
+match TabSpace /\t\|\s\+$/
+
+" Display title on window pane
+set title
+
+" Highlight current line
+set cursorline
+
+" 行末の1文字先までカーソルを移動できるように
+set virtualedit=onemore
+
+" Indentation is a smart indent
+set smartindent
+
+" Visualize beep sound
+set visualbell
+
+" Show parentheses corresponding to parenthesis input
+set showmatch
+
+" Tab display
+" Visualize invisible characters (tab is displayed as "▸ -")
+set list listchars=tab:\▸\-
+
+" Tab Make a letter space
+set expandtab
+
+" Display width of Tab characters other than the beginning of the line (how many spaces)
+set tabstop=2
+
+" Display width of Tab character with head
+set shiftwidth=2
+

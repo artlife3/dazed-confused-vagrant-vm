@@ -1,0 +1,82 @@
+
+
+- name: Install php
+  yum: name={{ item }} enablerepo=remi-php71
+  with_items:
+    - php
+    - php-cli
+    - php-common
+    - php-devel
+    - php-gd
+    - php-intl
+    - php-mbstring
+    - php-pdo
+    - php-mysqlnd
+    - php-pear
+    - php-xml
+    - php-mcrypt
+  notify: Restart httpd
+  tags: install
+
+- name: Install PECL
+  yum: name={{ item }} enablerepo=remi-php71
+  with_items:
+    - php-pecl-imagick
+    - php-opcache
+    - php-pecl-memcache
+    - php-pecl-memcached
+    - php-pecl-apcu
+    - php-pecl-xdebug
+  notify: Restart httpd
+  tags: install
+
+- name: Create folder [php log] 
+  file: path={{ log_dir }}/php
+         state=directory
+         owner={{ owner }}
+         group={{ owner }}
+         mode=775
+  tags: install
+
+- name: Touch php/php-error.log
+  file: path={{ log_dir }}/php/php_errors.log
+         state=touch
+         owner={{ owner }}
+         group={{ owner }}
+         mode=644
+  tags: install
+
+- name: Transfer /etc/logrotate.d/php
+  copy: src={{ templates_path }}/etc_logrotate.d/php
+            dest=/etc/logrotate.d/php
+            owner=root
+            group=root
+            mode=0644
+  tags: install
+
+- name: Transfer php.ini
+  copy: src={{ templates_path }}/php.ini
+            dest=/etc/php.ini
+            owner={{ owner }}
+            group={{ owner }}
+           mode=644
+  notify: Restart httpd
+  tags: settings
+
+- name: Permission change /var/lib/php/session 
+  file: path=/var/lib/php/session state=touch mode="777"
+
+- name: Transfer httpd/conf.d/php.conf
+  copy: src={{ templates_path }}/httpd_conf.d/php.conf
+            dest={{ httpd_conf_dir }}/conf.d/php.conf
+            owner={{ owner }}
+            group={{ owner }}
+            mode=0664
+  notify: Restart httpd
+  tags: settings
+
+- name: Install composer
+  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin && mv /usr/bin/composer.phar /usr/bin/composer
+         creates=/usr/bin/composer
+  tags: install
+

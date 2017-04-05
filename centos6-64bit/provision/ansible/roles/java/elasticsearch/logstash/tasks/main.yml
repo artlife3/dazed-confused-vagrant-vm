@@ -1,0 +1,22 @@
+- name: Install Logstash
+  yum: name=logstash
+  tags: install
+
+# Settings
+ 
+- name: Transfer [logstash logstash.yml]
+  copy: src={{ templates_path }}/logstash.yml
+           dest=/etc/logstash.yml
+  tags: settings
+
+- name: Transfer [Logstash log4j2.properties]
+  copy: src={{ templates_path }}/log4j2.properties
+           dest=/etc/log4j2.properties
+  tags: settings
+
+- name: Transfer [logstash jvm.options]
+  copy: src={{ templates_path }}/jvm.options
+           dest=/etc/jvm.options
+  tags: settings
+
+

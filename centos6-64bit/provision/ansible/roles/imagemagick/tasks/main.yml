@@ -1,0 +1,7 @@
+# Install
+
+- name: Install [ ImageMagick ]
+  yum: name=ImageMagick state=present
+  with_items: ImageMagick-devel
+  tags: install
+

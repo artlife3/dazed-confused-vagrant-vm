@@ -1,0 +1,110 @@
+# Java
+
+- include: ../java.yml
+
+# Tomcat
+
+- name: add group "tomcat"
+  group: name={{ tomcat_group }}
+  tags: install
+
+- name: add user "tomcat"
+  user: name={{ tomcat_user }} group={{ tomcat_group }} home=/home/{{ tomcat_user }} createhome=no
+  tags: install
+
+- name: Create tomcat folder 
+  file: path={{ tomact_dir }}
+         state=directory
+         owner={{ tomcat_user }}
+         group={{ tomcat_group }}
+         mode=775
+  notify: Restart tomcat8
+  tags: install
+
+- name: Existence of tomcat8
+  stat: path={{ tomact_dir }}/tomcat8
+  register: tomcat_flag
+
+- name: Download tomcat
+  get_url: url=http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.13/bin/apache-tomcat-8.5.13.zip
+           dest=/tmp/
+  when: not tomcat_flag.stat.exists
+  tags: install
+
+- unarchive: src=/tmp/apache-tomcat-8.5.13.zip dest={{ tomact_dir }} copy=no
+             owner={{ tomcat_user }}
+             group={{ tomcat_group }}
+  when: not tomcat_flag.stat.exists
+  tags: install
+
+- file: path=/tmp/apache-tomcat-8.5.13.zip state=absent
+  when: not tomcat_flag.stat.exists
+  tags: install
+
+- command: mv {{ tomact_dir }}/apache-tomcat-8.5.13 {{ tomact_dir }}/tomcat8
+  when: not tomcat_flag.stat.exists
+  tags: install
+
+- name: Tomcat bin
+  file: path={{ tomact_dir }}/tomcat8/bin mode=0775 recurse=yes
+  tags: install
+  
+# Settings
+
+- name: Transfer catalina.sh
+  copy: src={{ templates_path }}/bin/catalina.sh
+            dest={{ tomact_dir }}/tomcat8/bin/catalina.sh
+            mode=0755
+  notify: Restart tomcat8
+  tags: settings
+
+- name: Transfer context.xml
+  copy: src={{ templates_path }}/conf/context.xml
+           dest={{ tomact_dir }}/tomcat8/conf/context.xml
+  notify: Restart tomcat8
+  tags: settings
+
+- name: Transfer server.xml
+  copy: src={{ templates_path }}/conf/server.xml
+           dest={{ tomact_dir }}/tomcat8/conf/server.xml
+  notify: Restart tomcat8
+  tags: settings
+
+- name: Transfer tomcat-users.xml
+  copy: src={{ templates_path }}/conf/tomcat-users.xml
+           dest={{ tomact_dir }}/tomcat8/conf/tomcat-users.xml
+  notify: Restart tomcat8
+  tags: settings
+
+- name: Create tomcat folder 
+  file: path={{ tomact_dir }}/tomcat8/conf/Catalina/localhost
+         state=directory
+         owner={{ tomcat_user }}
+         group={{ tomcat_group }}
+         mode=775
+  notify: Restart tomcat8
+  tags: install
+
+- name: Transfer manager.xml
+  copy: src={{ templates_path }}/conf/Catalina/localhost/manager.xml
+            dest={{ tomact_dir }}/tomcat8/conf/Catalina/localhost/manager.xml
+  notify: Restart tomcat8
+  tags: settings
+
+- name: Transfer init.d/tomcat8
+  copy: src={{ templates_path }}/init.d/tomcat8
+            dest=/etc/init.d/tomcat8
+            owner=root
+            group=root
+            mode=0755
+  tags: settings
+
+- name: Transfer httpd/conf.d/tomcat.conf
+  copy: src={{ templates_path }}/httpd_conf.d/tomcat.conf
+            dest={{ httpd_conf_dir }}/conf.d/tomcat.conf
+            owner={{ owner }}
+            group={{ group }}
+            mode=0664
+  notify: Restart httpd
+  tags: settings
+

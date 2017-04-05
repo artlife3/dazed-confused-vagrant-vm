@@ -1,0 +1,23 @@
+- name: Add wing repo
+  get_url:
+    url: http://wing-repo.net/wing/6/EL6.wing.repo
+    dest: /etc/yum.repos.d/
+  tags: install
+
+- name: Install git 2.x
+  yum: name=git state=present enablerepo=wing
+  tags: install
+
+- name: Install Subversion
+  yum: name=svn state=present
+  tags: install
+
+- name: Install hg
+  yum: name=hg state=present
+  tags: install
+
+- name: Git clone bash_it
+  git: repo=https://github.com/Bash-it/bash-it
+       dest={{ tools_path }}/bash-it
+       version=master
+
