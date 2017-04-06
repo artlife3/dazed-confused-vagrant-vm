@@ -33,7 +33,7 @@ tools_path=/opt/tools
 rbenv_path=/opt
 
 # MySQL
-mysq_user=mysql
+mysq_user=vagrant
 mysq_group=vagrant
 mysql_root_passwd=root
 
