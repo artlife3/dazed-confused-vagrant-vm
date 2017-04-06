@@ -48,30 +48,39 @@
 
 - name: Transfer /etc/logrotate.d/php
   copy: src={{ templates_path }}/etc_logrotate.d/php
-            dest=/etc/logrotate.d/php
-            owner=root
-            group=root
-            mode=0644
+        dest=/etc/logrotate.d/php
+        owner=root
+        group=root
+        mode=0644
   tags: install
 
 - name: Transfer php.ini
   copy: src={{ templates_path }}/php.ini
-            dest=/etc/php.ini
-            owner={{ owner }}
-            group={{ owner }}
-           mode=644
+        dest=/etc/php.ini
+        owner={{ owner }}
+        group={{ owner }}
+        mode=644
   notify: Restart httpd
   tags: settings
 
-- name: Permission change /var/lib/php/session 
-  file: path=/var/lib/php/session state=touch mode="777"
+- name: Permission change /var/lib/php/
+  file: path={{ item }}
+        state=touch
+        owner={{ owner }}
+        group={{ owner }}
+        mode=777
+  with_items:
+    - /var/lib/php/
+    - /var/lib/php/opcache
+    - /var/lib/php/session
+    - /var/lib/php/wsdlcache
 
 - name: Transfer httpd/conf.d/php.conf
   copy: src={{ templates_path }}/httpd_conf.d/php.conf
-            dest={{ httpd_conf_dir }}/conf.d/php.conf
-            owner={{ owner }}
-            group={{ owner }}
-            mode=0664
+        dest={{ httpd_conf_dir }}/conf.d/php.conf
+        owner={{ owner }}
+        group={{ owner }}
+        mode=0664
   notify: Restart httpd
   tags: settings
 
