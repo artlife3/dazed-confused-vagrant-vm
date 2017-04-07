@@ -4,6 +4,7 @@
 [webservers:vars]
 templates_path=../templates
 files_path=../files
+env_dir=vagrant
 
 permission=ugo+rw
 permission_file=0666
