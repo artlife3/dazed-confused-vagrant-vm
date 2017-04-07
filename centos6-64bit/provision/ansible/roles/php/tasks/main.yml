@@ -1,7 +1,7 @@
 
 
 - name: Install php
-  yum: name={{ item }} enablerepo=remi-php71
+  yum: name={{ item }} enablerepo=remi-php55
   with_items:
     - php
     - php-cli
@@ -19,7 +19,7 @@
   tags: install
 
 - name: Install PECL
-  yum: name={{ item }} enablerepo=remi-php71
+  yum: name={{ item }} enablerepo=remi-php55
   with_items:
     - php-pecl-imagick
     - php-opcache
@@ -72,11 +72,12 @@
   with_items:
     - /var/lib/php/
     - /var/lib/php/opcache
+    - /var/lib/php/opcache
     - /var/lib/php/session
     - /var/lib/php/wsdlcache
 
 - name: Transfer httpd/conf.d/php.conf
-  copy: src={{ templates_path }}/httpd_conf.d/php.conf
+  copy: src={{ templates_path }}/httpd_conf.d/php5.conf
         dest={{ httpd_conf_dir }}/conf.d/php.conf
         owner={{ owner }}
         group={{ owner }}
