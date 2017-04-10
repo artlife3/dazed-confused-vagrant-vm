@@ -27,8 +27,11 @@ group=vagrant
 # Httpd
 apache_user=vagrant
 apache_group=vagrant
-httpd_conf_dir=/opt/rh/httpd24/root/etc/httpd
+httpd_conf_dir=/etc/httpd
+#httpd_conf_dir=/opt/rh/httpd24/root/etc/httpd
 httpd_document_root=/var/www/html
+httpd=httpd
+#httpd=httpd24-httpd
 
 tools_path=/opt/tools
 rbenv_path=/opt
