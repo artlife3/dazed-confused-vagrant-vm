@@ -1,15 +1,21 @@
 # Install
 
-- name: Install [ httpd ]
-  yum: name=httpd state=present
+- name: Download apache 2.4 repos
+  get_url: url=https://repos.fedorapeople.org/repos/jkaluza/httpd24/epel-httpd24.repo
+           dest=/etc/yum.repos.d/
   tags: install
 
-- name: Install [ mod_ssl ]
-  yum: name=mod_ssl state=present
+
+- name: Install [ httpd24-httpd ]
+  yum: name={{ item }} enablerepo=epel-httpd24 state=present
+  with_items:
+    - httpd24-httpd
+    - httpd24-mod_ssl
+    - httpd24-apr
   tags: install
 
 - name: Change modify [ Conf directory ]
-  file: path={{ httpd_conf_dir }}
+  file: path=/opt/rh/httpd24/
         owner={{ apache_user }}
         group={{ apache_group }}
         mode={{ permission }}
@@ -57,6 +63,6 @@
 
 
 - name: Httpd is running and enabled
-  service: name=httpd state=running enabled=yes
+  service: name=httpd24-httpd state=running enabled=yes
   tags: install
 
