@@ -65,7 +65,7 @@
 
 - name: Be sure MySQL is running and enabled
   service: name=mysqld state=running enabled=yes
-  become_user: vagrant
+  become: no
   tags: install
 
 - name: Install MySQL-python (For ansible)
