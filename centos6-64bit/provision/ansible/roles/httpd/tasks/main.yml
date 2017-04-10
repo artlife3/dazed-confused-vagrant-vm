@@ -1,24 +1,54 @@
 # Install
 
+- name: Remove [ httpd ]
+  yum: name=httpd state=absent
+  tags: install
+
+- name: Remove [ /etc/httpd ]
+  file: path=/etc/httpd state=absent
+  tags: install
+
 - name: Download apache 2.4 repos
   get_url: url=https://repos.fedorapeople.org/repos/jkaluza/httpd24/epel-httpd24.repo
            dest=/etc/yum.repos.d/
   tags: install
 
-
 - name: Install [ httpd24-httpd ]
   yum: name={{ item }} enablerepo=epel-httpd24 state=present
   with_items:
+    - openssl
     - httpd24-httpd
     - httpd24-mod_ssl
     - httpd24-apr
+  notify: Restart httpd
   tags: install
+
+- name: Create httpd symbolic link
+  file:
+    src={{ httpd_conf_dir }} dest=/etc/httpd state=link
+  tags: install
+
+- name: self signed certificate
+  shell: |
+    crt_file="/etc/pki/tls/certs/localhost.crt" &&
+    key_file="/etc/pki/tls/private/localhost.key" &&
+    crt_and_key_file="/etc/pki/tls/private/localhost.crt_and_key" &&
+    subject="/C=JP/ST=Tokyo/L=Tokyo City/CN=localhost" &&
+    openssl req -new -newkey rsa:2048 -sha1 -x509 -nodes \
+      -set_serial 1 \
+      -days 3650 \
+      -subj "$subject" \
+      -out "$crt_file" \
+      -keyout "$key_file" &&
+    cat "$crt_file" "$key_file" >> "$crt_and_key_file" &&
+    chmod 400 "$key_file" "$crt_and_key_file"
+    creates="/etc/pki/tls/certs/localhost.crt"
 
 - name: Change modify [ Conf directory ]
   file: path=/opt/rh/httpd24/
         owner={{ apache_user }}
         group={{ apache_group }}
-        mode={{ permission }}
+        mode=ug+rw
         recurse=yes
   tags: install
 
@@ -28,6 +58,7 @@
         owner={{ apache_user }}
         group={{ apache_group }}
         mode=0755
+  notify: Restart httpd
 
 # Settings
 
@@ -61,8 +92,4 @@
   notify: Restart httpd
   tags: settings
 
-
-- name: Httpd is running and enabled
-  service: name=httpd24-httpd state=running enabled=yes
-  tags: install
 

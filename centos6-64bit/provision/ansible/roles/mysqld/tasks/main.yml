@@ -39,6 +39,9 @@
   with_items:
     - "{{ log_dir }}/mysqld/error.log"
     - "{{ log_dir }}/mysqld.log"
+    - "{{ log_dir }}/mysqld/slow_query.log"
+    - "{{ log_dir }}/mysqld/query.log"
+    - "{{ log_dir }}/mysqld/mysqld.log"
     - "/var/run/mysqld"
   tags: install
 
@@ -51,7 +54,7 @@
 - name: owner change mysqld_safe
   replace: dest=/usr/bin/mysqld_safe
               regexp='^user=\'mysql\''
-              replace=user='vagrant'
+              replace='user=\'vagrant\''
 
 - name: Transfer my.cnf
   copy: src={{ templates_path }}/my.cnf
@@ -62,11 +65,9 @@
   notify: Restart mysqld
   tags: settings
 
-
 - name: Be sure MySQL is running and enabled
-  service: name=mysqld state=running enabled=yes
   become: no
-  tags: install
+  service: name=mysqld state=running enabled=yes
 
 - name: Install MySQL-python (For ansible)
   yum: name=MySQL-python state=present
@@ -80,30 +81,12 @@
   ignore_errors: True
   tags: install
 
-# log
-
-- name: Touch [mysqld/slow_query.log]
-  file: path={{ log_dir }}/mysqld/slow_query.log
-         state=touch
-         owner={{ mysq_user }}
-         group={{ mysq_group }}
-         mode=644
-  tags: install
-
-- name: Touch [mysqld/query.log]
-  file: path={{ log_dir }}/mysqld/query.log
-         state=touch
-         owner={{ mysq_user }}
-         group={{ mysq_group }}
-         mode=644
-  tags: install
-
 # logrotate
 - name: Transfer [logrotate.d/mysql]
   copy: src={{ templates_path }}/etc_logrotate.d/mysql
             dest=/etc/logrotate.d/mysql
             owner=root
             group=root
-            mode=0644
+            mode=0664
   tags: install
 

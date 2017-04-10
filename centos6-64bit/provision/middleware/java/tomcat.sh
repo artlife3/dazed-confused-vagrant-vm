@@ -48,7 +48,7 @@ EOT
 sed -i "114s/^/\nCATALINA_OPTS=\"$CATALINA_OPTS -Xloggc:\/opt\/tomcat\/tomcat8\/logs\/tomcat-gc.log -XX:+PrintGCDetails\"\n/" $PATH_TOMCAT/tomcat8/bin/catalina.sh
 
 sudo chown -R vagrant:vagrant $PATH_TOMCAT
-sudo chmod -R g+rw $PATH_TOMCAT
+sudo chmod -R go+rw $PATH_TOMCAT
 sudo find $PATH_TOMCAT -type d -exec chmod g+x {} \;
 
 
