@@ -66,18 +66,24 @@
   tags: settings
 
 - name: Be sure MySQL is running and enabled
-  become: no
-  service: name=mysqld state=running enabled=yes
+  become_user: vagrant
+  service: name=mysqld state=started enabled=yes
 
 - name: Install MySQL-python (For ansible)
   yum: name=MySQL-python state=present
   tags: install
+
+- name: Transfer [~/.my.cnf]
+  copy: src={{ templates_path }}/users_my.cnf
+        dest=/home/{{ owner }}/.my.cnf
+  become_user: vagrant
 
 - name: Add root user of mysqld
   mysql_user: name="root" host={{ item }} password={{ mysql_root_passwd }}
   with_items:
     - 127.0.0.1
     - localhost
+#  become_user: vagrant
   ignore_errors: True
   tags: install
 
@@ -90,3 +96,10 @@
             mode=0664
   tags: install
 
+- name: Transfer [~/.my.cnf]
+  copy: src={{ templates_path }}/my.cnf
+        dest=/home/{{ owner }}/.my.cnf
+        owner={{ owner }}
+        group={{ group }}
+        mode=644
+  become_user: vagrant
