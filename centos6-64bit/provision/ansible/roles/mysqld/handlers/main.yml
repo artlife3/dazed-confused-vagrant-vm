@@ -1,4 +1,4 @@
 - name: Restart mysqld
-  service: name=mysqld state=restarted enabled=yes
-  become: no
+  become_user: vagrant
+  service: name=mysqld state=restarted
 
