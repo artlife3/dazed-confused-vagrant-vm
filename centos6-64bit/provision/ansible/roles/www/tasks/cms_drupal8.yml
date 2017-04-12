@@ -7,11 +7,9 @@
 
 - name: Create a new database with name 'drupal8'
   become_user: vagrant
-  mysql_db:
-    name: drupal8
-    state: present
+  mysql_db: name=drupal8 state=present  login_unix_socket={{ mysql_socket }}
   when: not drupal8.stat.exists
-
+  tags: admin
 
 - name: Download drupal8 source code
   get_url: url="https://ftp.drupal.org/files/projects/{{ drupal8_version }}.tar.gz" dest={{ httpd_document_root }}/

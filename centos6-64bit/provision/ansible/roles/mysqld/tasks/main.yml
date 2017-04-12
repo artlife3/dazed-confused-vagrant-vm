@@ -56,7 +56,7 @@
               regexp='^user=\'mysql\''
               replace='user=\'vagrant\''
 
-- name: Transfer my.cnf
+- name: Transfer /etc/my.cnf
   copy: src={{ templates_path }}/my.cnf
             dest=/etc/my.cnf
             owner={{ mysq_user }}
@@ -73,23 +73,21 @@
   yum: name=MySQL-python state=present
   tags: install
 
-- name: Transfer [~/.my.cnf]
-  copy: src={{ templates_path }}/users_my.cnf
+- name: Transfer [Temporary ~/.my.cnf]
+  template: src={{ templates_path }}/users_pre_my.cnf
         dest=/home/{{ owner }}/.my.cnf
   become_user: vagrant
 
 - name: Add root user of mysqld
-  mysql_user: name="root" host={{ item }} password={{ mysql_root_passwd }}
+  mysql_user: name="root" host={{ item }} password={{ mysql_root_passwd }} login_unix_socket={{ mysql_socket }}
   with_items:
     - 127.0.0.1
     - localhost
-#  become_user: vagrant
-  ignore_errors: True
   tags: install
 
 # logrotate
 - name: Transfer [logrotate.d/mysql]
-  copy: src={{ templates_path }}/etc_logrotate.d/mysql
+  template: src={{ templates_path }}/etc_logrotate.d/mysql
             dest=/etc/logrotate.d/mysql
             owner=root
             group=root
@@ -97,7 +95,7 @@
   tags: install
 
 - name: Transfer [~/.my.cnf]
-  copy: src={{ templates_path }}/my.cnf
+  template: src={{ templates_path }}/users_my.cnf
         dest=/home/{{ owner }}/.my.cnf
         owner={{ owner }}
         group={{ group }}
