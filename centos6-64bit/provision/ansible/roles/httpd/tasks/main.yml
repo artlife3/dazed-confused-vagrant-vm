@@ -23,6 +23,9 @@
 #  notify: Restart httpd
 #  tags: install
 
+- name: create www/html
+  file: path={{ httpd_document_root }} state=directory owner={{ apache_user }} group={{ apache_group }}
+
 - name: Install [ httpd ]
   yum: name={{ item }} state=present
   with_items:
@@ -39,9 +42,9 @@
 
 - name: self signed certificate
   shell: |
-    crt_file="/etc/pki/tls/certs/{{ domain }}.crt" &&
-    key_file="/etc/pki/tls/private/{{ domain }}.key" &&
-    crt_and_key_file="/etc/pki/tls/private/{{ domain }}.crt_and_key" &&
+    crt_file="/etc/pki/tls/certs/localhost.crt" &&
+    key_file="/etc/pki/tls/private/localhost.key" &&
+    crt_and_key_file="/etc/pki/tls/private/localhost.crt_and_key" &&
     subject="/C=JP/ST=Tokyo/L=Tokyo City/CN={{ domain }}" &&
     openssl req -new -newkey rsa:2048 -sha1 -x509 -nodes \
       -set_serial 1 \
@@ -51,7 +54,7 @@
       -keyout "$key_file" &&
     cat "$crt_file" "$key_file" >> "$crt_and_key_file" &&
     chmod 666 "$key_file" "$crt_and_key_file"
-    creates="/etc/pki/tls/certs/{{ domain }}.crt"
+    creates="/etc/pki/tls/certs/localhost.crt"
   notify: Restart httpd
 
 - name: Change modify [ Conf directory ]

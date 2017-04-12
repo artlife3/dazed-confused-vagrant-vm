@@ -23,6 +23,9 @@
   yum: name=mysql-community-server
   tags: install
 
+- name: chmod MySQL data 
+  file: path=/var/www/mysql_data owner={{ mysq_user }} group={{ mysq_group }} mode=0755 recurse=yes state=directory
+
 - name: Create folder [mysqld log]
   file: path={{ log_dir }}/mysqld
          state=directory

@@ -44,6 +44,7 @@
   file:
     src: /var/www/html/admin
     dest: /home/{{ owner }}/admin
+    force: yes
     state: link
 
 - name: Create log symbolic link
