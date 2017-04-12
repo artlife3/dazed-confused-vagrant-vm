@@ -50,7 +50,7 @@
   tags: install
 
 - name: Transfer /etc/logrotate.d/php
-  copy: src={{ templates_path }}/etc_logrotate.d/php
+  template: src={{ templates_path }}/etc_logrotate.d/php
         dest=/etc/logrotate.d/php
         owner=root
         group=root
@@ -58,7 +58,7 @@
   tags: install
 
 - name: Transfer php.ini
-  copy: src={{ templates_path }}/php.ini
+  template: src={{ templates_path }}/php.ini
         dest=/etc/php.ini
         owner={{ owner }}
         group={{ owner }}
@@ -80,7 +80,7 @@
     - /var/lib/php/wsdlcache
 
 - name: Transfer httpd/conf.d/php.conf
-  copy: src={{ templates_path }}/httpd_conf.d/php5.conf
+  template: src={{ templates_path }}/httpd_conf.d/php5.conf
         dest={{ httpd_conf_dir }}/conf.d/php.conf
         owner={{ owner }}
         group={{ owner }}

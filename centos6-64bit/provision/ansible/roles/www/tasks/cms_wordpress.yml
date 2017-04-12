@@ -7,9 +7,7 @@
 
 - name: Create a new database with name 'wordpress'
   become_user: vagrant
-  mysql_db:
-    name: wordpress
-    state: present
+  mysql_db: name=wordpress state=present  login_unix_socket={{ mysql_socket }}
   when: not wordpress.stat.exists
   tags: admin
 

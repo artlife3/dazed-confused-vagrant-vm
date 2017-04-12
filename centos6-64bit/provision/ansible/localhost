@@ -40,6 +40,7 @@ rbenv_path=/opt
 mysq_user=vagrant
 mysq_group=vagrant
 mysql_root_passwd=root
+mysql_socket=/tmp/mysql.sock
 
 # www/cms
 drupal7=drupal7
