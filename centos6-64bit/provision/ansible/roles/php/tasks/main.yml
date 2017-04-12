@@ -1,7 +1,7 @@
 
-- name: Remove [ php ]
-  yum: name=php state=absent
-  tags: install
+#- name: Remove [ php ]
+#  yum: name=php state=absent
+#  tags: install
 
 - name: Install php
   yum: name={{ item }} enablerepo=remi-php55

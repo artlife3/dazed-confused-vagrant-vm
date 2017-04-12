@@ -10,7 +10,7 @@
   tags: install
 
 - name: Transfer /etc/init.d/mailcatcher
-  copy: src={{ templates_path }}/etc_init.d_mailcatcher
+  template: src={{ templates_path }}/etc_init.d_mailcatcher
             dest=/etc/init.d/mailcatcher
             mode=755
   notify: Restart mailcatcher
@@ -35,7 +35,7 @@
 # Settings
 
 - name: Transfer httpd/conf.d/mailcatcher.conf
-  copy: src={{ templates_path }}/httpd_conf.d/mailcatcher.conf
+  template: src={{ templates_path }}/httpd_conf.d/mailcatcher.conf
             dest={{ httpd_conf_dir }}/conf.d/mailcatcher.conf
   notify: Restart httpd
   tags: settings

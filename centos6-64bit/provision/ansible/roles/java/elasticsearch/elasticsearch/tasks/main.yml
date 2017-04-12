@@ -10,11 +10,12 @@
 
 - name: add user "Elasticsearch"
   user: name={{ elastic_user }} group={{ elastic_group }} home=/home/{{ elastic_user }} createhome=no
+  ignore_errors: True
   tags: install
 
 
 - name: Add Elasticsearch repo
-  copy: src={{ templates_path }}/elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
+  template: src={{ templates_path }}/elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
   notify: Restart elasticsearch
   tags: install
 
@@ -46,29 +47,33 @@
     - /etc/sysconfig/elasticsearch
   tags: install
 
+- name: Change permission
+  file: path=/etc/init.d/elasticsearch mode=0755 owner={{ elastic_user }} group={{ elastic_group }}
+  tags: install
+
 
   # Settings
   
 - name: Transfer [elasticsearch.yml]
-  copy: src={{ templates_path }}/etc/elasticsearch.yml 
+  template: src={{ templates_path }}/etc/elasticsearch.yml 
            dest={{ elastic_conf_dir }}/elasticsearch.yml
   notify: Restart elasticsearch
   tags: settings
 
 - name: Transfer [jvm.options]
-  copy: src={{ templates_path }}/etc/jvm.options
+  template: src={{ templates_path }}/etc/jvm.options
            dest={{ elastic_conf_dir }}/jvm.options
   notify: Restart elasticsearch
   tags: settings
 
 - name: Transfer [log4j2.properties]
-  copy: src={{ templates_path }}/etc/log4j2.properties
+  template: src={{ templates_path }}/etc/log4j2.properties
            dest={{ elastic_conf_dir }}/log4j2.properties
   notify: Restart elasticsearch
   tags: settings
 
 - name: Transfer [sysconfig/elasticsearch]
-  copy: src={{ templates_path }}/sysconfig/elasticsearch
+  template: src={{ templates_path }}/sysconfig/elasticsearch
            dest=/etc/sysconfig/elasticsearch
   notify: Restart elasticsearch
   tags: settings

@@ -52,26 +52,26 @@
 # Settings
 
 - name: Transfer catalina.sh
-  copy: src={{ templates_path }}/bin/catalina.sh
+  template: src={{ templates_path }}/bin/catalina.sh
             dest={{ tomact_dir }}/tomcat8/bin/catalina.sh
             mode=0755
   notify: Restart tomcat8
   tags: settings
 
 - name: Transfer context.xml
-  copy: src={{ templates_path }}/conf/context.xml
+  template: src={{ templates_path }}/conf/context.xml
            dest={{ tomact_dir }}/tomcat8/conf/context.xml
   notify: Restart tomcat8
   tags: settings
 
 - name: Transfer server.xml
-  copy: src={{ templates_path }}/conf/server.xml
+  template: src={{ templates_path }}/conf/server.xml
            dest={{ tomact_dir }}/tomcat8/conf/server.xml
   notify: Restart tomcat8
   tags: settings
 
 - name: Transfer tomcat-users.xml
-  copy: src={{ templates_path }}/conf/tomcat-users.xml
+  template: src={{ templates_path }}/conf/tomcat-users.xml
            dest={{ tomact_dir }}/tomcat8/conf/tomcat-users.xml
   notify: Restart tomcat8
   tags: settings
@@ -86,13 +86,13 @@
   tags: install
 
 - name: Transfer manager.xml
-  copy: src={{ templates_path }}/conf/Catalina/localhost/manager.xml
+  template: src={{ templates_path }}/conf/Catalina/localhost/manager.xml
             dest={{ tomact_dir }}/tomcat8/conf/Catalina/localhost/manager.xml
   notify: Restart tomcat8
   tags: settings
 
 - name: Transfer init.d/tomcat8
-  copy: src={{ templates_path }}/init.d/tomcat8
+  template: src={{ templates_path }}/init.d/tomcat8
             dest=/etc/init.d/tomcat8
             owner=root
             group=root
@@ -100,7 +100,7 @@
   tags: settings
 
 - name: Transfer httpd/conf.d/tomcat.conf
-  copy: src={{ templates_path }}/httpd_conf.d/tomcat.conf
+  template: src={{ templates_path }}/httpd_conf.d/tomcat.conf
             dest={{ httpd_conf_dir }}/conf.d/tomcat.conf
             owner={{ owner }}
             group={{ group }}

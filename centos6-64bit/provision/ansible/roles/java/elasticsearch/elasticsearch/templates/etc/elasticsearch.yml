@@ -87,6 +87,6 @@
 #
 #action.destructive_requires_name: true
 cluster.name: vagrant-cluster
-node.name: dazed-vagrant.vm
+node.name: {{ domain }}
 network.host: 127.0.0.1
 bootstrap.mlockall: true

@@ -41,7 +41,7 @@
   tags: admin
 
 - name: Copy drupal8 settings.php
-  copy: src={{ httpd_document_root }}/drupal8/sites/default/default.settings.php
+  template: src={{ httpd_document_root }}/drupal8/sites/default/default.settings.php
         dest={{ httpd_document_root }}/drupal8/sites/default/settings.php
         owner={{ owner }}
         group={{ group }}

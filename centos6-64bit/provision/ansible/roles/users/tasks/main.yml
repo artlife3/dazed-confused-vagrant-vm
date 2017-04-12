@@ -5,7 +5,7 @@
   tags: settings
 
 - name: Transfer [~/.bach_profile]
-  copy: src={{ templates_path }}/bash_profile
+  template: src={{ templates_path }}/bash_profile
         dest=/home/{{ owner }}/.bash_profile
         owner={{ owner }}
         group={{ group }}
@@ -15,7 +15,7 @@
 
 
 - name: Transfer [~/.bashrc]
-  copy: src={{ templates_path }}/bashrc
+  template: src={{ templates_path }}/bashrc
         dest=/home/{{ owner }}/.bashrc
         owner={{ owner }}
         group={{ group }}
@@ -24,7 +24,7 @@
   tags: settings
 
 - name: Transfer [~/.vimrc]
-  copy: src={{ templates_path }}/vimrc
+  template: src={{ templates_path }}/vimrc
         dest=/home/{{ owner }}/.vimrc
         owner={{ owner }}
         group={{ group }}

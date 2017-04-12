@@ -57,7 +57,7 @@
               replace='user=\'vagrant\''
 
 - name: Transfer /etc/my.cnf
-  copy: src={{ templates_path }}/my.cnf
+  template: src={{ templates_path }}/my.cnf
             dest=/etc/my.cnf
             owner={{ mysq_user }}
             group={{ mysq_group }}

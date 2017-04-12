@@ -41,8 +41,8 @@ HEADER {
       <li><a href="./server-info" target="_blank">Apache Server Information</a></li>
     </ul>
     <li><a href="./mail_test.php" target="_blank">Mail send test</a></li>
-    <li><a href="//tomcat.dazed-vagrant.vm/" target="_blank">Managing Tomcat</a></li>
-    <li><a href="//kibana.dazed-vagrant.vm/" target="_blank">Kibana</a> Start visualizing, analyzing, and exploring your data with Elasticsearch</li>
+    <li><a href="//tomcat.{{ domain }}/" target="_blank">Managing Tomcat</a></li>
+    <li><a href="//kibana.{{ domain }}/" target="_blank">Kibana</a> Start visualizing, analyzing, and exploring your data with Elasticsearch</li>
   </ul>
 </article>
 
@@ -55,7 +55,7 @@ HEADER {
   <ul>
     <li>Mail test</li>
     <ul>
-      <li><a href="//mailcatcher.dazed-vagrant.vm/" target="_blank">MailCatcher</a></li>
+      <li><a href="//mailcatcher.{{ domain }}/" target="_blank">MailCatcher</a></li>
     </ul>
       <li><a href="./phpinfo.php" target="_blank">phpinfo();</a></li>
     <li><a href="./phpmyadmin" target="_blank">phpMyAdmin</a></li>
