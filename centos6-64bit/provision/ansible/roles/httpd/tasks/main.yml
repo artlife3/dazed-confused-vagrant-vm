@@ -40,15 +40,15 @@
 #    src={{ httpd_conf_dir }} dest=/etc/httpd state=link
 #  tags: install
 
-- name: self signed certificate
+- name: self signed certificate (Expiration date is 20 years)
   shell: |
     crt_file="/etc/pki/tls/certs/localhost.crt" &&
     key_file="/etc/pki/tls/private/localhost.key" &&
     crt_and_key_file="/etc/pki/tls/private/localhost.crt_and_key" &&
-    subject="/C=JP/ST=Tokyo/L=Tokyo City/CN={{ domain }}" &&
+    subject="/C=JP/ST=Tokyo/L=Tokyo City/CN=localhost" &&
     openssl req -new -newkey rsa:2048 -sha1 -x509 -nodes \
       -set_serial 1 \
-      -days 3650 \
+      -days 7300 \
       -subj "$subject" \
       -out "$crt_file" \
       -keyout "$key_file" &&
