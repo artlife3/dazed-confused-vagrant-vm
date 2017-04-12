@@ -89,3 +89,4 @@
 cluster.name: vagrant-cluster
 node.name: dazed-vagrant.vm
 network.host: 127.0.0.1
+bootstrap.mlockall: true

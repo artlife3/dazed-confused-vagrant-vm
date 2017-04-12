@@ -43,3 +43,17 @@
            dest=/etc/sysconfig/i18n
   tags: settings
 
+
+# Remove serivice
+
+- name: Disable serivice
+  serivice: name={{ item }} state=stopped enabled=no
+  with_items:
+    - postfix
+    - ConsoleKit
+
+- name: Remove serivice
+  yum: name={{ item }} state=absent
+  with_items:
+    - postfix
+    - ConsoleKit
