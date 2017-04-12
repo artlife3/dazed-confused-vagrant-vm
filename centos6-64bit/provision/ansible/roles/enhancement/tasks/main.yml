@@ -27,3 +27,4 @@
 - name: Install [ multitail ]
   yum: name=multitail state=present
   tags: install
+
