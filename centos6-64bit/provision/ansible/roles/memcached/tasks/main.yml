@@ -7,7 +7,7 @@
   tags: install
 
 - name: Config memcached
-  copy: src={{ templates_path }}/memcached
+  template: src={{ templates_path }}/memcached
             dest=/etc/sysconfig/memcached
             mode=0664
   notify: Restart memcached

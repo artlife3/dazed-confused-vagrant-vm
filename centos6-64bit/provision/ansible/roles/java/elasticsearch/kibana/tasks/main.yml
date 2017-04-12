@@ -6,13 +6,13 @@
   # Settings
   
 - name: Transfer [conf.d/kibana.conf]
-  copy: src={{ templates_path }}/httpd_conf.d/kibana.conf
+  template: src={{ templates_path }}/httpd_conf.d/kibana.conf
             dest={{ httpd_conf_dir }}/conf.d/kibana.conf
   notify: Restart httpd
   tags: settings
 
 - name: Transfer [etc/kibana/kibana.yml]
-  copy: src={{ templates_path }}/etc_kibana_kibana.yml
+  template: src={{ templates_path }}/etc_kibana_kibana.yml
             dest=/etc/kibana/kibana.conf
   notify: Restart kibana
   tags: settings

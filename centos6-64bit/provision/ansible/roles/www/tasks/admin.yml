@@ -29,32 +29,32 @@
 # admin/index.php
 
 - name: Transfer admin page
-  copy: src={{ templates_path }}/admin/index.php
+  template: src={{ templates_path }}/admin/index.php
         dest={{ httpd_document_root }}/admin/index.php
   tags: admin
  
 #phpinfo
 
 - name: Transfer phpinfo
-  copy: src={{ templates_path }}/admin/phpinfo.php
+  template: src={{ templates_path }}/admin/phpinfo.php
         dest={{ httpd_document_root }}/admin/phpinfo.php
   tags: admin
 
 # admin/memcache.php
 - name: Transfer memcache.php
-  copy: src={{ templates_path }}/admin/memcache.php
+  template: src={{ templates_path }}/admin/memcache.php
         dest={{ httpd_document_root }}/admin/memcache.php
   tags: admin
 
 # admin/mail_test.php
 - name: Transfer mail_test.php
-  copy: src={{ templates_path }}/admin/mail_test.php
+  template: src={{ templates_path }}/admin/mail_test.php
         dest={{ httpd_document_root }}/admin/mail_test.php
   tags: admin
  
 # admin/mail-test.php
 - name: Transfer mail-test.php
-  copy: src={{ templates_path }}/admin/mail-test.php
+  template: src={{ templates_path }}/admin/mail-test.php
         dest={{ httpd_document_root }}/admin/mail-test.php
   tags: admin
 

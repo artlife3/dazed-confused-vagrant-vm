@@ -29,28 +29,22 @@
 # Settings
 
 - name: Transfer [ /etc/security/limits.conf ]
-  copy: src={{ templates_path }}/security_limits.conf
-           dest=/etc/security/limits.conf
+  template: src={{ templates_path }}/security_limits.conf
+                  dest=/etc/security/limits.conf
   tags: settings
 
 - name: Transfer [ /etc/sysconfig/clock ]
-  copy: src={{ templates_path }}/sysconfig_clock
-           dest=/etc/sysconfig/clock
+  template: src={{ templates_path }}/sysconfig_clock
+                  dest=/etc/sysconfig/clock
   tags: settings
 
 - name: Transfer [ /etc/sysconfig/i18n ]
-  copy: src={{ templates_path }}/sysconfig_i18n
-           dest=/etc/sysconfig/i18n
+  template: src={{ templates_path }}/sysconfig_i18n
+                  dest=/etc/sysconfig/i18n
   tags: settings
 
 
 # Remove serivice
-
-- name: Disable serivice
-  serivice: name={{ item }} state=stopped enabled=no
-  with_items:
-    - postfix
-    - ConsoleKit
 
 - name: Remove serivice
   yum: name={{ item }} state=absent
