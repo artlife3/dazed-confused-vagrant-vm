@@ -3,7 +3,6 @@
 
 [webservers:vars]
 domain=dazed.vagrant.vm
-old_domain=dazed-vagrant.vm
 
 templates_path=../templates
 files_path=../files
@@ -16,6 +15,7 @@ permission=ugo+rw
 time_zone=Tokyo/Asia
 log_dir=/var/log
 
+java_versions=java-1.8.0-openjdk-devel.x86_64
 tomact_dir=/opt/tomcat
 tomcat_user=vagrant
 tomcat_group=vagrant
