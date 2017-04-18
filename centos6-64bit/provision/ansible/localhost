@@ -19,6 +19,7 @@ java_versions=java-1.8.0-openjdk-devel.x86_64
 tomact_dir=/opt/tomcat
 tomcat_user=vagrant
 tomcat_group=vagrant
+tomcat_name=tomcat8
 
 elastic_conf_dir=/etc/elasticsearch
 elastic_user=elasticsearch
