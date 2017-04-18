@@ -1,2 +1,2 @@
 JAVA_HOME=/usr/java/default
-JAVA_OPTS="-Xms1024M -Xmx1024M"
+JAVA_OPTS="-Xms512M -Xmx512M"
