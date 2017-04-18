@@ -1,0 +1,49 @@
+- name: Git clone rbenv
+  git: repo=git://github.com/sstephenson/rbenv.git
+       dest={{ rbenv_path }}/rbenv
+       version=master
+  tags: install
+
+- name: Git clone ruby-build
+  git: repo=git://github.com/sstephenson/ruby-build.git
+       dest={{ rbenv_path }}/rbenv/plugins/ruby-build
+       version=master
+  tags: install
+
+- name: Add to /etc/profile
+  lineinfile:
+    dest=/etc/profile
+    line={{ item }}
+  with_items:
+    - ''
+    - '# RBENV'
+    - 'export RBENV_ROOT="{{ rbenv_path }}/rbenv"'
+    - 'export PATH="${RBENV_ROOT}/bin:${PATH}"'
+    - 'eval "$(rbenv init -)"'
+  tags: install
+
+- name: Install dependent
+  yum: name={{ item }}
+  with_items:
+    - gcc
+    - make
+    - openssl-devel
+    - libffi-devel
+  tags: install
+
+- name: Install Ruby 2.3.3
+  command: bash -lc "rbenv install 2.3.3"
+  ignore_errors: True
+  tags: install
+
+- name: Do rehash
+  command: bash -lc "rbenv rehash"
+  tags: install
+
+- name: Set Ruby 2.3.3 as default
+  command: bash -lc "rbenv global 2.3.3"
+  tags: install
+
+- name: Do rehash
+  command: bash -lc "rbenv rehash"
+  tags: install

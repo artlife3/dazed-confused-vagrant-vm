@@ -1,0 +1,103 @@
+- name: Create admin folder
+  file: path={{ httpd_document_root }}/admin
+         state=directory
+         owner={{ owner }}
+         group={{ group }}
+         mode=775
+  tags: admin
+
+- name: Existence of Bootstrap directory
+  stat: path={{ httpd_document_root }}/admin/bootstrap
+  register: bootstrap
+  tags: admin
+
+- name: Download bootstarp
+  get_url: url="http://getbootstrap.com/2.3.2/assets/bootstrap.zip" dest={{ httpd_document_root }}/admin
+  when: not bootstrap.stat.exists
+  tags: admin
+
+- name: Unarchive bootstrap.zip
+  unarchive: src={{ httpd_document_root }}/admin/bootstrap.zip dest={{ httpd_document_root }}/admin/ copy=no
+  when: not bootstrap.stat.exists
+  tags: admin
+
+- name: Remove bootstrap.zip
+  file: path={{ httpd_document_root }}/admin/bootstrap.zip state=absent
+  when: not bootstrap.stat.exists
+  tags: admin
+
+# admin/index.php
+
+- name: Transfer admin page
+  template: src={{ templates_path }}/admin/index.php
+        dest={{ httpd_document_root }}/admin/index.php
+  tags: admin
+ 
+#phpinfo
+
+- name: Transfer phpinfo
+  template: src={{ templates_path }}/admin/phpinfo.php
+        dest={{ httpd_document_root }}/admin/phpinfo.php
+  tags: admin
+
+# admin/memcache.php
+- name: Transfer memcache.php
+  template: src={{ templates_path }}/admin/memcache.php
+        dest={{ httpd_document_root }}/admin/memcache.php
+  tags: admin
+
+# admin/mail_test.php
+- name: Transfer mail_test.php
+  template: src={{ templates_path }}/admin/mail_test.php
+        dest={{ httpd_document_root }}/admin/mail_test.php
+  tags: admin
+ 
+# admin/mail-test.php
+- name: Transfer mail-test.php
+  template: src={{ templates_path }}/admin/mail-test.php
+        dest={{ httpd_document_root }}/admin/mail-test.php
+  tags: admin
+
+# Opcache
+- name: Git clone opcache
+  git: repo=https://github.com/rlerdorf/opcache-status.git
+       dest={{ httpd_document_root }}/admin/opcache-status
+ 
+# Apcu
+- name: Git clone apcu
+  git: repo=https://github.com/krakjoe/apcu.git
+       dest={{ httpd_document_root }}/admin/apcu
+
+# phpMemcacheAdmin
+- name: Git clone phpMemcacheAdmin
+  git: repo=https://github.com/elijaa/phpmemcacheadmin.git
+       dest={{ httpd_document_root }}/admin/phpmemcacheadmin
+
+# phpMyAdmin
+
+- name: Existence of phpMyAdmin directory
+  stat: path={{ httpd_document_root }}/admin/phpmyadmin
+  register: phpmyadmin
+  tags: admin
+
+- name: Download phpMyAdmin
+  get_url: url="https://files.phpmyadmin.net/phpMyAdmin/4.6.6/phpMyAdmin-4.6.6-all-languages.zip" dest={{ httpd_document_root }}/admin/ validate_certs=no
+  when: not phpmyadmin.stat.exists
+  tags: admin
+
+- name: Unarchive phpMyAdmin-4.6.6-all-languages.zip
+  unarchive: src={{ httpd_document_root }}/admin/phpMyAdmin-4.6.6-all-languages.zip dest={{ httpd_document_root }}/admin/ copy=no
+  when: not phpmyadmin.stat.exists
+  tags: admin
+
+- name: Remove phpMyAdmin-4.6.6-all-languages.zip
+  file: path={{ httpd_document_root }}/admin/phpMyAdmin-4.6.6-all-languages.zip state=absent
+  when: not phpmyadmin.stat.exists
+  tags: admin
+
+- name: Move phpMyAdmin
+  shell: mv {{ httpd_document_root }}/admin/phpMyAdmin-4.6.6-all-languages {{ httpd_document_root }}/admin/phpmyadmin
+  when: not phpmyadmin.stat.exists
+  tags: admin
+
+

@@ -1,0 +1,18 @@
+- name: Install [ libselinux-python ]
+  yum: name=libselinux-python state=present
+  tags: install
+
+- name: SELinux Disable
+  selinux: state=disabled
+  tags: install
+
+- name: Edit selinux config
+  replace: dest=/etc/selinux/config
+              regexp='^SELINUX=enforing'
+              replace=SELINUX=disabled
+  tags: install
+
+- name: stop iptabes
+  service: name=iptables state=stopped enabled=no
+  tags: install
+

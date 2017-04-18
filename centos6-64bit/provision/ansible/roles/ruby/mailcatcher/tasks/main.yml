@@ -1,0 +1,41 @@
+# Ruby
+
+- include: ../ruby.yml
+
+# MailCatcher
+
+- name: gem install mailcatcher
+  gem: name=mailcatcher user_install=no executable={{ rbenv_path }}/rbenv/shims/gem
+  notify: Restart mailcatcher
+  tags: install
+
+- name: Transfer /etc/init.d/mailcatcher
+  template: src={{ templates_path }}/etc_init.d_mailcatcher
+            dest=/etc/init.d/mailcatcher
+            mode=755
+  notify: Restart mailcatcher
+  tags: settings
+
+- name: Create folder mailcatcher log
+  file: path={{ log_dir }}/mailcatcher
+         state=directory
+         owner={{ owner }}
+         group={{ owner }}
+         mode=775
+  tags: install
+
+- name: Add to php.ini
+  lineinfile: >
+    dest=/etc/php.ini
+    regexp='sendmail_path = \/usr\/sbin\/sendmail -t -i'
+    line='sendmail_path = /usr/bin/env /opt/rbenv/shims/catchmail'
+  notify: Restart httpd
+  tags: install
+
+# Settings
+
+- name: Transfer httpd/conf.d/mailcatcher.conf
+  template: src={{ templates_path }}/httpd_conf.d/mailcatcher.conf
+            dest={{ httpd_conf_dir }}/conf.d/mailcatcher.conf
+  notify: Restart httpd
+  tags: settings

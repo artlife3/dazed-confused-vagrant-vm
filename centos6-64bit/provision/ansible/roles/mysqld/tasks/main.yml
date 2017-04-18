@@ -1,0 +1,106 @@
+# install
+
+- name: Create mysql data folder 
+  file: path=/var/www/mysql_data
+         state=directory
+         owner={{ mysq_user }}
+         group={{ mysq_group }}
+         mode=775
+  tags: install
+
+- name: Create mysql data symbolic link
+  file:
+    src: /var/www/mysql_data
+    dest: /var/lib/mysql
+    state: link
+  tags: install
+
+- name: Add mysql repo
+  yum: name=http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm state=present
+  tags: install
+
+- name: Install MySQL
+  yum: name=mysql-community-server
+  tags: install
+
+- name: chmod MySQL data 
+  file: path=/var/www/mysql_data owner={{ mysq_user }} group={{ mysq_group }} mode=0755 recurse=yes state=directory
+
+- name: Create folder [mysqld log]
+  file: path={{ log_dir }}/mysqld
+         state=directory
+         owner={{ mysq_user }}
+         group={{ mysq_group }}
+         mode=775
+  tags: install
+
+- name: Touch [mysqld/error.log]
+  file: path={{ item }}
+         state=touch
+         owner={{ mysq_user }}
+         group={{ mysq_group }}
+  with_items:
+    - "{{ log_dir }}/mysqld/error.log"
+    - "{{ log_dir }}/mysqld.log"
+    - "{{ log_dir }}/mysqld/slow_query.log"
+    - "{{ log_dir }}/mysqld/query.log"
+    - "{{ log_dir }}/mysqld/mysqld.log"
+    - "/var/run/mysqld"
+  tags: install
+
+- name: Touch [/var/lock/subsys]
+  file: path=/var/lock/subsys
+         state=touch
+         mode=777
+  tags: install
+
+- name: owner change mysqld_safe
+  replace: dest=/usr/bin/mysqld_safe
+              regexp='^user=\'mysql\''
+              replace='user=\'vagrant\''
+
+- name: Transfer /etc/my.cnf
+  template: src={{ templates_path }}/my.cnf
+            dest=/etc/my.cnf
+            owner={{ mysq_user }}
+            group={{ mysq_group }}
+            mode=0664
+  notify: Restart mysqld
+  tags: settings
+
+- name: Be sure MySQL is running and enabled
+  become_user: vagrant
+  service: name=mysqld state=started enabled=yes
+
+- name: Install MySQL-python (For ansible)
+  yum: name=MySQL-python state=present
+  tags: install
+
+- name: Transfer [Temporary ~/.my.cnf]
+  template: src={{ templates_path }}/users_pre_my.cnf
+        dest=/home/{{ owner }}/.my.cnf
+  become_user: vagrant
+
+- name: Add root user of mysqld
+  mysql_user: name="root" host={{ item }} password={{ mysql_root_passwd }} login_unix_socket={{ mysql_socket }}
+  with_items:
+    - 127.0.0.1
+    - localhost
+  tags: install
+
+# logrotate
+- name: Transfer [logrotate.d/mysql]
+  template: src={{ templates_path }}/etc_logrotate.d/mysql
+            dest=/etc/logrotate.d/mysql
+            owner=root
+            group=root
+            mode=0664
+  tags: install
+
+- name: Transfer [~/.my.cnf]
+  template: src={{ templates_path }}/users_my.cnf
+        dest=/home/{{ owner }}/.my.cnf
+        owner={{ owner }}
+        group={{ group }}
+        mode=644
+  become_user: vagrant

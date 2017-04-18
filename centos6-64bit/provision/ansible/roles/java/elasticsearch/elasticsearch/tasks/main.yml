@@ -1,0 +1,82 @@
+# Java
+
+- include: ../../../java.yml
+
+# Elasitcsearch
+
+- name: add group "Elasticsearch"
+  group: name={{ elastic_group }}
+  tags: install
+
+- name: add user "Elasticsearch"
+  user: name={{ elastic_user }} group={{ elastic_group }} home=/home/{{ elastic_user }} createhome=no
+  ignore_errors: True
+  tags: install
+
+
+- name: Add Elasticsearch repo
+  template: src={{ templates_path }}/elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
+  notify: Restart elasticsearch
+  tags: install
+
+- name: "Install GPG-KEY-elasticsearch"
+  rpm_key:
+    key: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+  notify: Restart elasticsearch
+  tags: install
+
+- name: Install Elasticsearch
+  yum: name=elasticsearch
+  notify: Restart elasticsearch
+  tags: install
+
+- name: Change directory permission
+  file: path={{ item }} mode=0775 owner={{ elastic_user }} group={{ elastic_group }}
+  with_items: 
+    - /var/log/elasticsearch 
+    - "{{ elastic_conf_dir }}"
+    - "{{ elastic_conf_dir }}/scripts"
+  tags: install
+
+- name: Change file permission
+  file: path={{ item }} mode=0664 owner={{ elastic_user }} group={{ elastic_group }}
+  with_items: 
+    - "{{ elastic_conf_dir }}/elasticsearch.yml"
+    - "{{ elastic_conf_dir }}/jvm.options"
+    - "{{ elastic_conf_dir }}/log4j2.properties"
+    - /etc/sysconfig/elasticsearch
+  tags: install
+
+- name: Change permission
+  file: path=/etc/init.d/elasticsearch mode=0755 owner={{ elastic_user }} group={{ elastic_group }}
+  tags: install
+
+
+  # Settings
+  
+- name: Transfer [elasticsearch.yml]
+  template: src={{ templates_path }}/etc/elasticsearch.yml 
+           dest={{ elastic_conf_dir }}/elasticsearch.yml
+  notify: Restart elasticsearch
+  tags: settings
+
+- name: Transfer [jvm.options]
+  template: src={{ templates_path }}/etc/jvm.options
+           dest={{ elastic_conf_dir }}/jvm.options
+  notify: Restart elasticsearch
+  tags: settings
+
+- name: Transfer [log4j2.properties]
+  template: src={{ templates_path }}/etc/log4j2.properties
+           dest={{ elastic_conf_dir }}/log4j2.properties
+  notify: Restart elasticsearch
+  tags: settings
+
+- name: Transfer [sysconfig/elasticsearch]
+  template: src={{ templates_path }}/sysconfig/elasticsearch
+           dest=/etc/sysconfig/elasticsearch
+  notify: Restart elasticsearch
+  tags: settings
+
+- name: Elasticsearch helth check
+  debug: msg="curl -X GET 'http://localhost:9200/_cluster/health?pretty'"

@@ -1,0 +1,4 @@
+- name: Install Java
+  yum: name={{ java_versions }}
+  tags: install
+

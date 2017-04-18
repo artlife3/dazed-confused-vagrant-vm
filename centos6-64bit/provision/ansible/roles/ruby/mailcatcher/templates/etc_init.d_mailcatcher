@@ -1,0 +1,29 @@
+#!/bin/sh
+# chkconfig: 345 99 1
+# description: mailcatcher
+# processname: mailcatcher
+
+start() {
+    echo -n "starting mailcatcher:"
+    /opt/rbenv/shims/mailcatcher --http-ip 0.0.0.0 --smtp-ip 0.0.0.0 -v -f > /var/log/mailcatcher/mailcatcher.log&
+    return 0
+}
+
+stop() {
+    killall mailcatcher
+    return 0
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop}"
+        exit 2
+esac
+
+exit 0
