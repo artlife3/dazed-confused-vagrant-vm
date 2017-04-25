@@ -12,10 +12,10 @@
     - php
     - enhancement
     - ruby/mailcatcher
-    - java/tomcat
-    - java/elasticsearch/elasticsearch
-    - java/elasticsearch/kibana
-    - java/elasticsearch/logstash
+#    - java/tomcat
+#    - java/elasticsearch/elasticsearch
+#    - java/elasticsearch/kibana
+#    - java/elasticsearch/logstash
     - users
     - www
 

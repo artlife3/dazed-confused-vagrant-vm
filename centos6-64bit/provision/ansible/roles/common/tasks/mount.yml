@@ -1,0 +1,89 @@
+
+- name: Check the additional partition directory
+  shell: df | grep /dev/sdb
+  register: mount_result
+  failed_when: mount_result.rc not in [0, 1]
+
+- name: yum install xfsprogs
+  yum:
+    name: xfsprogs
+  when: mount_result.rc == 1 and mount_file_system == "xfs"
+
+- name: mkfs
+  filesystem:
+    fstype: "{{ mount_file_system }}"
+    dev: "{{ mount_device }}"
+  when: mount_result.rc == 1
+
+- name: mkdir /mnt/tmp_device
+  file:
+    path: /mnt/tmp_device
+    state: directory
+  when: mount_result.rc == 1
+
+- name: mount /mnt/tmp_device
+  mount:
+    name: /mnt/tmp_device
+    src: "{{ mount_device }}"
+    fstype: "{{ mount_file_system }}"
+    opts: defaults
+    state: mounted
+  when: mount_result.rc == 1
+
+- name: mv to /mnt/tmp_device/.
+  shell: mv {{ mount_point }}/* /mnt/tmp_device/.
+  when: mount_result.rc == 1
+
+- name: mkdir mount_point
+  file:
+    path: "{{ mount_point }}"
+    state: directory
+  when: mount_result.rc == 1
+
+- name: get blkid
+  shell: 'blkid {{ mount_device }} | awk -F\" ''{ print $2 }'' '
+  register: uuid
+  when: mount_result.rc == 1
+
+- name: unmount /mnt/tmp_device
+  mount:
+    name: /mnt/tmp_device
+    src: "{{ mount_device }}"
+    fstype: "{{ mount_file_system }}"
+    opts: defaults
+    state: absent
+  when: mount_result.rc == 1
+
+- name: mount
+  mount:
+    name: "{{ mount_point }}"
+    src: "UUID={{ uuid.stdout }}"
+    fstype: "{{ mount_file_system }}"
+    opts: defaults
+    state: mounted
+  when: mount_result.rc == 1
+
+- name: Change modify
+  file: path={{ mount_point }}
+        owner={{ owner }}
+        group={{ group }}
+        mode=ug+rw
+  tags: install
+  when: mount_result.rc == 1
+
+- name: reboot
+  shell: shutdown -r now
+  when: mount_result.rc == 1
+
+- name: wait for SSH port down
+  local_action: wait_for host={{ inventory_hostname }} port=22 state=stopped
+  when: mount_result.rc == 1
+
+- name: wait for SSH port up
+  wait_for: host={{ inventory_hostname }} port=22 state=started delay=30
+  delegate_to: 127.0.0.1
+  when: mount_result.rc == 1
+
+- name: test connection (after reboot)
+  ping:
+  when: mount_result.rc == 1

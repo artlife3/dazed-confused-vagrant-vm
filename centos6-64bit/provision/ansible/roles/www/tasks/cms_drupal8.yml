@@ -7,7 +7,7 @@
 
 - name: Create a new database with name 'drupal8'
   become_user: vagrant
-  mysql_db: name=drupal8 state=present  login_unix_socket={{ mysql_socket }}
+  mysql_db: name=drupal8 state=present
   when: not drupal8.stat.exists
   tags: admin
 
