@@ -1,0 +1,53 @@
+    - name: yum install xfsprogs
+      yum:
+        name: xfsprogs
+      when: mount_file_system == "xfs"
+
+    - name: mkfs
+      filesystem:
+        fstype: "{{ mount_file_system }}"
+        dev: "{{ mount_device }}"
+
+    - name: mkdir /mnt/tmp_device
+      file:
+        path: /mnt/tmp_device
+        state: directory
+
+    - name: mount /mnt/tmp_device
+      mount:
+        name: /mnt/tmp_device
+        src: "{{ mount_device }}"
+        fstype: "{{ mount_file_system }}"
+        opts: defaults
+        state: mounted
+
+    - name: mv to /mnt/tmp_device/.
+      shell: mv {{ mount_point }}/* /mnt/tmp_device/.
+
+    - name: mkdir mount_point
+      file:
+        path: "{{ mount_point }}"
+        state: directory
+
+    - name: get blkid
+      shell: 'blkid {{ mount_device }} | awk -F\" ''{ print $2 }'' '
+      register: uuid
+
+    - name: unmount /mnt/tmp_device
+      mount:
+        name: /mnt/tmp_device
+        src: "{{ mount_device }}"
+        fstype: "{{ mount_file_system }}"
+        opts: defaults
+        state: absent
+
+    - name: mount
+      mount:
+        name: "{{ mount_point }}"
+        src: "UUID={{ uuid.stdout }}"
+        fstype: "{{ mount_file_system }}"
+        opts: defaults
+        state: mounted
+
+    - name: reboot
+      shell: shutdown -r now

@@ -4,6 +4,10 @@
 [webservers:vars]
 domain=dazed.vagrant.vm
 
+mount_file_system=xfs
+mount_device=/dev/sdb
+mount_point=/var
+
 templates_path=../templates
 files_path=../files
 env_dir=vagrant

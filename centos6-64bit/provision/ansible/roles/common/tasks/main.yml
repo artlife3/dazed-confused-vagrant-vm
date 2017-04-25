@@ -1,3 +1,6 @@
+# Mount
+- include: tasks/mount.yml
+
 # Install
 
 - name: Add [ epel-release ]
