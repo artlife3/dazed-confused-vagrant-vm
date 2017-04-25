@@ -38,12 +38,13 @@ else
 fi
 
 brew cask install vagrant-manager
+vagrant plugin install vagrant-hostsupdater
 vagrant --version
 brew cask cleanup
 
 echo " Installation of vagrant command completed."
 echo ""
-echo "==== Then execute these. ==="
+echo "==== Execute these commands. ==="
 echo ""
-echo " sh 10_create_centos6-64bit_box.sh"
-
+echo " cd ../../centos6-64bit/"
+echo " sh refresh_vagrant.sh"
