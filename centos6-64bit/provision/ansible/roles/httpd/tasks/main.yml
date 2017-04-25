@@ -73,6 +73,10 @@
         mode=0755
   notify: Restart httpd
 
+- name: delete ssl.conf
+  file: path={{ httpd_conf_dir }}/conf.d/ssl.conf
+        state=absent
+
 # Settings
 
 - name: Transfer [httpd.conf]

@@ -78,6 +78,7 @@
     - /var/lib/php/opcache
     - /var/lib/php/session
     - /var/lib/php/wsdlcache
+  tags: install
 
 - name: Transfer httpd/conf.d/php.conf
   template: src={{ templates_path }}/httpd_conf.d/php5.conf
