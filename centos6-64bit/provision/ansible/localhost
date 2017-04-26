@@ -6,7 +6,7 @@ domain=dazed.vagrant.vm
 
 mount_file_system=xfs
 mount_device=/dev/sdb
-mount_point=/opt
+mount_point=/opt/rh
 
 templates_path=../templates
 files_path=../files
@@ -20,7 +20,7 @@ time_zone=Tokyo/Asia
 log_dir=/var/log
 
 java_versions=java-1.8.0-openjdk-devel.x86_64
-tomact_dir=/opt/tomcat
+tomact_dir=/opt/rh/tomcat
 tomcat_user=vagrant
 tomcat_group=vagrant
 tomcat_name=tomcat8
@@ -41,14 +41,14 @@ httpd_document_root=/var/www/html
 httpd=httpd
 #httpd=httpd24-httpd
 
-tools_path=/opt/tools
-rbenv_path=/opt
+tools_path=/opt/rh/tools
+rbenv_path=/opt/rh
 
 # MySQL
 mysq_user=mysql
 mysq_group=mysql
 mysql_root_passwd=root
-mysql_data=/opt/mysql_data
+mysql_data=/opt/rh/mysql_data
 
 
 # www/cms

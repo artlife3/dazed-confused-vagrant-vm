@@ -15,43 +15,17 @@
     dev: "{{ mount_device }}"
   when: mount_result.rc == 1
 
-- name: mkdir /mnt/tmp_device
-  file:
-    path: /mnt/tmp_device
-    state: directory
-  when: mount_result.rc == 1
-
-- name: mount /mnt/tmp_device
-  mount:
-    name: /mnt/tmp_device
-    src: "{{ mount_device }}"
-    fstype: "{{ mount_file_system }}"
-    opts: defaults
-    state: mounted
-  when: mount_result.rc == 1
-
-- name: mv to /mnt/tmp_device/.
-  shell: mv {{ mount_point }}/* /mnt/tmp_device/.
-  when: mount_result.rc == 1
-
 - name: mkdir mount_point
   file:
     path: "{{ mount_point }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     state: directory
   when: mount_result.rc == 1
 
 - name: get blkid
   shell: 'blkid {{ mount_device }} | awk -F\" ''{ print $2 }'' '
   register: uuid
-  when: mount_result.rc == 1
-
-- name: unmount /mnt/tmp_device
-  mount:
-    name: /mnt/tmp_device
-    src: "{{ mount_device }}"
-    fstype: "{{ mount_file_system }}"
-    opts: defaults
-    state: absent
   when: mount_result.rc == 1
 
 - name: mount
@@ -68,7 +42,7 @@
         owner={{ owner }}
         group={{ group }}
         mode=ug+rw
-  tags: install
+        recurse=yes
   when: mount_result.rc == 1
 
 - name: reboot
