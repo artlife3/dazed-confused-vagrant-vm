@@ -112,7 +112,7 @@ OS400*) os400=true;;
 HP-UX*) hpux=true;;
 esac
 
-CATALINA_OPTS="-server -Xmx128M -Xms64M -XX:MaxPermSize=256m -Xloggc:/opt/tomcat/tomcat8/logs/tomcat-gc.log -XX:+PrintGCDetails"
+CATALINA_OPTS="-server -Xmx128M -Xms64M -XX:MaxPermSize=256m -Xloggc:{{ tomact_dir }}/tomcat8/logs/tomcat-gc.log -XX:+PrintGCDetails"
 
 # resolve links - $0 may be a softlink
 PRG="$0"
