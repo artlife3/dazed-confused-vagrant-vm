@@ -5,7 +5,7 @@
 
 start() {
     echo -n "starting mailcatcher:"
-    /opt/rbenv/shims/mailcatcher --http-ip 0.0.0.0 --smtp-ip 0.0.0.0 -v -f > /var/log/mailcatcher/mailcatcher.log&
+    {{ rbenv_path }}/rbenv/shims/mailcatcher --http-ip 0.0.0.0 --smtp-ip 0.0.0.0 -v -f > {{ log_dir }}/mailcatcher/mailcatcher.log&
     return 0
 }
 

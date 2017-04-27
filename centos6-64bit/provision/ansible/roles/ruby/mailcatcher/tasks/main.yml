@@ -28,7 +28,7 @@
   lineinfile: >
     dest=/etc/php.ini
     regexp='sendmail_path = \/usr\/sbin\/sendmail -t -i'
-    line='sendmail_path = /usr/bin/env /opt/rbenv/shims/catchmail'
+    line='sendmail_path = /usr/bin/env {{ rbenv_path }}/rbenv/shims/catchmail'
   notify: Restart httpd
   tags: install
 

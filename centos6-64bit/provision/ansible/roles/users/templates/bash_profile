@@ -12,8 +12,8 @@ export CLICOLOR="true"
 mycolor=$'32m' # Change the color for each environment.
 export PS1='\[\e]0;\w\a\]\n\[\e[$mycolor\]\h@\u \[\e[33m\]\W\[\e[0m\] $ '
 
-source /opt/tools/git-completion/git-completion.bash
-source /opt/tools/git-completion/git-prompt.sh
+source {{ rbenv_path }}/tools/git-completion/git-completion.bash
+source {{ rbenv_path }}/tools/git-completion/git-prompt.sh
 
 # Display various information at prompt
 GIT_PS1_SHOWDIRTYSTATE=1

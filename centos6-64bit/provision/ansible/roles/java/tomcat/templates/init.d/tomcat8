@@ -8,7 +8,7 @@
 . /etc/init.d/functions
 . /etc/sysconfig/network
 
-CATALINA_HOME=/opt/tomcat/tomcat8
+CATALINA_HOME={{ tomact_dir }}/tomcat8
 TOMCAT_USER=vagrant
 
 LOCKFILE=/var/lock/subsys/tomcat8
