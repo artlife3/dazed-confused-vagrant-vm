@@ -89,4 +89,3 @@
 cluster.name: vagrant-cluster
 node.name: {{ domain }}
 network.host: 127.0.0.1
-bootstrap.mlockall: true
