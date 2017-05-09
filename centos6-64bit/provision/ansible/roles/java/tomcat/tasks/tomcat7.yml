@@ -46,19 +46,6 @@
   
 # Settings
 
-- name: Transfer catalina.sh
-  template: src={{ templates_path }}/bin/catalina.sh
-            dest={{ tomact_dir }}/tomcat7/bin/catalina.sh
-            mode=0755
-  notify: Restart tomcat7
-  tags: settings
-
-- name: Transfer context.xml
-  template: src={{ templates_path }}/conf/context_tomcat7.xml
-           dest={{ tomact_dir }}/tomcat7/conf/context.xml
-  notify: Restart tomcat7
-  tags: settings
-
 - name: Transfer server.xml
   template: src={{ templates_path }}/conf/server.xml
            dest={{ tomact_dir }}/tomcat7/conf/server.xml
