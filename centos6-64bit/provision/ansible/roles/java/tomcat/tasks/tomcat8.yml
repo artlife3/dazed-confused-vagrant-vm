@@ -47,6 +47,15 @@
   
 # Settings
 
+- name: Transfer setenv.sh
+  template: src={{ templates_path }}/bin/setenv.sh
+            dest={{ tomact_dir }}/tomcat8/bin/setenv.sh
+            owner={{ tomcat_user }}
+            group={{ tomcat_group }}
+            mode=775
+  notify: Restart tomcat8
+  tags: settings
+
 - name: Transfer server.xml
   template: src={{ templates_path }}/conf/server.xml
            dest={{ tomact_dir }}/tomcat8/conf/server.xml
