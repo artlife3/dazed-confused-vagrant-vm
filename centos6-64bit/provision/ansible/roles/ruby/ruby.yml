@@ -33,6 +33,7 @@
 
 - name: Install Ruby 2.3.3
   command: bash -lc "rbenv install 2.3.3"
+  ignore_errors: True
   tags: install
 
 - name: Do rehash
