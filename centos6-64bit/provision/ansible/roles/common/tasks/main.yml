@@ -1,4 +1,5 @@
 # Mount
+
 - include: tasks/mount.yml
 
 # Install
@@ -7,13 +8,20 @@
   yum: name=epel-release
   tags: install
 
-- name: Add [ remi-release-6.rpm ]
+- name: Add [ remi-release-6 repos ]
   yum: name=http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+  tags: install
+
+- name: Add [ city-fan.org repos ]
+  yum: name=http://www.city-fan.org/ftp/contrib/yum-repo/city-fan.org-release-1-13.rhel6.noarch.rpm
   tags: install
 
 - name: Install [ wget ]
   yum: name=wget state=present
   tags: install
+
+- name: Update [ libcurl ]
+  yum: name=libcurl enablerepo=city-fan.org state=latest
 
 - name: Install [ unzip ]
   yum: name=unzip state=present

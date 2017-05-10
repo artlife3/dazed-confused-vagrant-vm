@@ -24,6 +24,8 @@ tomact_dir=/opt/rh/tomcat
 tomcat_user=vagrant
 tomcat_group=vagrant
 tomcat_name=tomcat8
+tomcat_Xms=128M
+tomcat_Xmx=1024M
 
 elastic_conf_dir=/etc/elasticsearch
 elastic_user=elasticsearch
