@@ -5,6 +5,8 @@
         rotate 5
         missingok
         compress
+        size 128M
+        copytruncate
     postrotate
         # just if mysqld is really running
         if test -x /usr/bin/mysqladmin && \

@@ -94,3 +94,5 @@
          creates=/usr/bin/composer
   tags: install
 
+- name: Install drush
+  yum: name=drush enablerepo=remi-php55

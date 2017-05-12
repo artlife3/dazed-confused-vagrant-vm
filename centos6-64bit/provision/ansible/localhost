@@ -26,6 +26,8 @@ tomcat_group=vagrant
 tomcat_name=tomcat8
 tomcat_Xms=128M
 tomcat_Xmx=1024M
+tomcat_maxThreads=100
+
 
 elastic_conf_dir=/etc/elasticsearch
 elastic_user=elasticsearch
@@ -45,6 +47,9 @@ httpd=httpd
 
 tools_path=/opt/rh/tools
 rbenv_path=/opt/rh
+
+# PHP
+php_memory_limit=512M
 
 # MySQL
 mysq_user=mysql
