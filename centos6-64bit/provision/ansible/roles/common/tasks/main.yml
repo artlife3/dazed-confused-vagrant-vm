@@ -54,6 +54,10 @@
                   dest=/etc/sysconfig/i18n
   tags: settings
 
+- name: Transfer [ logrotate.conf ]
+  template: src={{ templates_path }}/logrotate.conf
+                  dest=/etc/logrotate.conf
+  tags: settings
 
 # Remove serivice
 
