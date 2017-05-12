@@ -11,6 +11,7 @@ mount_point=/opt/rh
 templates_path=../templates
 files_path=../files
 env_dir=vagrant
+env_mode=vagrant
 
 permission=ugo+rw
 permission_file=0666

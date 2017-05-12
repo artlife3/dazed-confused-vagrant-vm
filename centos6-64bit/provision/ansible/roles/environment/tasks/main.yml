@@ -1,0 +1,20 @@
+- name: Add to /etc/environment
+  lineinfile:
+    dest=/etc/environment
+    line={{ item }}
+  with_items:
+    - 'ENV_MODE={{ env_mode }}'
+  notify: Restart httpd
+
+- name: Add to httpd/envvars
+  lineinfile:
+    dest={{ httpd_conf_dir }}/envvars
+    line={{ item }}
+    create=yes
+    owner={{ owner }}
+    group={{ group }}
+    mode=644
+  with_items:
+    - '. /etc/environment'
+  notify: Restart httpd
+
