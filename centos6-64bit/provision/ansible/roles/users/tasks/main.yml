@@ -14,14 +14,14 @@
   tags: settings
 
 
-- name: Transfer [~/.bashrc]
-  template: src={{ templates_path }}/bashrc
-        dest=/home/{{ owner }}/.bashrc
-        owner={{ owner }}
-        group={{ group }}
-        mode=644
-  become: no
-  tags: settings
+#- name: Transfer [~/.bashrc]
+#  template: src={{ templates_path }}/bashrc
+#        dest=/home/{{ owner }}/.bashrc
+#        owner={{ owner }}
+#        group={{ group }}
+#        mode=644
+#  become: no
+#  tags: settings
 
 - name: Transfer [~/.vimrc]
   template: src={{ templates_path }}/vimrc

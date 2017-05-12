@@ -25,7 +25,7 @@ match TabSpace /\t\|\s\+$/
 set title
 
 " Highlight current line
-set cursorline
+"set cursorline
 
 " 行末の1文字先までカーソルを移動できるように
 set virtualedit=onemore
@@ -41,7 +41,7 @@ set showmatch
 
 " Tab display
 " Visualize invisible characters (tab is displayed as "▸ -")
-set list listchars=tab:\▸\-
+"set list listchars=tab:\▸\-
 
 " Tab Make a letter space
 set expandtab
