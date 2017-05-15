@@ -55,6 +55,7 @@ php_memory_limit=512M
 # MySQL
 mysq_user=mysql
 mysq_group=mysql
+mysql_root_user=root
 mysql_root_passwd=root
 mysql_data=/opt/rh/mysql_data
 

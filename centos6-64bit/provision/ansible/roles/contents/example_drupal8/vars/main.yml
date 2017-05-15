@@ -1,0 +1,13 @@
+site_dir: example2
+site_version: drupal-8
+site_database: example2_d8
+site_database_user: root
+site_database_passwd: root
+site_user: admin
+site_user_password: admin
+mysql_root_user: root
+mysql_root_passwd: root
+account_mail: example@example.com
+site_name: "Example sites Drupal 8"
+site_locale: en
+site_profile: standard
