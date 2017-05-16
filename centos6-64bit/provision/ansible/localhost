@@ -4,7 +4,7 @@
 [webservers:vars]
 domain=dazed.vagrant.vm
 
-mount_file_system=xfs
+mount_file_system=ext4
 mount_device=/dev/sdb
 mount_point=/opt/rh
 
