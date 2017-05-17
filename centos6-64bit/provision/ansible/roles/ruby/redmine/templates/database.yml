@@ -1,0 +1,8 @@
+production:
+  adapter: mysql
+  database: "{{ redmine_db_name }}"
+  host: localhost
+  username: "{{ redmine_db_user }}"
+  password: "{{ redmine_db_passwd }}"
+  encoding: utf8
+  pool: 5
