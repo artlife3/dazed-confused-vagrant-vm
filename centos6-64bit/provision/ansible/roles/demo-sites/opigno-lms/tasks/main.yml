@@ -1,0 +1,22 @@
+- name: Existence of directory
+  stat: path={{ httpd_document_root }}/{{ sites_dir }}
+  register: archive
+
+- name: Download
+  get_url: url={{ download_url }} dest=/tmp/{{ download_file }}
+  when: not archive.stat.exists
+
+- name: Unarchive
+  unarchive: src=/tmp/{{ download_file }} dest={{ httpd_document_root }}/ copy=no
+  when: not archive.stat.exists
+
+- name: Rename
+  command: mv {{ httpd_document_root }}/{{ extracted_file_name }} {{ httpd_document_root }}/{{ sites_dir }}
+  when: not archive.stat.exists
+
+- name: Remove archive
+  file: path=/tmp/{{ download_file }} state=absent
+  when: not archive.stat.exists
+
+- include: tasks/php_ini.yml
+- include: tasks/drush.yml

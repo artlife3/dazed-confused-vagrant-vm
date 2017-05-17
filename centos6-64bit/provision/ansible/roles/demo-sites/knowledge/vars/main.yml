@@ -1,0 +1,6 @@
+war_name:
+  knowledge.war
+download_url:
+  https://github.com/support-project/knowledge/releases/download/v1.8.1/knowledge.war
+tomcat_name:
+  tomcat8

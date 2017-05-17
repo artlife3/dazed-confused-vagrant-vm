@@ -1,0 +1,8 @@
+- hosts: webservers
+  become: yes
+  become_user: vagrant
+  roles:
+    - demo-sites/opigno-lms
+#    - demo-sites/knowledge
+    - demo-sites/example_drupal7
+    - demo-sites/example_drupal8
