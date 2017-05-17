@@ -5,7 +5,8 @@
 
 - name: Drupal settings
   become_user: vagrant
-  command: 'drush site-install opigno_lms 
+  command: |
+      drush site-install opigno_lms 
       -yes 
       --root={{ httpd_document_root }}/{{ sites_dir }} 
       -v --uri={{ domain }} 
@@ -15,6 +16,6 @@
       --site-name="{{ site_name }}" 
       --account-name={{ account-name }} 
       --account-pass={{ account-pass }}
-      --account-mail={{ account-mail }} --site-mail={{ account-mail }}'
+      --account-mail={{ account-mail }} --site-mail={{ account-mail }}
   when: exists_db_flag.changed
   

@@ -8,8 +8,14 @@
          --drupal-project-rename={{ site_dir }}"
   when: not sites.stat.exists
 
+- name: Create a new database 
+  become_user: vagrant
+  mysql_db: name={{ site_database }} state=present
+  register: exists_db_flag
+
 - name: Site setup Drupal
-  shell: "drush site-install {{ site_profile }} 
+  shell: |
+         drush site-install {{ site_profile }} 
          --account-name={{ site_user }} 
          --account-pass={{ site_user_password }} 
          --db-url=mysql://{{ site_database_user }}:{{ site_database_passwd }}@localhost/{{ site_database }} 
@@ -19,6 +25,6 @@
          --db-su-pw={{ mysql_root_passwd }}
          --account-mail={{ account_mail }}
          --site-name={{ site_name }}
-         --locale={{ site_locale }}"
-  when: not sites.stat.exists
+         --locale={{ site_locale }}
+  when: exists_db_flag.changed
 
