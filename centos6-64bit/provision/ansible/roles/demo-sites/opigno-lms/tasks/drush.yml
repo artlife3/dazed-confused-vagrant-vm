@@ -1,0 +1,21 @@
+- name: Create a new database 
+  become_user: vagrant
+  mysql_db: name={{ sites_dir }} state=present
+  register: exists_db_flag
+
+- name: Drupal settings
+  become_user: vagrant
+  command: |
+      drush site-install opigno_lms 
+      -yes 
+      --root={{ httpd_document_root }}/{{ sites_dir }} 
+      -v --uri={{ domain }} 
+      --db-url=mysql://root:{{ mysql_root_passwd }}@localhost/{{ db_name }} 
+      --db-su=root 
+      --db-su-pw={{ mysql_root_passwd }} 
+      --site-name="{{ site_name }}" 
+      --account-name={{ account-name }} 
+      --account-pass={{ account-pass }}
+      --account-mail={{ account-mail }} --site-mail={{ account-mail }}
+  when: exists_db_flag.changed
+  

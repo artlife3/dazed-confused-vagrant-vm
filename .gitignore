@@ -4,3 +4,4 @@
 centos6-64bit/share/
 centos6-64bit/vagrant.log
 centos6-64bit/tmp/
+*.retry

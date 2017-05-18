@@ -1,0 +1,52 @@
+# Ruby
+
+#- include: ../ruby.yml
+
+# Redmine
+
+- name: Install dependent
+  yum: name={{ item }}
+  with_items:
+    - "@development-tools"
+    - openssl-devel
+    - readline-devel
+    - zlib-devel
+    - curl-devel
+    - libyaml-devel
+    - libffi-devel
+    - httpd-devel
+    - ImageMagick
+    - ImageMagick-devel
+    - ipa-pgothic-fonts
+
+- name: gem install bundler
+  gem: name=bundler state=present
+
+- name: Create redmine database
+  become_user: vagrant
+  mysql_db: name={{ redmine_db_name }} state=present
+  register: exists_db_flag
+
+- name: Svn checkout Redmine
+  subversion: repo={{ redmine_svn_url }} dest={{ redmine_dir }}
+
+- name: database.ymlの作成
+  become: yes
+  template:
+    src=database.yml
+    dest={{ redmine_dir }}/config/database.yml
+    force=no
+  register:
+    result_database_yml
+
+- name: configuration.ymlの作成
+  become: yes
+  template:
+    src=configuration.yml
+    dest={{ redmine_dir }}/config/configuration.yml
+
+- name: install gem package
+  command:
+    bundle install --path vendor/bundle
+    chdir={{ redmine_dir }}
+    

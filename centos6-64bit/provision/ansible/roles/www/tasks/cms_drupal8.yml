@@ -8,7 +8,7 @@
 - name: Create a new database with name 'drupal8'
   become_user: vagrant
   mysql_db: name=drupal8 state=present
-  when: not drupal8.stat.exists
+  register: exists_db_flag
   tags: admin
 
 - name: Download drupal8 source code

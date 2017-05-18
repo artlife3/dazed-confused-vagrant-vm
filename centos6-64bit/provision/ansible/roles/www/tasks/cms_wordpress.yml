@@ -8,7 +8,7 @@
 - name: Create a new database with name 'wordpress'
   become_user: vagrant
   mysql_db: name=wordpress state=present
-  when: not wordpress.stat.exists
+  register: exists_db_flag
   tags: admin
 
 - name: Download Wordpress
