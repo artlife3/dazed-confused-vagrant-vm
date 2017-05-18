@@ -53,8 +53,8 @@ redmine_svn_url=http://svn.redmine.org/redmine/branches/3.3-stable
 redmine_dir=/opt/rh/redmine
 redmine_font_path=/usr/share/fonts/truetype/takao-gothic/TakaoPGothic.ttf
 redmine_db_name=redmine
-redmine_db_user=root
-redmine_db_passwd=root
+redmine_db_user=redmine_user
+redmine_db_passwd=redmine_passwd
 
 # PHP
 php_memory_limit=512M

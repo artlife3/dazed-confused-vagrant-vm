@@ -1,6 +1,6 @@
 # Ruby
 
-#- include: ../ruby.yml
+- include: ../ruby.yml
 
 # Redmine
 
@@ -20,6 +20,7 @@
     - ipa-pgothic-fonts
 
 - name: gem install bundler
+  become_user: vagrant
   gem: name=bundler state=present
 
 - name: Create redmine database
@@ -28,10 +29,14 @@
   register: exists_db_flag
 
 - name: Svn checkout Redmine
+  become_user: vagrant
   subversion: repo={{ redmine_svn_url }} dest={{ redmine_dir }}
 
-- name: database.ymlの作成
-  become: yes
+- name: Add mysql user
+  become_user: vagrant
+  mysql_user: name={{ redmine_db_user }} password={{ redmine_db_passwd }} priv="{{ redmine_db_name }}.*:ALL"
+
+- name: database.yml
   template:
     src=database.yml
     dest={{ redmine_dir }}/config/database.yml
@@ -39,14 +44,15 @@
   register:
     result_database_yml
 
-- name: configuration.ymlの作成
-  become: yes
+- name: configuration.yml
   template:
     src=configuration.yml
     dest={{ redmine_dir }}/config/configuration.yml
 
 - name: install gem package
-  command:
-    bundle install --path vendor/bundle
-    chdir={{ redmine_dir }}
-    
+  become_user: vagrant
+  bundler:
+    state: present
+    exclude_groups: "development"
+    gem_path: "vendor/bundle"
+    chdir: "{{ redmine_dir }}"

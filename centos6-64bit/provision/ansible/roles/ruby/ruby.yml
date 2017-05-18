@@ -10,6 +10,14 @@
        version=master
   tags: install
 
+- name: Change Permission
+  file: path={{ rbenv_path }}/rbenv/
+        state=directory
+        owner={{ owner }}
+        group={{ group }}
+        mode=ug+rw
+        recurse=yes
+
 - name: Add to /etc/profile
   lineinfile:
     dest=/etc/profile
