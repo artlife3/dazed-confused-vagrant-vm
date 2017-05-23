@@ -56,3 +56,95 @@
     exclude_groups: "development"
     gem_path: "vendor/bundle"
     chdir: "{{ redmine_dir }}"
+    executable: /opt/rh/rbenv/shims/bundle
+
+- name: secret tokenの作成
+  become_user: vagrant
+  command:
+    bundle exec rake generate_secret_token
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: データベースのマイグレーション
+  become_user: vagrant
+  command:
+    bundle exec rake db:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: デフォルトデータ(日本語)をロード
+  become_user: vagrant
+  command:
+    bundle exec rake redmine:load_default_data
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+    REDMINE_LANG: ja
+  when:
+    result_database_yml|changed
+
+- name: farend_basicテーマのダウンロード
+  become_user: vagrant
+  git:
+    repo=https://github.com/farend/redmine_theme_farend_basic.git
+    dest={{ redmine_dir }}/public/themes/farend_basic
+
+- name: テーマをfarend_basicに切り替え
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["ui_theme"]="farend_basic"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    result_database_yml|changed
+
+- name: デフォルトの言語を日本語に変更
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["default_language"]="ja"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    result_database_yml|changed
+
+- name: ユーザー名の表示形式を「姓 名」に変更
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["user_format"]=:lastname_firstname'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    result_database_yml|changed
+
+- name: 添付ファイルとリポジトリのエンコーディングを設定
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["repositories_encodings"]="UTF-8,CP932,EUC-JP"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    result_database_yml|changed
+
+- name: 添付ファイルのサムネイルを表示
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["thumbnails_enabled"]="1"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    result_database_yml|changed

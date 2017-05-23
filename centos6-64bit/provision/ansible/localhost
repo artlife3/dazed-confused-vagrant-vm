@@ -49,6 +49,7 @@ httpd=httpd
 tools_path=/opt/rh/tools
 
 rbenv_path=/opt/rh
+ruby_environment_path="/bin:/opt/rh/rbenv/shims:/usr/bin"
 redmine_svn_url=http://svn.redmine.org/redmine/branches/3.3-stable
 redmine_dir=/opt/rh/redmine
 redmine_font_path=/usr/share/fonts/truetype/takao-gothic/TakaoPGothic.ttf
