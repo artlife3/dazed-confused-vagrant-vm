@@ -1,1 +1,12 @@
-
+load_default_data_lang:
+  ja
+ui_theme:
+  farend_basic
+repositories_encodings:
+  "UTF-8,CP932,EUC-JP"
+default_language:
+  ja
+display_username_format:
+  lastname_firstname
+thumbnails_enabled:
+  1

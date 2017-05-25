@@ -18,9 +18,21 @@
         mode=ug+rw
         recurse=yes
 
-- name: Add to /etc/profile
+#- name: Add to /etc/profile
+#  lineinfile:
+#    dest='/etc/profile'
+#    line={{ item }}
+#  with_items:
+#    - ''
+#    - '# RBENV'
+#    - 'export RBENV_ROOT="{{ rbenv_path }}/rbenv"'
+#    - 'export PATH="${RBENV_ROOT}/bin:${PATH}"'
+#    - 'eval "$(rbenv init -)"'
+#  tags: install
+
+- name: Add to /etc/bashrc
   lineinfile:
-    dest=/etc/profile
+    dest=/etc/bashrc
     line={{ item }}
   with_items:
     - ''

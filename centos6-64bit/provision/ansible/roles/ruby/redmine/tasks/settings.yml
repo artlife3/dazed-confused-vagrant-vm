@@ -1,0 +1,60 @@
+- name: Settings | Default data load. LANG:JP
+  become_user: vagrant
+  command:
+    bundle exec rake redmine:load_default_data
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+    REDMINE_LANG: "{{ load_default_data_lang }}"
+
+- name: Settings | Download farend_basic theme
+  become_user: vagrant
+  git:
+    repo=https://github.com/farend/redmine_theme_farend_basic.git
+    dest={{ redmine_dir }}/public/themes/farend_basic
+
+- name: Settings | Switch theme to farend_basic
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["ui_theme"]="{{ ui_theme }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Change default language to Japanese
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["default_language"]="{{ default_language }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Change display format of user name to "Last name"
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["user_format"]=:{{ display_username_format }}'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set attachment and repository encoding
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["repositories_encodings"]="{{ repositories_encodings }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set attachment thumbnail to display
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["thumbnails_enabled"]="{{ thumbnails_enabled }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production

@@ -1,0 +1,110 @@
+- name: Install dependent
+  yum: name={{ item }}
+  with_items:
+    - "@development-tools"
+    - openssl-devel
+    - readline-devel
+    - zlib-devel
+    - curl-devel
+    - libyaml-devel
+    - libffi-devel
+    - httpd-devel
+    - ImageMagick
+    - ImageMagick-devel
+    - ipa-pgothic-fonts
+    - mysql-devel
+
+- name: gem install bundler
+  become_user: vagrant
+  gem: name=bundler state=present
+
+- name: Create redmine database
+  become_user: vagrant
+  mysql_db: name={{ redmine_db_name }} state=present
+  register: exists_db_flag
+
+- name: Svn checkout Redmine
+  become_user: vagrant
+  subversion: repo={{ redmine_svn_url }} dest={{ redmine_dir }}
+
+- name: Add mysql user
+  become_user: vagrant
+  mysql_user: name={{ redmine_db_user }} password={{ redmine_db_passwd }} priv="{{ redmine_db_name }}.*:ALL"
+
+- name: config/database.yml
+  template:
+    src=database.yml
+    dest={{ redmine_dir }}/config/database.yml
+    force=no
+  register:
+    result_database_yml
+
+- name: configuration.yml
+  template:
+    src=configuration.yml
+    dest={{ redmine_dir }}/config/configuration.yml
+
+- name: install gem package
+  become_user: vagrant
+  bundler:
+    state: present
+    exclude_groups: "development"
+    gem_path: "vendor/bundle"
+    chdir: "{{ redmine_dir }}"
+    executable: /opt/rh/rbenv/shims/bundle
+
+- name: Create secret token
+  become_user: vagrant
+  command:
+    bundle exec rake generate_secret_token
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Migrating the database
+  become_user: vagrant
+  command:
+    bundle exec rake db:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    result_database_yml.changed
+
+- name: Install passenger
+  become: yes
+  gem: name=passenger state=present user_install=no
+  environment:
+   PATH: "{{ ruby_environment_path }}"
+
+- name: Install Passenger Apache module
+  become: yes
+  command:
+    passenger-install-apache2-module --auto
+  environment:
+   PATH: "{{ ruby_environment_path }}"
+
+- name: Get the settings from passenger apache module
+  command:
+    passenger-install-apache2-module --snippet
+  environment:
+   PATH: "{{ ruby_environment_path }}"
+  register:
+    passenger_snippet_vars
+  changed_when: false
+
+- name: Add redmine.conf for apache
+  template:
+    src=httpd_conf_redmine.conf
+    dest={{ httpd_conf_dir }}/conf.d/redmine.conf
+  notify: Restart httpd
+
+- name: Change modify
+  file: path={{ redmine_dir }}
+         state=directory
+         owner={{ apache_user }}
+         group={{ apache_group }}
+         mode=ug+rw
+         recurse=yes
