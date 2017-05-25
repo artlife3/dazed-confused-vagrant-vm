@@ -1,11 +1,11 @@
 load_default_data_lang:
-  ja
+  en
 ui_theme:
   farend_basic
 repositories_encodings:
   "UTF-8,CP932,EUC-JP"
 default_language:
-  ja
+  en
 display_username_format:
   lastname_firstname
 thumbnails_enabled:

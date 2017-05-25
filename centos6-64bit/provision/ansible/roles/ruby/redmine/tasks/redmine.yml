@@ -20,7 +20,7 @@
 
 - name: Create redmine database
   become_user: vagrant
-  mysql_db: name={{ redmine_db_name }} state=present
+  mysql_db: name={{ redmine_db_name }} state=present encoding=utf8
   register: exists_db_flag
 
 - name: Svn checkout Redmine
@@ -71,7 +71,7 @@
     PATH: "{{ ruby_environment_path }}"
     RAILS_ENV: production
   when:
-    result_database_yml.changed
+    result_database_yml.changed or exists_db_flag.changed
 
 - name: Install passenger
   become: yes
