@@ -1,4 +1,4 @@
-- name: Settings | Default data load. LANG:JP
+- name: Settings | Default data load.
   become_user: vagrant
   command:
     bundle exec rake redmine:load_default_data
@@ -7,21 +7,6 @@
     PATH: "{{ ruby_environment_path }}"
     RAILS_ENV: production
     REDMINE_LANG: "{{ load_default_data_lang }}"
-
-- name: Settings | Download farend_basic theme
-  become_user: vagrant
-  git:
-    repo=https://github.com/farend/redmine_theme_farend_basic.git
-    dest={{ redmine_dir }}/public/themes/farend_basic
-
-- name: Settings | Switch theme to farend_basic
-  become_user: vagrant
-  command:
-    bundle exec rails r 'Setting["ui_theme"]="{{ ui_theme }}"'
-    chdir={{ redmine_dir }}
-  environment:
-    PATH: "{{ ruby_environment_path }}"
-    RAILS_ENV: production
 
 - name: Settings | Change default language to Japanese
   become_user: vagrant
@@ -41,6 +26,24 @@
     PATH: "{{ ruby_environment_path }}"
     RAILS_ENV: production
 
+- name: Settings | Set gravatar_enabled
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["gravatar_enabled"]="{{ gravatar_enabled }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set gravatar_default
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["gravatar_default"]="{{ gravatar_default }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
 - name: Settings | Set attachment and repository encoding
   become_user: vagrant
   command:
@@ -50,10 +53,20 @@
     PATH: "{{ ruby_environment_path }}"
     RAILS_ENV: production
 
+
 - name: Settings | Set attachment thumbnail to display
   become_user: vagrant
   command:
     bundle exec rails r 'Setting["thumbnails_enabled"]="{{ thumbnails_enabled }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set default_projects_public
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting["default_projects_public"]="{{ default_projects_public }}"'
     chdir={{ redmine_dir }}
   environment:
     PATH: "{{ ruby_environment_path }}"

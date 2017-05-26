@@ -1,0 +1,19 @@
+- name: Plugins | Download redmine_work_time 
+  become_user: vagrant
+  hg:
+    repo=https://bitbucket.org/tkusukawa/redmine_work_time
+    dest={{ redmine_dir }}/plugins/redmine_work_time
+  register: redmine_plugins_flag
+
+- name: Plugins | redmine:plugins:migrate
+  become_user: vagrant
+  command:
+    bundle exec rake redmine:plugins:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    redmine_plugins_flag.changed
+  notify: Restart httpd
+  

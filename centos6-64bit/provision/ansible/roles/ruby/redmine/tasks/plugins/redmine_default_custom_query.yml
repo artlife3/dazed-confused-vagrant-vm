@@ -1,0 +1,20 @@
+- name: Plugins | Download redmine_default_custom_query
+  become_user: vagrant
+  git:
+    repo=https://github.com/hidakatsuya/redmine_default_custom_query.git
+    dest={{ redmine_dir }}/plugins/redmine_default_custom_query
+  register: redmine_plugins_flag
+
+
+- name: Plugins | redmine:plugins:migrate
+  become_user: vagrant
+  command:
+    bundle exec rake redmine:plugins:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    redmine_plugins_flag.changed
+  notify: Restart httpd
+

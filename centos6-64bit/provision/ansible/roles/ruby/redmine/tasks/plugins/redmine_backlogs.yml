@@ -1,0 +1,8 @@
+- name: Plugins | Download redmine_backlogs
+  become_user: vagrant
+  git:
+    repo=https://github.com/backlogs/redmine_backlogs.git
+    dest={{ redmine_dir }}/plugins/redmine_backlogs
+  register: redmine_plugins_flag
+
+

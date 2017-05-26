@@ -1,0 +1,9 @@
+- name: Plugins | Download redmine_estimate_timelog 
+  become_user: vagrant
+  git:
+#    repo=https://github.com/suvene/redmine_estimate_timelog.git
+    repo=https://github.com/toritori0318/redmine_estimate_timelog.git
+    dest={{ redmine_dir }}/plugins/redmine_estimate_timelog
+  register: redmine_plugins_flag
+  notify: Restart httpd
+  

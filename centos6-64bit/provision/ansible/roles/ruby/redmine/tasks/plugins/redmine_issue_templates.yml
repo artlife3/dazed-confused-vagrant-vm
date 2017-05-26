@@ -1,0 +1,20 @@
+- name: Plugins | Download redmine_issue_templates
+  become_user: vagrant
+  git:
+    repo=https://github.com/akiko-pusu/redmine_issue_templates.git
+    dest={{ redmine_dir }}/plugins/redmine_issue_templates
+  register: redmine_plugins_flag
+
+
+- name: Plugins | redmine:plugins:migrate
+  become_user: vagrant
+  command:
+    bundle exec rake redmine:plugins:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    redmine_plugins_flag.changed
+  notify: Restart httpd
+

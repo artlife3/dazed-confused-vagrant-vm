@@ -1,0 +1,8 @@
+- name: Plugins | Download redmine_workload 
+  become_user: vagrant
+  git:
+    repo=https://github.com/cfis/redmine_workload.git
+    dest={{ redmine_dir }}/plugins/redmine_workload
+  register: redmine_plugins_flag
+  notify: Restart httpd
+  

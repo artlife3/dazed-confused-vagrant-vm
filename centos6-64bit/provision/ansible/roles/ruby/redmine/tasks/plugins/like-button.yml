@@ -1,0 +1,7 @@
+- name: Plugins | Download like-button
+  become_user: vagrant
+  subversion:
+    repo=http://subversion.andriylesyuk.com/like-button
+    dest={{ redmine_dir }}/plugins/like-button
+  register: redmine_plugins_flag
+  notify: Restart httpd
