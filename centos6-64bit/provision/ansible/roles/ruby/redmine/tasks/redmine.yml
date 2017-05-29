@@ -73,7 +73,7 @@
     PATH: "{{ ruby_environment_path }}"
     RAILS_ENV: production
 
-- name: Migrating the database
+- name: bundle exec rake db:migrate
   become_user: vagrant
   command:
     bundle exec rake db:migrate

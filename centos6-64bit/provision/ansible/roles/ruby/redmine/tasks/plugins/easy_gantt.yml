@@ -1,0 +1,42 @@
+- name: Plugins | Transfer [eash_gant]
+  become_user: vagrant
+  synchronize: 
+    src: easy_gantt
+    dest: "{{ redmine_dir }}/plugins/"
+    rsync_opts:
+      - "--exclude=.gitkeep"
+
+- name: Change modify
+  file: path={{ redmine_dir }}/plugins/easy_gantt
+         state=directory
+         owner={{ apache_user }}
+         group={{ apache_group }}
+         mode=ug+rw
+         recurse=yes
+
+- name: Plugins | bundle install
+  become_user: vagrant
+  bundler:
+    state: present
+    chdir: "{{ redmine_dir }}"
+    executable: /opt/rh/rbenv/shims/bundle
+
+- name: bundle exec rake db:migrate RAILS_ENV=production
+  become_user: vagrant
+  command:
+    bundle exec rake db:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Plugins | Tbundle exec rake redmine:plugins:migrate RAILS_ENV=production
+  become_user: vagrant
+  command:
+    bundle exec rake redmine:plugins:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  notify: Restart httpd
+
