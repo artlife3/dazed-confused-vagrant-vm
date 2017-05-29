@@ -1,25 +1,24 @@
 # Ruby
 
-- include: ../ruby.yml
-- include: redmine.yml
-- include: settings.yml
-- include: themes.yml
+#- include: ../ruby.yml
+#- include: redmine.yml
+#- include: settings.yml
+#- include: themes.yml
 
-#- include: plugins/redmine_issue_templates.yml
-#- include: plugins/redmine_default_custom_query.yml
-#- include: plugins/redmine_advanced_roadmap_v2.yml
-#- include: plugins/redmine_importer.yml
-#- include: plugins/redmine_work_time.yml
-#- include: plugins/redmine_estimate_timelog.yml
-#- include: plugins/redmine_workload.yml
-#- include: plugins/redmine_local_avatars.yml
-#- include: plugins/redmine_issue_checklist.yml
-#- include: plugins/redmine_tagging.yml
-#- include: plugins/redmine_code_review.yml
-#- include: plugins/redmine_absolute_dates.yml
-#- include: plugins/redmine_google_calendar.yml
-#- include: plugins/redmine_slack.yml
-
+- include: plugins/redmine_issue_templates.yml
+- include: plugins/redmine_default_custom_query.yml
+- include: plugins/redmine_advanced_roadmap_v2.yml
+- include: plugins/redmine_importer.yml
+- include: plugins/redmine_work_time.yml
+- include: plugins/redmine_estimate_timelog.yml
+- include: plugins/redmine_workload.yml
+- include: plugins/redmine_local_avatars.yml
+- include: plugins/redmine_issue_checklist.yml
+- include: plugins/redmine_tagging.yml
+- include: plugins/redmine_code_review.yml
+- include: plugins/redmine_absolute_dates.yml
+- include: plugins/redmine_google_calendar.yml
+- include: plugins/redmine_slack.yml
 - include: plugins/redmine_backlogs.yml
 
 

@@ -3,6 +3,18 @@
   git:
     repo=https://github.com/backlogs/redmine_backlogs.git
     dest={{ redmine_dir }}/plugins/redmine_backlogs
+    version=origin/feature/redmine3
   register: redmine_plugins_flag
 
 
+#gem install holidays --version 1.0.3
+#gem install holidays
+#sudo yum install -y libxml2 libxml2-devel libxslt libxslt-devel
+
+#git clone https://github.com/backlogs/redmine_backlogs.git
+#git checkout origin/feature/redmine3
+#/redmine_backlogs/Gemfile
+#+#gem “nokogiri"
+#+#  gem "capybara", "~> 1"
+#cd path/to/redmine
+# RAILS_ENV=production bundle exec rake redmine:backlogs:install
