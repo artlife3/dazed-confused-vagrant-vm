@@ -1,9 +1,9 @@
 # Ruby
 
-#- include: ../ruby.yml
-#- include: redmine.yml
-#- include: settings.yml
-#- include: themes.yml
+- include: ../ruby.yml
+- include: redmine.yml
+- include: settings.yml
+- include: themes.yml
 
 #- include: plugins/redmine_issue_templates.yml
 #- include: plugins/redmine_default_custom_query.yml

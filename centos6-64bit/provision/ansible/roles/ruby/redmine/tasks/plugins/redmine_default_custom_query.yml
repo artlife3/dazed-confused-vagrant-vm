@@ -5,6 +5,15 @@
     dest={{ redmine_dir }}/plugins/redmine_default_custom_query
   register: redmine_plugins_flag
 
+- name: bundle install --without development test --path vendor/bundle
+  become_user: vagrant
+  bundler:
+    state: present
+    exclude_groups: "development"
+    gem_path: "vendor/bundle"
+    chdir: "{{ redmine_dir }}"
+    executable: /opt/rh/rbenv/shims/bundle
+
 
 - name: Plugins | redmine:plugins:migrate
   become_user: vagrant

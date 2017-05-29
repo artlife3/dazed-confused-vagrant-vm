@@ -14,24 +14,29 @@
     - ipa-pgothic-fonts
     - mysql-devel
 
+- name: Permission change /opt/rh
+  file: path={{ rbenv_path }}
+        state=touch
+        owner={{ owner }}
+        group={{ owner }}
+        mode=775
+
 - name: gem install bundler
   become_user: vagrant
-  gem: name=bundler state=present
+  gem: name=bundler state=present executable=/opt/rh/rbenv/shims/gem user_install=False
 
 - name: Create redmine database
   become_user: vagrant
   mysql_db: name={{ redmine_db_name }} state=present encoding=utf8
   register: exists_db_flag
 
+
 - name: Svn checkout Redmine
   become_user: vagrant
   subversion: repo={{ redmine_svn_url }} dest={{ redmine_dir }}
 
-- name: Add mysql user
-  become_user: vagrant
-  mysql_user: name={{ redmine_db_user }} password={{ redmine_db_passwd }} priv="{{ redmine_db_name }}.*:ALL"
-
 - name: config/database.yml
+  become_user: vagrant
   template:
     src=database.yml
     dest={{ redmine_dir }}/config/database.yml
@@ -40,11 +45,17 @@
     result_database_yml
 
 - name: configuration.yml
+  become_user: vagrant
   template:
     src=configuration.yml
     dest={{ redmine_dir }}/config/configuration.yml
 
-- name: install gem package
+- name: Add mysql user
+  become_user: vagrant
+  mysql_user: name={{ redmine_db_user }} password={{ redmine_db_passwd }} priv="{{ redmine_db_name }}.*:ALL"
+
+
+- name: bundle install --without development test --path vendor/bundle
   become_user: vagrant
   bundler:
     state: present
@@ -74,19 +85,20 @@
     result_database_yml.changed or exists_db_flag.changed
 
 - name: Install passenger
-  become: yes
-  gem: name=passenger state=present user_install=no
+  become_user: vagrant
+  gem: name=passenger state=present user_install=False
   environment:
    PATH: "{{ ruby_environment_path }}"
 
 - name: Install Passenger Apache module
-  become: yes
+  become_user: vagrant
   command:
     passenger-install-apache2-module --auto
   environment:
    PATH: "{{ ruby_environment_path }}"
 
 - name: Get the settings from passenger apache module
+  become_user: vagrant
   command:
     passenger-install-apache2-module --snippet
   environment:

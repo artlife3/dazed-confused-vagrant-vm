@@ -1,3 +1,17 @@
+- name: Add to /etc/environment
+  lineinfile:
+    dest=/etc/environment
+    line={{ item }}
+  with_items:
+    - 'RAILS_ENV=production'
+    
+- name: Permission change /opt/rh
+  file: path={{ rbenv_path }}
+        state=touch
+        owner={{ owner }}
+        group={{ owner }}
+        mode=775
+
 - name: Git clone rbenv
   git: repo=git://github.com/sstephenson/rbenv.git
        dest={{ rbenv_path }}/rbenv
