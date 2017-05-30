@@ -18,3 +18,8 @@ gravatar_default:
   "Mystery man"
 default_projects_public:
   0
+clone_sites:
+- trial1
+- trial2
+
+

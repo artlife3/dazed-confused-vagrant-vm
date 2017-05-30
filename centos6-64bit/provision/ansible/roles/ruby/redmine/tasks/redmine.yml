@@ -81,8 +81,6 @@
   environment:
     PATH: "{{ ruby_environment_path }}"
     RAILS_ENV: production
-  when:
-    result_database_yml.changed or exists_db_flag.changed
 
 - name: Install passenger
   become_user: vagrant
@@ -110,7 +108,7 @@
 - name: Add redmine.conf for apache
   template:
     src=httpd_conf_redmine.conf
-    dest={{ httpd_conf_dir }}/conf.d/redmine.conf
+    dest={{ httpd_conf_dir }}/conf.d/{{ redmine }}.conf
   notify: Restart httpd
 
 - name: Change modify
