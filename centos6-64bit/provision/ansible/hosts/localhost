@@ -1,2 +1,8 @@
-[dazed-vagrant]
-192.168.33.10
+[webservers]
+{{ ip_address }}
+
+#[dvservers]
+#{{ ip_address }}
+
+#[searchservers]
+#{{ ip_address }}
