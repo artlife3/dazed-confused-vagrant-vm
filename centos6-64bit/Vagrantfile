@@ -37,12 +37,11 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder "share", "/var/www/",
      :create => true,
-     owner: "vagrant",
-     group: "vagrant",
-     mount_options: ['dmode=777','fmode=666'],
-     :nfs => false
+     mount_options: ['nolock,vers=3,tcp,noatime'],
+     :nfs => ansible_settings['nfs_enable']
 
   config.vm.provision "ansible" do |ansible|
+    ansible.verbose = ansible_settings['ansible_verbose']
     ansible.playbook = "provision/ansible/webservers.yml"
     ansible.inventory_path = "provision/ansible/hosts/localhost"
     ansible.limit = 'all'

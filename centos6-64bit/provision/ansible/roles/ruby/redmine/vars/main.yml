@@ -19,7 +19,11 @@ gravatar_default:
 default_projects_public:
   0
 clone_sites:
-- trial1
-- trial2
+- iwasaki
+- tanimine
+- takahashi
+- morino
+- neo
+- tanimine
 
 
