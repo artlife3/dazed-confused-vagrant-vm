@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.verbose = ansible_settings['ansible_verbose']
-    ansible.playbook = "provision/ansible/webservers.yml"
+    ansible.playbook = "provision/ansible/playbook/webservers.yml"
     ansible.inventory_path = "provision/ansible/hosts/localhost"
     ansible.limit = 'all'
   end
