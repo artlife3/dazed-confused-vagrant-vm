@@ -52,8 +52,12 @@ redmine_db_name: redmine
 redmine_db_user: redmine_user
 redmine_db_passwd: redmine_passwd
 
+
 # PHP
 php_memory_limit: 512M
+php_required_modules: [ 'php', 'php-cli', 'php-common', 'php-devel', 'php-gd', 'php-intl', 'php-mbstring', 'php-pdo', 'php-mysqlnd', 'php-pear', 'php-xml', 'php-mcrypt', 'php-soap']
+php_required_pecl_modules: [ 'php-pecl-imagick', 'php-opcache', 'php-pecl-memcache', 'php-pecl-memcached', 'php-pecl-apcu', 'php-pecl-xdebug' ]
+
 
 # MySQL
 mysq_user: mysql

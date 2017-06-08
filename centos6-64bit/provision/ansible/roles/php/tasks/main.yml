@@ -5,31 +5,13 @@
 
 - name: Install php
   yum: name={{ item }} enablerepo=remi-php55
-  with_items:
-    - php
-    - php-cli
-    - php-common
-    - php-devel
-    - php-gd
-    - php-intl
-    - php-mbstring
-    - php-pdo
-    - php-mysqlnd
-    - php-pear
-    - php-xml
-    - php-mcrypt
+  with_items: "{{ php_required_modules }}"
   notify: Restart httpd
   tags: install
 
 - name: Install PECL
   yum: name={{ item }} enablerepo=remi-php55
-  with_items:
-    - php-pecl-imagick
-    - php-opcache
-    - php-pecl-memcache
-    - php-pecl-memcached
-    - php-pecl-apcu
-    - php-pecl-xdebug
+  with_items: "{{ php_required_pecl_modules }}"
   notify: Restart httpd
   tags: install
 
