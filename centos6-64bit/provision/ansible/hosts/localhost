@@ -1,8 +1,8 @@
 [webservers]
-{{ ip_address }}
+"{{ ip_address }}"
 
 #[dvservers]
-#{{ ip_address }}
+#"{{ ip_address }}"
 
 #[searchservers]
-#{{ ip_address }}
+#"{{ ip_address }}"
