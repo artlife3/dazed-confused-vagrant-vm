@@ -1,4 +1,5 @@
 production:
+  ui_theme: redmine-theme-gitmike-design
   email_delivery:
     delivery_method: :smtp
     smtp_settings:

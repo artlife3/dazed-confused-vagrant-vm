@@ -28,6 +28,7 @@
  * **APC**
 1. **Ruby** - v2.3.3
  * **[Mailcatcher](https://mailcatcher.me)**
+ * **Redmine** - v3.3
 1. **Memcached** - v1.4
 1. **Ansible**
 1. **ImageMagick**
@@ -85,6 +86,15 @@ $ sh refresh_vagrant.sh
 * http://mailcatcher.dazed.vagrant.vm
 ![Mailcatcher page](README/mail_catcher.png)
 
+### htop command
+
+```
+$ vagrant ssh
+$ htop
+```
+![htop command image](README/htop.png)
+
+
 
 ---
 
@@ -99,3 +109,98 @@ $ vagrant suspend
 $ vagrant resume
 etc...
 ```
+
+# Ansible
+
+## Structure of ansible files
+
+```
+ansible/
+├── ansible.cfg
+├── backend.yml
+├── group_vars         # Variables by environment
+│   ├── all.yml        # Variables of all environments
+│   ├── backend
+│   │   └── all.yml
+│   ├── development
+│   │   └── all.yml
+│   ├── staging
+│   │   └── all.yml
+│   ├── production
+│   │   └── all.yml
+│   └── localhost
+│       └── all.yml
+├── hosts            # Host setting per environment
+│   ├── backend
+│   ├── development
+│   ├── staging
+│   ├── production
+│   └── localhost
+├── roles            # Package by application
+│   ├── httpd
+│   │   ├── handlers
+│   │   ├── tasks
+│   │   └── templates
+│   ├── java         # Case of grouping
+│   │   ├── elasticsearch
+│   │   │   ├── elasticsearch
+│   │   │   │   ├── handlers
+│   │   │   │   ├── tasks
+│   │   │   │   └── templates
+│   │   │   ├── kibana
+│   │   │   │   ├── handlers
+│   │   │   │   ├── tasks
+│   │   │   │   └── templates
+│   │   │   └── logstash
+│   │   │       ├── tasks
+│   │   │       └── templates
+│   │   ├── java.yml
+│   │   └── tomcat
+│   │       ├── handlers
+│   │       │   └── main.yml
+│   │       ├── tasks
+│   │       │   └── main.yml
+│   │       └── templates
+│   ├── memcached
+│   │   ├── handlers
+│   │   ├── tasks
+│   │   └── templates
+│   ├── mysqld
+│   │   ├── handlers
+│   │   ├── tasks
+│   │   └── templates
+│   ├── php
+│   │   ├── handlers
+│   │   ├── tasks
+│   │   └── templates
+└── webservers.yml
+```
+
+## Example of ansible command
+
+```
+$ cd dazed-confused-vagrant-vm/centos6-64bit/provision/ansible
+```
+
+### When ansible is executed without using the vagrant command
+
+```
+$ ansible-playbook -i hosts/localhost webservers.yml
+```
+
+----
+
+
+### Build backend server
+
+```
+$ ansible-playbook -i hosts/backend backend.yml
+```
+* Redmine, scm manager, etc.
+
+### Build development server
+
+```
+$ ansible-playbook -i hosts/development webservers.yml
+```
+

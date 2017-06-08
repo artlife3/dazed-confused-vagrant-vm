@@ -71,3 +71,14 @@
   environment:
     PATH: "{{ ruby_environment_path }}"
     RAILS_ENV: production
+
+- name: Settings | Set ui_theme
+  become_user: vagrant
+  command:
+    bundle exec rails r 'Setting={'ui_theme' => "redmine-theme-gitmike-design"}'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+  

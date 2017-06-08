@@ -1,4 +1,4 @@
-- name: Plugins | Transfer [eash_gant]
+- name: Plugins | Transfer [easy_gant]
   become_user: vagrant
   synchronize: 
     src: easy_gantt
