@@ -1,0 +1,89 @@
+- name: Redmine source copy
+  become_user: "{{ owner }}"
+  shell: creates={{ rbenv_path }}/redmine_{{ item }} cp -r {{ redmine_dir }} {{ rbenv_path }}/redmine_{{ item }}
+  with_items: "{{redmine_clone_sites}}"
+
+- name: Create other redmine database
+  become_user: "{{ owner }}"
+  mysql_db: name=redmine_{{ item }} state=present encoding=utf8
+  with_items: "{{redmine_clone_sites}}"
+
+- name: Add mysql user
+  become_user: "{{ owner }}"
+  mysql_user: name={{ redmine_db_user }} password={{ redmine_db_passwd }} priv="{{ redmine }}%.*:ALL"
+
+
+- name: Others redmine config/database.yml
+  become_user: "{{ owner }}"
+  template:
+    src=database_forClone.yml
+    dest={{ rbenv_path }}/redmine_{{ item }}/config/database.yml
+    force=yes
+  with_items: "{{redmine_clone_sites}}"
+
+
+- name: Create tmp folder 
+  file: path=/opt/rh/tmp
+         state=directory
+         owner={{ owner }}
+         group={{ group }}
+         mode=775
+
+- name: Dump redmine databases to redmine.sql
+  become_user: "{{ owner }}"
+  mysql_db:
+    state: dump
+    name: "{{ redmine_db_name }}"
+    single_transaction: yes
+    target: "/opt/rh/tmp/{{ redmine_db_name }}.sql"
+
+- name: Sites Database restore
+  become_user: "{{ owner }}"
+  mysql_db: name=redmine_{{ item }} target=/opt/rh/tmp/{{ redmine_db_name }}.sql state=import
+  with_items: "{{redmine_clone_sites}}"
+
+- name: Others redmine Create secret token
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rake generate_secret_token
+    chdir={{ rbenv_path }}/redmine_{{ item }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  with_items: "{{redmine_clone_sites}}"
+
+- name: Others redmine bundle exec rake db:migrate
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rake db:migrate
+    chdir={{ rbenv_path }}/redmine_{{ item }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  with_items: "{{redmine_clone_sites}}"
+
+- name: Others redmine Add redmine.conf for apache
+  template:
+    src=httpd_conf_redmine_forClone.conf
+    dest={{ httpd_conf_dir }}/conf.d/redmine_{{ item }}.conf
+  with_items: "{{redmine_clone_sites}}"
+  notify: Restart httpd
+
+- name: Settings | Set app_title
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["app_title"]="{{ redmine_app_title }} {{ item }}"'
+    chdir={{ rbenv_path }}/redmine_{{ item }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  with_items: "{{redmine_clone_sites}}"
+
+
+#- name: Change modify
+#  file: path={{ redmine_dir }}
+#         state=directory
+#         owner={{ apache_user }}
+#         group={{ apache_group }}
+#         mode=ug+rw
+#         recurse=yes

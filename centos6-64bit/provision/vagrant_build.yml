@@ -1,0 +1,28 @@
+- hosts: all
+  become: yes
+  become_user: root
+  vars_files:
+    - group_vars/localhost/all.yml
+  roles:
+    # Common ##
+    - common
+    - firewall_selinux
+    - imagemagick
+    - scm
+    - memcached
+    - enhancement
+
+    ## LAMP ##
+    - httpd
+    - environment
+    - users
+    - mysqld
+    - php # Problem composer
+    - ruby/mailcatcher
+    - www # Bug: (drupal7&drupal8)
+
+#     ## Extra ##
+    - java/tomcat
+    - java/elasticsearch/elasticsearch
+    - java/elasticsearch/kibana
+# #    - java/elasticsearch/logstash # Not test

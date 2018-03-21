@@ -1,0 +1,55 @@
+#- name: Plugins | Transfer [easy_gant]
+#  become_user: "{{ owner }}"
+#  synchronize: 
+#    src: easy_gantt
+#    dest: "{{ redmine_dir }}/plugins/"
+#    rsync_opts:
+#      - "--exclude=.gitkeep"
+
+- name: Plugins | Transfer [easy_gant]
+  become_user: "{{ owner }}"
+  copy: 
+    src: EasyGanttFree-2.zip
+    dest: "{{ redmine_dir }}/plugins/"
+
+- name: unarchive
+  become_user: "{{ owner }}"
+  unarchive:
+    src: "{{ redmine_dir }}/plugins/EasyGanttFree-2.zip"
+    dest: "{{ redmine_dir }}/plugins/"
+    copy: no
+
+- name: Change modify
+  file: path={{ redmine_dir }}/plugins/easy_gantt
+         state=directory
+         owner={{ apache_user }}
+         group={{ apache_group }}
+         mode=ug+rw
+         recurse=yes
+
+- name: Plugins | bundle install
+  become_user: "{{ owner }}"
+  bundler:
+    state: present
+    chdir: "{{ redmine_dir }}"
+    executable: /opt/rh/rbenv/shims/bundle
+
+- name: bundle exec rake db:migrate RAILS_ENV=production
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rake db:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Plugins | Tbundle exec rake redmine:plugins:migrate RAILS_ENV=production
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rake redmine:plugins:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  notify: Restart httpd
+

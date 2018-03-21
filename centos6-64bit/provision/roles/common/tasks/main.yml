@@ -1,0 +1,95 @@
+# Mount
+
+#- include: tasks/mount.yml
+- name: mkdir opt_dir
+  file:
+    path: "{{ opt_dir }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: ug+rw
+    state: directory
+
+- name: Chnage the permission  /var/www/vagrant directory
+  file: path={{ share_dir }} state=directory mode=777 recurse=yes
+
+# - name: Create html symbolic link
+#   file:
+#     src: /vagrant/share
+#     dest: /var/www/vagrant
+#     state: link
+
+
+# Install
+
+- name: Add [ epel-release ]
+  yum: name=epel-release
+  tags: install
+
+- name: Install remi-release-6.rpm
+  yum: name=http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+  when:
+    - ansible_distribution == "CentOS"
+    - ansible_distribution_major_version == "6"
+  tags: install
+
+- name: Install remi-release-7.rpm
+  yum: name=http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+  when:
+    - ansible_distribution == "CentOS"
+    - ansible_distribution_major_version == "7"
+  tags: install
+
+- name: Add [ city-fan.org repos ]
+  yum: name=http://www.city-fan.org/ftp/contrib/yum-repo/city-fan.org-release-2-1.rhel7.noarch.rpm
+  tags: install
+
+- name: Install [ wget ]
+  yum: name=wget state=present
+  tags: install
+
+- name: Update [ libcurl ]
+  yum: name=libcurl enablerepo=city-fan.org state=latest
+
+- name: Install [ unzip ]
+  yum: name=unzip state=present
+  tags: install
+
+- name: Install [ ansible ]
+  yum: name=ansible state=present
+  tags: install
+
+- name: Install [ libselinux-python ] (For ansible)
+  yum: name=libselinux-python state=present
+  tags: install
+
+
+
+# Settings
+
+- name: Transfer [ /etc/security/limits.conf ]
+  template: src={{ templates_path }}/security_limits.conf
+                  dest=/etc/security/limits.conf
+  tags: settings
+
+- name: Transfer [ /etc/sysconfig/clock ]
+  template: src={{ templates_path }}/sysconfig_clock
+                  dest=/etc/sysconfig/clock
+  tags: settings
+
+- name: Transfer [ /etc/sysconfig/i18n ]
+  template: src={{ templates_path }}/sysconfig_i18n
+                  dest=/etc/sysconfig/i18n
+  tags: settings
+
+- name: Transfer [ logrotate.conf ]
+  template: src={{ templates_path }}/logrotate.conf
+                  dest=/etc/logrotate.conf
+  tags: settings
+
+# Remove serivice
+
+- name: Remove serivice
+  yum: name={{ item }} state=absent
+  with_items:
+    - postfix
+    - ConsoleKit

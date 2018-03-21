@@ -1,0 +1,85 @@
+# Install
+
+- name: Git clone ssl-client-auth
+  git: repo=https://github.com/pikanji/ssl-client-auth.git
+       dest={{ ssl_certificate_path }}
+  ignore_errors: True
+
+- name: Copy ssl-client-auth/.env
+  shell: cp {{ ssl_certificate_path }}/.env.dist {{ ssl_certificate_path }}/.env
+
+- name: Edit DOMAIN for ssl-client-auth/.env
+  replace: dest={{ ssl_certificate_path }}/.env
+              regexp='^DOMAIN(.*)$'
+              replace="DOMAIN={{ domain }}"
+
+- name: Edit COMMON_NAME for ssl-client-auth/.env
+  replace: dest={{ ssl_certificate_path }}/.env
+              regexp='^COMMON_NAME(.*)$'
+              replace="COMMON_NAME={{ domain }}"
+
+- name: Edit NUM_OF_DAYS for ssl-client-auth/.env (Expiration date is 20 years)
+  replace: dest={{ ssl_certificate_path }}/.env
+              regexp='^NUM_OF_DAYS(.*)$'
+              replace="NUM_OF_DAYS=7300"
+
+- name: Execute the create_root_cert_and_key.sh
+  command: "{{ ssl_certificate_path }}/create_root_cert_and_key.sh"
+  args:
+    chdir: "{{ ssl_certificate_path }}"
+
+- name: Install [ python-pip ]
+  yum: name=python-pip state=present
+
+- name: Install [ pexpect ]
+  pip: name=pexpect state=present
+
+- name: Execute the create_certificate_for_domain.sh
+  expect:
+    command: "{{ ssl_certificate_path }}/create_certificate_for_domain.sh"
+    chdir: "{{ ssl_certificate_path }}/"
+    responses:
+        "Enter Export Password:" : "vagrant"
+        "Verifying - Enter Export Password:" : "vagrant"
+
+- name: Edit ssl.conf
+  replace: dest={{ httpd_conf_dir }}/conf.d/ssl.conf
+              regexp='^SSLCertificateFile(.*)$'
+              replace="SSLCertificateFile {{ ssl_certificate_file }}"
+  ignore_errors: True
+
+- name: Edit ssl.conf
+  replace: dest={{ httpd_conf_dir }}/conf.d/ssl.conf
+              regexp='^SSLCertificateKeyFile(.*)$'
+              replace="SSLCertificateKeyFile {{ ssl_certificate_key_file }}"
+  ignore_errors: True
+
+- name: Edit ssl.conf
+  replace: dest={{ httpd_conf_dir }}/conf.d/ssl.conf
+              regexp='^#SSLCertificateChainFile(.*)$'
+              replace="SSLCertificateChainFile {{ ssl_certificate_chain_file }}"
+  ignore_errors: True
+
+- name: z_ssl.conf
+  command: mv {{ httpd_conf_dir }}/conf.d/ssl.conf {{ httpd_conf_dir }}/conf.d/z_ssl.conf
+  ignore_errors: True
+  notify: Restart httpd
+  tags: settings
+
+
+#- name: self signed certificate (Expiration date is 20 years)
+#  shell: |
+#    crt_file="{{ ssl_certificate_file }}" &&
+#    key_file="{{ ssl_certificate_key_file }}" &&
+#    crt_and_key_file="/etc/pki/tls/private/localhost.crt_and_key" &&
+#    subject="/C=JP/ST=Tokyo/L=Tokyo City/CN=localhost" &&
+#    openssl req -new -newkey rsa:2048 -sha256 -x509 -nodes \
+#      -set_serial 1 \
+#      -days 7300 \
+#      -subj "$subject" \
+#      -out "$crt_file" \
+#      -keyout "$key_file" &&
+#    cat "$crt_file" "$key_file" >> "$crt_and_key_file" &&
+#    chmod 666 "$key_file" "$crt_and_key_file"
+#    creates="{{ ssl_certificate_file }}"
+#  notify: Restart httpd

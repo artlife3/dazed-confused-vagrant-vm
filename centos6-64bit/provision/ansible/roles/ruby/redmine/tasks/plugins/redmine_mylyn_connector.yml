@@ -1,8 +1,0 @@
-- name: Plugins | Download Redmine-Mylyn Connector 
-  become_user: vagrant
-  git:
-    repo=https://git.code.sf.net/p/redmin-mylyncon/redmine-mylyn-connector
-    dest={{ redmine_dir }}/plugins/redmine_mylyn_connector
-  register: redmine_plugins_flag
-  notify: Restart httpd
-

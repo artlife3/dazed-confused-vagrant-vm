@@ -1,0 +1,18 @@
+- name: Plugins | Download redmine_importer
+  become_user: "{{ owner }}"
+  git:
+    repo=https://github.com/zh/redmine_importer.git
+    dest={{ redmine_dir }}/plugins/redmine_importer
+  register: redmine_plugins_flag
+
+- name: Plugins | redmine:plugins:migrate
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rake redmine:plugins:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    redmine_plugins_flag.changed
+  notify: Restart httpd

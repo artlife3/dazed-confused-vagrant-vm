@@ -39,6 +39,7 @@ fi
 
 brew cask install vagrant-manager
 vagrant plugin install vagrant-hostsupdater
+vagrant plugin install vagrant-bindfs
 vagrant --version
 brew cask cleanup
 

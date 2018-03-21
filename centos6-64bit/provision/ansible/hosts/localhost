@@ -1,9 +1,0 @@
-[localhost]
-192.168.33.10
-
-#[dvservers]
-#"{{ ip_address }}"
-
-#[searchservers]
-#"{{ ip_address }}"
-

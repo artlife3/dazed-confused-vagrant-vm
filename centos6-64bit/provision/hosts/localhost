@@ -1,0 +1,9 @@
+[webservers]
+192.168.33.11
+
+#[webservers:vars]
+#env_dir=localhost
+#env_mode=vagrant
+
+[localhost:children]
+webservers

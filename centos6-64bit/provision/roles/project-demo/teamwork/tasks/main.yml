@@ -1,0 +1,7 @@
+- name: "Create symbolic link `Teamwork` webaspp directory"
+  file:
+    src: /var/www/teamwork
+    dest: "{{ tomact_dir }}/{{ tomcat_name }}/webapps/teamwork"
+    state: link
+  notify: Restart tomcat8
+

@@ -1,0 +1,8 @@
+- name: Plugins | Download redmine_google_calendar
+  become_user: "{{ owner }}"
+  git:
+    repo=https://github.com/pablodv/redmine_google_calendar.git
+    dest={{ redmine_dir }}/plugins/redmine_google_calendar
+  register: redmine_plugins_flag
+  notify: Restart httpd
+  

@@ -1,8 +1,0 @@
-- name: Plugins | Download redmine_absolute_date
-  become_user: vagrant
-  git:
-    repo=https://github.com/yoshidayo/redmine_absolute_dates.git
-    dest={{ redmine_dir }}/plugins/redmine_absolute_dates
-  register: redmine_plugins_flag
-  notify: Restart httpd
-  

@@ -1,0 +1,114 @@
+# Install
+
+#- name: Remove [ httpd ]
+#  yum: name={{ item }} state=absent
+#  ignore_errors: True
+#  with_items:
+#    - httpd
+#    - httpd-tools
+#  tags: install
+
+#- name: Download apache 2.4 repos
+#  get_url: url=https://repos.fedorapeople.org/repos/jkaluza/httpd24/epel-httpd24.repo
+#           dest=/etc/yum.repos.d/
+#  tags: install
+
+- name: Chnage the permission  /var/www/vagrant directory
+  file: path={{ share_dir }} state=directory mode=777 recurse=yes
+
+- name: Create html directory
+  file: path={{ httpd_document_root }} state=directory owner={{ apache_user }} group={{ apache_group }}
+  ignore_errors: true
+
+- name: Install [ httpd ]
+  yum: name={{ item }} state=present
+  with_items:
+    - openssl
+    - httpd
+    - mod_ssl
+ #   - "{{ httpd_version }}-apr"
+  notify: Restart httpd
+
+#- name: Install [ httpd ]
+#  yum: name={{ item }} state=present
+#  with_items:
+#    - openssl
+#    - httpd
+#    - mod_ssl
+#  notify: Restart httpd
+#  tags: install
+
+#- name: Create httpd symbolic link
+#  file:
+#    src={{ httpd_conf_dir }} dest=/etc/httpd state=link
+#  tags: install
+
+- name: Change the httpd.conf for Apache User and Group
+  replace:
+    dest: '{{ httpd_conf_dir }}/conf/httpd.conf'
+    regexp: '{{ item.regexp}}'
+    replace: '{{ item.replace }}'
+  with_items:
+    - regexp: '^User(.*)$'
+      replace: 'User {{ apache_user }}'
+    - regexp: '^Group(.*)$'
+      replace: 'Group {{ apache_group }}'
+  notify: Restart httpd
+
+
+- include: ./ssl_certificate.yml
+
+
+- name: Change modify [ Conf directory ]
+  file: path={{ httpd_conf_dir }}
+        owner={{ apache_user }}
+        group={{ apache_group }}
+        mode=ug+rw
+        recurse=yes
+  tags: install
+
+- name: Create [ Log directory ]
+  file: path={{ httpd_log_dir }}
+        state=directory
+        owner={{ apache_user }}
+        group={{ apache_group }}
+        mode=0755
+  notify: Restart httpd
+#
+#- name: delete ssl.conf
+#  file: path={{ httpd_conf_dir }}/conf.d/ssl.conf
+#        state=absent
+
+# Settings
+
+#- name: Transfer [httpd.conf]
+#  template: src={{ templates_path }}/httpd24.conf
+#        dest={{ httpd_conf_dir }}/conf/httpd.conf
+#  notify: Restart httpd
+#  tags: settings
+
+- name: Transfer [vhost.conf]
+  template: src={{ templates_path }}/conf.d/vhost.conf
+        dest={{ httpd_conf_dir }}/conf.d/vhost.conf
+  notify: Restart httpd
+  tags: settings
+
+#- name: welcome.conf
+#  command: mv {{ httpd_conf_dir }}/conf.d/welcome.conf {{ httpd_conf_dir }}/conf.d/welcome.conf.disable
+#  ignore_errors: True
+#  notify: Restart httpd
+#  tags: settings
+
+- name: Transfer [server-info.conf]
+  template: src={{ templates_path }}/conf.d/server-info.conf
+        dest={{ httpd_conf_dir }}/conf.d/server-info.conf
+  notify: Restart httpd
+  tags: settings
+
+- name: Transfer [server-status.conf]
+  template: src={{ templates_path }}/conf.d/server-status.conf
+        dest={{ httpd_conf_dir }}/conf.d/server-status.conf
+  notify: Restart httpd
+  tags: settings
+
+

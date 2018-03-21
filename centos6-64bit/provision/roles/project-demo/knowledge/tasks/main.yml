@@ -1,0 +1,10 @@
+- name: Existence of directory
+  stat: path={{ tomact_dir }}/{{ tomcat_name }}/webapps/{{ war_name }}
+  register: archive
+
+- name: Download
+  get_url: url={{ download_url }} dest={{ tomact_dir }}/{{ tomcat_name }}/webapps/
+  become_user: vagrant
+  when: not archive.stat.exists
+  notify: Restart tomcat8
+

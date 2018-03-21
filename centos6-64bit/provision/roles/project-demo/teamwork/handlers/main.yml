@@ -1,0 +1,12 @@
+- name: Restart rsyslog
+  service: name=rsyslog state=restarted
+
+- name: Restart httpd
+  service: name={{ httpd }} state=restarted
+
+- name: Restart mysqld
+  service: name=mysqld state=restarted
+  become: no
+
+- name: Restart tomcat8
+  service: name=tomcat8 state=restarted

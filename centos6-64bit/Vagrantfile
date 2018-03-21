@@ -1,49 +1,157 @@
 require 'yaml'
-ansible_settings = YAML.load_file './provision/ansible/group_vars/localhost/all.yml'
+ansible_settings = YAML.load_file './provision/group_vars/localhost/all.yml'
+system "vagrant plugin install vagrant-multiplug" unless Vagrant.has_plugin? "vagrant-multiplug"
 
-Vagrant::Config.run do |config|
-  config.vm.box = ansible_settings['vm_box_name']
-  config.vm.box_url = ansible_settings['vm_box_url']
+module OS
+  def OS.windows?
+    Vagrant::Util::Platform.windows?
+  end
+
+  def OS.mac?
+    (/darwin/ =~ Vagrant::Util::Platform.platform) != nil
+  end
+
+  def OS.unix?
+    !Vagrant::Util::Platform.platform
+  end
+
+  def OS.linux?
+    OS.unix? and not OS.mac?
+  end
 end
 
+# Vagrant::Config.run do |config|
+#   config.vm.box = ansible_settings['vm_box_name']
+# #  config.vm.box_url = ansible_settings['vm_box_url']
+# end
+
 Vagrant.configure("2") do |config|
-  config.vm.box = ansible_settings['vm_box_name']
 
+  if ansible_settings['vm_box_url']
+    config.vm.box = ansible_settings['vm_box_name']
+    config.vm.box_url = ansible_settings['vm_box_url']
+  else
+    config.vm.box = ansible_settings['vm_box_name']
+  end
+  config.vm.define ansible_settings['vm_box_define_name']
+
+
+  # SSH options.
+  config.ssh.forward_agent = true
+  config.ssh.insert_key = false
+
+  # Disk seize
+  config.plugin.add_dependency "vagrant-disksize"
+  config.disksize.size = ansible_settings['disk_size']
+
+  # Cachier
+  config.plugin.add_dependency "vagrant-cachier"
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box 
+  end
+
+  # Host
   config.vm.hostname = ansible_settings['domain']
-  config.hostsupdater.aliases = ["tomcat.dazed.vagrant.vm","mailcatcher.dazed.vagrant.vm","kibana.dazed.vagrant.vm"]
 
-   config.vm.network "forwarded_port", guest: 80, host: 30000
-   config.vm.network "forwarded_port", guest: 9200, host: 9200
-   config.vm.network "forwarded_port", host: 1080, guest: 1080
+  config.plugin.add_dependency "vagrant-hostsupdater"
+  config.plugin.add_dependency "vagrant-bindfs"
+  config.hostsupdater.aliases = [
+    "tomcat."+ansible_settings['domain'],
+    "mailcatcher."+ansible_settings['domain'],
+    "kibana."+ansible_settings['domain'],
+    "psd."+ansible_settings['domain'],
+    "redmine."+ansible_settings['domain']]
 
-  config.vm.network :"private_network", ip: ansible_settings['ip_address'], auto_network: true
+  # config.vm.network :forwarded_port, guest: 80, host: 30000
+  # config.vm.network :forwarded_port, guest: 9200, host: 9200
+  # config.vm.network :forwarded_port, host: 1080, guest: 1080
+config.vm.network :forwarded_port, guest: 22, host: 2223, id: "ssh", auto_correct: true
+config.vm.network :private_network, ip: ansible_settings['ip_address'], auto_network: false
 
+  config.plugin.add_dependency "vagrant-vbguest"
   config.vm.provider "virtualbox" do |vb|
     vb.memory = ansible_settings['memory']
     vb.customize ["modifyvm", :id, "--cpuexecutioncap", ansible_settings['cpu_execution_cap']]
-    file_to_disk = "tmp/disk.vdi"
-    if not File.exist?(file_to_disk) then
-      vb.customize ["createhd",
-                    "--filename", file_to_disk,
-                    "--size", ansible_settings['disk_size'] * 1024]
-    end
-    vb.customize ['storageattach', :id,
-                  '--storagectl', 'SATA Controller',
-                  '--port', 1,
-                  '--device', 0,
-                  '--type', 'hdd',
-                  '--medium', file_to_disk]
   end
 
-  config.vm.synced_folder "share", "/var/www/",
-     :create => true,
-     mount_options: ['nolock,vers=3,tcp,noatime'],
-     :nfs => ansible_settings['nfs_enable']
+  #
+  # Synced folders.
+  # 
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.verbose = ansible_settings['ansible_verbose']
-    ansible.playbook = "provision/ansible/playbook/webservers.yml"
-    ansible.inventory_path = "provision/ansible/hosts/localhost"
+  # Synch
+  config.vm.synced_folder ".vagrant", "/vagrant/.vagrant",
+     type: "rsync",
+     rsync__auto: false,
+     rsync__exclude: [],
+     rsync__args: [
+       "--verbose", "--archive", "--delete", "-z", "--copy-links",
+     ],
+     rsync__chown: false
+
+  if OS.windows?
+#    config.winnfsd.uid = 1000
+#    config.winnfsd.gid = 1000
+    provisioner = "ansible_local"
+  elsif OS.mac?
+    config.nfs.map_uid = 501
+    config.nfs.map_gid = 501
+    provisioner = "ansible_local"
+  else
+    provisioner = "ansible"
+  end
+
+  # Synced folders.
+  options = {
+    type: "nfs",
+    rsync__exclude: "",
+    rsync__args: ['--verbose', '--archive', '--delete', '-z', '--copy-links', '--chmod=ugo=rwX'],
+    id: 1,
+    create: true,
+    mount_options: [],
+    nfs_udp: false
+  }
+ config.vm.synced_folder "../share", "/var/www/vagrant", options
+
+
+  #
+  # PROVISION
+  # 
+  config.vm.provision provisioner do |ansible|
+    ansible.playbook = ansible_settings['ansible_playbook']
     ansible.limit = 'all'
+    ansible.install = true
+    ansible.install_mode = "pip"
+    ansible.verbose = ansible_settings['ansible_verbose']
+    ansible.version = ansible_settings['ansible_version']
+    if OS.windows?
+      ansible.config_file = "/vagrant/provision/ansible.cfg"
+    elsif OS.mac?
+      ansible.config_file = "/vagrant/provision/ansible.cfg"
+#      ansible.inventory_path = "provision/hosts/localhost"
+    else
+      ansible.config_file = "provision/ansible.cfg"
+      ansible.inventory_path = "provision/hosts/localhost"
+    end
+
+
   end
+
+#　config.vm.provision "shell", inline: "sudo service httpd restart"
+  config.plugin.add_dependency "vagrant-vbox-snapshot"
+  config.plugin.add_dependency "sahara"
+  config.plugin.add_dependency "vagrant-global-status"
+
+  config.vm.post_up_message = 'Please access and check the following URL.\n'
+  config.vm.post_up_message = 'http://dazed.vagrant.vm/admin/'
+
+  config.vm.post_up_message = <<-MESSAGE
+    Done!
+
+    Please access and check the following URL.
+
+    http://dazed.vagrant.vm/admin/
+
+
+  MESSAGE
+
 end

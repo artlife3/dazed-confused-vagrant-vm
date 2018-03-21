@@ -1,0 +1,164 @@
+- name: Settings | Default data load.
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rake redmine:load_default_data
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+    REDMINE_LANG: "{{ redmine_load_default_data_lang }}"
+
+- name: Settings | Change default language to Japanese
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["default_language"]="{{ redmine_default_language }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Change display format of user name to "Last name"
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["user_format"]=:{{ redmine_display_username_format }}'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set gravatar_enabled
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["gravatar_enabled"]="{{ redmine_gravatar_enabled }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set gravatar_default
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["gravatar_default"]="{{ redmine_gravatar_default }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set attachment and repository encoding
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["repositories_encodings"]="{{ redmine_repositories_encodings }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+
+- name: Settings | Set attachment thumbnail to display
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["thumbnails_enabled"]="{{ redmine_thumbnails_enabled }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set default_projects_public
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["default_projects_public"]="{{ redmine_default_projects_public }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+# Site Setting
+
+- name: Settings | Set app_title
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["app_title"]="{{ redmine_app_title }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set rest_api_enabled
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["rest_api_enabled"]="{{ redmine_rest_api_enabled }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set issue_group_assignment
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["issue_group_assignment"]="{{ redmine_issue_group_assignment }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set cross_project_issue_relations
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["cross_project_issue_relations"]="{{ redmine_cross_project_issue_relations }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+- name: Settings | Set text_formatting
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["text_formatting"]="{{ redmine_text_formatting }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+
+- name: Settings | Set mail_from
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["mail_from"]="{{ redmine_mail_from }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+
+
+# Detail settings
+
+#- name: Settings | Set default_projects_modules
+#  become_user: "{{ owner }}"
+#  command:
+#    bundle exec rails r 'Setting["default_projects_modules"][1]="{{ item }}"'
+#    chdir={{ redmine_dir }}
+#  environment:
+#    PATH: "{{ ruby_environment_path }}"
+#    RAILS_ENV: production
+#  with_items: "{{redmine_default_projects_modules_enabled}}"
+#
+#- name: Settings | Set notified_events
+#  become_user: "{{ owner }}"
+#  command:
+#    bundle exec rails r 'Setting["notified_events"][1]="{{ item }}"'
+#    chdir={{ redmine_dir }}
+#  environment:
+#    PATH: "{{ ruby_environment_path }}"
+#    RAILS_ENV: production
+#  with_items: "{{redmine_notified_events_enabled}}"
+#
+#- name: Settings | Set enabled_scm
+#  become_user: "{{ owner }}"
+#  command:
+#    bundle exec rails r 'Setting["enabled_scm"][1]="{{ item }}"'
+#    chdir={{ redmine_dir }}
+#  environment:
+#    PATH: "{{ ruby_environment_path }}"
+#    RAILS_ENV: production
+#  with_items: "{{redmine_disabled_scm}}"
+
