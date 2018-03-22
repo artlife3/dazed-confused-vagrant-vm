@@ -1,0 +1,29 @@
+- name: Change the php.ini
+  replace:
+    dest: "/etc/php.ini"
+    regexp: '{{ item.regexp}}'
+    replace: '{{ item.replace }}'
+  with_items: 
+    - regexp: '^;(date.timezone) =.*'
+      replace: 'date.timezone = Asia/Tokyo'
+    - regexp: '^;error_log = php_errors.log'
+      replace: 'error_log = /var/log/php/php_errors.log'
+  notify: restart php-fpm
+
+- name: Change the vhosts
+  replace:
+    dest: "/etc/httpd/conf.d/vhost.conf"
+    regexp: '{{ item.regexp}}'
+    replace: '{{ item.replace }}'
+  with_items: 
+    - regexp: 'proxy:fcgi://127.0.0.1:90..'
+      replace: 'proxy:fcgi://127.0.0.1:{{ php_fpm_port }}'
+  notify: restart webserver
+
+- name: Disable PHP55-PHP-FPM
+  service: name=php55-php-fpm state=stopped enabled=no
+  ignore_errors: true
+
+- name: Disable PHP56-PHP-FPM
+  service: name=php56-php-fpm state=stopped enabled=no
+  ignore_errors: true

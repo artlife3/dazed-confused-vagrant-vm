@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
 
   # SSH options.
   config.ssh.forward_agent = true
-  config.ssh.insert_key = false
+  config.ssh.insert_key = true
 
   # Disk seize
   config.plugin.add_dependency "vagrant-disksize"

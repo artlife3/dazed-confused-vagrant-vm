@@ -1,0 +1,87 @@
+- name: Disable original(v7.1) PHP-FPM
+  service: name=php-fpm state=stopped enabled=no
+
+- name: Disable PHP55-PHP-FPM
+  service: name=php55-php-fpm state=stopped enabled=no
+  ignore_errors: true
+
+- name: Install php56
+  yum: name={{ item }} enablerepo=remi,remi-php56
+  with_items:
+    - php56
+    - php56-php-fpm
+    - php56-php-cli
+    - php56-php-common
+    - php56-php-devel
+    - php56-php-gd
+    - php56-php-intl
+    - php56-php-mbstring
+    - php56-php-pdo
+    - php56-php-mysqlnd
+    - php56-php-pear
+    - php56-php-xml
+    - php56-php-mcrypt
+    - php56-php-soap
+  notify: restart php-fpm
+
+- name: Install php56-PECL
+  yum: name={{ item }} enablerepo=remi,remi-php56
+  with_items: 
+    - php56-php-pecl-imagick
+    - php56-php-opcache
+    - php56-php-pecl-memcache
+    - php56-php-pecl-memcached
+    - php56-php-pecl-apcu
+    - php56-php-pecl-xdebug
+  notify: restart php-fpm
+
+- name: Create PHP log directory
+  file: 
+    path: /opt/remi/php56/root/var/log/php/
+    state: directory
+    owner: "vagrant"
+    group: "vagrant"
+    mode: 775
+
+- name: Create PHP log file
+  file: 
+    path: /opt/remi/php56/root/var/log/php/php_errors.log
+    state: touch
+    owner: "vagrant"
+    group: "vagrant"
+    mode: 775
+
+- name: Change the php.ini
+  replace:
+    dest: "/opt/remi/php56/root/etc/php.ini"
+    regexp: '{{ item.regexp}}'
+    replace: '{{ item.replace }}'
+  with_items: 
+    - regexp: '^;(date.timezone) =.*'
+      replace: 'date.timezone = Asia/Tokyo'
+    - regexp: '^(memory_limit) =.*'
+      replace: 'memory_limit = 512M'
+    - regexp: '^;error_log = php_errors.log'
+      replace: 'error_log = /opt/remi/php56/root/var/log/php/php_errors.log'
+  notify: restart php-fpm
+
+- name: Change the php-fpm.d/www.conf
+  replace:
+    dest: "{{ php_fpm_pool_conf_path }}"
+    regexp: '{{ item.regexp}}'
+    replace: '{{ item.replace }}'
+  with_items: 
+    - regexp: '^listen = 127.0.0.1:90..'
+      replace: 'listen = 127.0.0.1:{{ php56_fpm_port }}'
+  notify: restart php-fpm
+
+- name: Change the vhosts
+  replace:
+    dest: "/etc/httpd/conf.d/vhost.conf"
+    regexp: '{{ item.regexp}}'
+    replace: '{{ item.replace }}'
+  with_items: 
+    - regexp: 'proxy:fcgi://127.0.0.1:90..'
+      replace: 'proxy:fcgi://127.0.0.1:{{ php56_fpm_port }}'
+  notify: restart webserver
+
