@@ -5,6 +5,7 @@
     - group_vars/localhost/all.yml
   roles:
     # Common ##
+    - ssh-config
     - common
     - firewall_selinux
     - imagemagick
@@ -16,13 +17,13 @@
     - httpd
     - environment
     - users
+    - www # Bug: (drupal7&drupal8)
     - mysqld
     - php # Problem composer
-    - ruby/mailcatcher
-    - www # Bug: (drupal7&drupal8)
+#     - ruby/mailcatcher
 
-#     ## Extra ##
-    - java/tomcat
-    - java/elasticsearch/elasticsearch
-    - java/elasticsearch/kibana
+# #     ## Extra ##
+#     - java/tomcat
+#     - java/elasticsearch/elasticsearch
+#     - java/elasticsearch/kibana
 # #    - java/elasticsearch/logstash # Not test

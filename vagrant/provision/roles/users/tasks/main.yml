@@ -1,5 +1,3 @@
-- include: ssh-config.yml
-
 - name: Create Tools folder
   file: path={{ tools_dir }}
          state=directory
