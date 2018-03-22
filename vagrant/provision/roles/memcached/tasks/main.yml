@@ -6,10 +6,14 @@
   notify: Restart memcached
   tags: install
 
-- name: Config memcached
-  template: src={{ templates_path }}/memcached
-            dest=/etc/sysconfig/memcached
-            mode=0664
+- name: Change the /etc/sysconfig/memcached
+  replace:
+    dest: "/etc/sysconfig/memcached"
+    regexp: '{{ item.regexp}}'
+    replace: '{{ item.replace }}'
+  with_items: 
+    - regexp: 'CACHESIZE="64"'
+      replace: 'CACHESIZE="64"'
   notify: Restart memcached
   tags: settings
 
