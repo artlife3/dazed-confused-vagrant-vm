@@ -17,12 +17,12 @@
     - httpd
     - environment
     - users
-    - www # Bug: (drupal7&drupal8)
     - mysqld
     - php # Problem composer
     - php55
     - php56
     - php_default
+    - www # Bug: (drupal7&drupal8)
     - ruby/mailcatcher
 
      ## Extra ##
