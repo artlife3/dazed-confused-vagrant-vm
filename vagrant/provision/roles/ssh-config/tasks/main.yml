@@ -5,7 +5,7 @@
          group={{ group }}
          mode=600
 
-- name: Add to ssh/config 
+- name: Add to ssh/config
   lineinfile:
     dest=/home/{{ owner }}/.ssh/config
     line={{ item }}
@@ -16,7 +16,7 @@
     - '  UserKnownHostsFile /dev/null'
     - '  StrictHostKeyChecking no'
     - '  PasswordAuthentication no'
-    - '  IdentityFile /vagrant/.vagrant/machines/{{ vm_box_define_name }}/virtualbox/private_key'
+    - '  IdentityFile /home/vagrant/.vagrant.d/insecure_private_key'
     - '  IdentitiesOnly yes'
     - '  LogLevel FATAL'
     - '  ForwardAgent yes'

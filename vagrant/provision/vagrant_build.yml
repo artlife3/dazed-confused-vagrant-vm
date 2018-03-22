@@ -20,10 +20,13 @@
     - www # Bug: (drupal7&drupal8)
     - mysqld
     - php # Problem composer
-#     - ruby/mailcatcher
+    - php55
+    - php56
+    - php_default
+    - ruby/mailcatcher
 
-# #     ## Extra ##
-#     - java/tomcat
-#     - java/elasticsearch/elasticsearch
-#     - java/elasticsearch/kibana
-# #    - java/elasticsearch/logstash # Not test
+     ## Extra ##
+    - java/tomcat
+    - java/elasticsearch/elasticsearch
+    - java/elasticsearch/kibana
+#    - java/elasticsearch/logstash # Not test

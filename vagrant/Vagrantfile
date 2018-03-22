@@ -79,12 +79,23 @@ config.vm.network :private_network, ip: ansible_settings['ip_address'], auto_net
   # 
 
   # Synch
-  config.vm.synced_folder ".vagrant", "/vagrant/.vagrant",
+  config.vm.synced_folder "~/.vagrant.d/", "/home/vagrant/.vagrant.d",
      type: "rsync",
      rsync__auto: false,
-     rsync__exclude: [],
+     rsync__exclude: [
+       "auto_network",
+       "boxes",
+       "cache",
+       "data",
+       "gems",
+       "rgloader",
+       "tmp",
+       "machine-environments.json",
+       "plugins.json",
+       "setup_version",
+     ],
      rsync__args: [
-       "--verbose", "--archive", "--delete", "-z", "--copy-links",
+       "--verbose", "--archive", "--delete", "-z", "--copy-links", '--chmod=ugo=rwX'
      ],
      rsync__chown: false
 
