@@ -16,22 +16,23 @@
 ## What is set up
 
 ### Middleware
-1. **CentOS 7.2**
-1. **Java** - v1.8.0
-  * **Tomcat** - v8~
-  * **Elasticsearch** - v5.x~
-  * **Kibana**
-  * **Logstash**
+1. **CentOS** - v7.2
+1. **Apache** - v2.4.6~
 1. **MySQL** - v5.6~
 1. **PHP** - v7.1, v5.6, v5.5(Multiple)
-  * **Opcache**
-  * **APC**
-1. **Ruby** - v2.4.1
-  * **[Mailcatcher](https://mailcatcher.me)**
-  * **Redmine** - v3.3
+    * **Opcache**
+    * **APC**
 1. **Memcached** - v1.4
 1. **Ansible** - v2.4.2.0
 1. **ImageMagick**
+1. **Java** - v1.8.0
+    * **Tomcat** - v8~
+    * **Elasticsearch** - v5.x~
+    * **Kibana**
+    * **Logstash**
+1. **Ruby** - v2.4.1
+    * **[Mailcatcher](https://mailcatcher.me)**
+    * **Redmine** - v3.3
 
 ### SCM
 1. **SVN** - v1.7.14~

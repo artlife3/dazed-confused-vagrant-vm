@@ -141,7 +141,7 @@ Vagrant.configure("2") do |config|
 
   end
 
-　config.vm.provision "shell", inline: "sudo service httpd restart"
+#  config.vm.provision "shell", inline: "sudo service httpd restart"
   config.plugin.add_dependency "vagrant-vbox-snapshot"
   config.plugin.add_dependency "sahara"
   config.plugin.add_dependency "vagrant-global-status"
