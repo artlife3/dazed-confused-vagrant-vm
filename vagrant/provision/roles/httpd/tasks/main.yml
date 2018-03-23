@@ -13,11 +13,15 @@
 #           dest=/etc/yum.repos.d/
 #  tags: install
 
-- name: Chnage the permission  /var/www/vagrant directory
-  file: path={{ share_dir }} state=directory mode=777 recurse=yes
+# - name: Chnage the permission  /var/www/vagrant directory
+#   file: path={{ share_dir }} state=directory mode=777 recurse=yes
 
 - name: Create html directory
-  file: path={{ httpd_document_root }} state=directory owner={{ apache_user }} group={{ apache_group }}
+  file: 
+    path: "{{ httpd_document_root }}" 
+    state: directory
+    # owner: "{{ apache_user }}"
+    # group: "{{ apache_group }}"
   ignore_errors: true
 
 - name: Install [ httpd ]

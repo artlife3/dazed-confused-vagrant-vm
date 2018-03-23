@@ -4,13 +4,17 @@
 - name: mkdir opt_dir
   file:
     path: "{{ opt_dir }}"
-    owner: "{{ owner }}"
-    group: "{{ group }}"
-    mode: ug+rw
+    # owner: "{{ owner }}"
+    # group: "{{ group }}"
+    # mode: ug+rw
     state: directory
 
 - name: Chnage the permission  /var/www/vagrant directory
-  file: path={{ share_dir }} state=directory mode=777 recurse=yes
+  file: 
+    path: "{{ share_dir }}"
+    state: directory
+    # mode: 777
+    recurse: yes
 
 # - name: Create html symbolic link
 #   file:

@@ -34,18 +34,18 @@
 - name: Create drupal7/sites/default/files folder
   file: path={{ httpd_document_root }}/drupal7/sites/default/files
          state=directory
-         owner={{ owner }}
-         group={{ group }}
-         mode={{ permission_dir }}
+         # owner={{ owner }}
+         # group={{ group }}
+         # mode={{ permission_dir }}
   when: not drupal7.stat.exists
   tags: admin
 
 - name: Copy drupal7 settings.php
   copy: src={{ httpd_document_root }}/drupal7/sites/default/default.settings.php
         dest={{ httpd_document_root }}/drupal7/sites/default/settings.php
-        owner={{ owner }}
-        group={{ group }}
-        mode={{ permission_file }}
+        # owner={{ owner }}
+        # group={{ group }}
+        # mode={{ permission_file }}
         remote_src=true
   when: not drupal7.stat.exists
   tags: admin

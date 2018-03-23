@@ -6,9 +6,9 @@
 - name: Create admin folder
   file: path={{ httpd_document_root }}/admin
          state=directory
-         owner={{ owner }}
-         group={{ group }}
-         mode=775
+         # owner={{ owner }}
+         # group={{ group }}
+         # mode=775
   ignore_errors: true
   tags: admin
 
