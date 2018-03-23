@@ -23,7 +23,7 @@
  * **Kibana**
  * **Logstash**
 1. **MySQL** - v5.6~
-1. **PHP** - v7.1
+1. **PHP** - v7.1, v5.6, v5.5(Multiple)
  * **Opcache**
  * **APC**
 1. **Ruby** - v2.4.1
