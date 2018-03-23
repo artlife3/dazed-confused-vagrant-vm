@@ -68,16 +68,19 @@
 - name: Git clone opcache
   git: repo=https://github.com/rlerdorf/opcache-status.git
        dest={{ httpd_document_root }}/admin/opcache-status
- 
+  ignore_errors: True
+
 # Apcu
 - name: Git clone apcu
   git: repo=https://github.com/krakjoe/apcu.git
        dest={{ httpd_document_root }}/admin/apcu
+  ignore_errors: True
 
 # phpMemcacheAdmin
 - name: Git clone phpMemcacheAdmin
   git: repo=https://github.com/elijaa/phpmemcacheadmin.git
        dest={{ httpd_document_root }}/admin/phpmemcacheadmin
+  ignore_errors: True
 
 # phpMyAdmin
 
