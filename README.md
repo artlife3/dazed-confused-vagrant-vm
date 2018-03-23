@@ -53,7 +53,8 @@
 ## Required Spec
 
 * Free Memory Size: 2GB - 4GB
-* HDD Disk free size: 10GB -
+* HDD Disk free size: 10GB Over
+* Provider is Virtualbox only
 
 ## How to insall
 
@@ -64,6 +65,15 @@
 ```
 $ cd install/MacOSX/
 $ sh install_vagrant.sh
+```
+
+* Windows7 user
+  * Windows 7 requires PowerShell upgrade
+	* Installed referring to DrupalVM's [Windows](http://docs.drupalvm.com/en/latest/getting-started/installation-windows/) page.
+    * PowerShell 3.0 or higher
+  * vagrant-winnfsd plugin
+```
+$ vagrant plugin install vagrant-winnfsd
 ```
 
 ### Start the VM with vagrant and start building it
