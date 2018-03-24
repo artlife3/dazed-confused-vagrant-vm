@@ -72,6 +72,9 @@ Vagrant.configure("2") do |config|
   # Synced folders.
   # 
 
+  config.winnfsd.uid = 1
+  config.winnfsd.gid = 1
+
   # Synch
   config.vm.synced_folder "~/.vagrant.d/", "/home/vagrant/.vagrant.d",
      type: "rsync",
