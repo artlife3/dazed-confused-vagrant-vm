@@ -69,10 +69,12 @@ mailcatcher_smtp_port: 1025
 
 # PHP
 php_memory_limit: 512M
+php_timezone: "Asia/Tokyo"
 php_required_modules: [ 'php', 'php-fpm', 'php-cli', 'php-common', 'php-devel', 'php-gd', 'php-intl', 'php-mbstring', 'php-pdo', 'php-mysqlnd', 'php-pear', 'php-xml', 'php-mcrypt', 'php-soap']
 php_required_pecl_modules: [ 'php-pecl-imagick', 'php-opcache', 'php-pecl-memcache', 'php-pecl-memcached', 'php-pecl-apcu', 'php-pecl-xdebug' ]
 php_version: 71 # Example: 71, 70, 56, 55
 phpfpm_port: 9000
+php_disable_functions: "pcntl_exec" # pcntl_exec(drush 8.1.16),pcntl_fork
 
 # MySQL
 mysq_user: mysql
@@ -80,6 +82,7 @@ mysq_group: mysql
 mysql_root_user: root
 mysql_root_passwd: root
 
-
+# Drush
+drush_version: "8.1.16" # 8.1.16(pcntl_exec)
 
 

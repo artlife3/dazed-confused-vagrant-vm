@@ -4,7 +4,7 @@
   vars_files:
     - group_vars/localhost/all.yml
   roles:
-    # Common ##
+    ## Common ##
     - ssh-config
     - common
     - firewall_selinux
@@ -18,10 +18,12 @@
     - environment
     - users
     - mysqld
-    - php # Problem composer
+    - php
     - php55
     - php56
     - php_default
+    - composer
+    - drush
     - www # Bug: (drupal7&drupal8)
     - ruby/mailcatcher
 

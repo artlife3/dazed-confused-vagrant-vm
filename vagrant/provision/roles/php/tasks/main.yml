@@ -64,13 +64,15 @@
     replace: '{{ item.replace }}'
   with_items: 
     - regexp: '^;(date.timezone) =.*'
-      replace: 'date.timezone = Asia/Tokyo'
+      replace: 'date.timezone = {{ php_timezone }}'
     - regexp: '^(memory_limit) =.*'
-      replace: 'memory_limit = 512M'
+      replace: 'memory_limit = {{ php_memory_limit }}'
     - regexp: '^display_errors = Off'
       replace: 'display_errors = On'
     - regexp: '^;error_log = php_errors.log'
       replace: 'error_log = /var/log/php/php_errors.log'
+    - regexp: '^disable_functions =.*'
+      replace: 'disable_functions = {{ php_disable_functions }}'
   notify: Restart php-fpm
 
 
@@ -97,10 +99,3 @@
 #  notify: Restart httpd
 #  tags: settings
 
-# - name: Install composer
-#   shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin && mv /usr/bin/composer.phar /usr/bin/composer
-#          creates=/usr/bin/composer
-#   tags: install
-
-# - name: Install drush
-#   yum: name=drush enablerepo=remi,remi-php{{ php_version }}

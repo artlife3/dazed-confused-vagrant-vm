@@ -12,7 +12,7 @@ memory: 2048 # 2GB
 disk_size: "10GB" # 40GB
 cpu_execution_cap: 80 # 80%
 synced_folders_type: "nfs" #
-ansible_verbose: "v"
+ansible_verbose: "vv"
 share_dir: /var/www/vagrant
 
 # User setting

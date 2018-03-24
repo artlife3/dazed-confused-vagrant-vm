@@ -22,18 +22,14 @@ end
 
 Vagrant.configure("2") do |config|
 
+  config.vm.define ansible_settings['vm_box_define_name']
   if ansible_settings['vm_box_url']
     config.vm.box = ansible_settings['vm_box_name']
     config.vm.box_url = ansible_settings['vm_box_url']
   else
     config.vm.box = ansible_settings['vm_box_name']
   end
-  config.vm.define ansible_settings['vm_box_define_name']
 
-
-  # SSH options.
-  config.ssh.insert_key = false
-  config.ssh.forward_agent = true
 
   # Disk seize
   config.plugin.add_dependency "vagrant-disksize"
@@ -49,13 +45,15 @@ Vagrant.configure("2") do |config|
   config.vm.hostname = ansible_settings['domain']
 
   config.plugin.add_dependency "vagrant-hostsupdater"
-  config.plugin.add_dependency "vagrant-bindfs"
   config.hostsupdater.aliases = [
     "tomcat."+ansible_settings['domain'],
     "mailcatcher."+ansible_settings['domain'],
     "kibana."+ansible_settings['domain'],
     "redmine."+ansible_settings['domain']]
 
+  # SSH options.
+  config.ssh.insert_key = false
+  config.ssh.forward_agent = true
   # config.vm.network :forwarded_port, guest: 80, host: 30000
   # config.vm.network :forwarded_port, guest: 9200, host: 9200
   # config.vm.network :forwarded_port, host: 1080, guest: 1080
@@ -94,12 +92,15 @@ Vagrant.configure("2") do |config|
      rsync__chown: false
 
   if OS.windows?
-#    config.winnfsd.uid = 1000
-#    config.winnfsd.gid = 1000
+    config.plugin.add_dependency "vagrant-winnfsd"
+    config.winnfsd.uid = 1000
+    config.winnfsd.gid = 1000
+    config.winnfsd.logging = "on"
     provisioner = "ansible_local"
   elsif OS.mac?
+    # config.plugin.add_dependency "vagrant-bindfs"
     # config.nfs.map_uid = 501
-    # config.nfs.map_gid = 501
+    # onfig.nfs.map_gid = 501
     provisioner = "ansible_local"
   else
     provisioner = "ansible"
