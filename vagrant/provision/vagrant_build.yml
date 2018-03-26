@@ -33,8 +33,3 @@
     - java/elasticsearch/kibana
 #    - java/elasticsearch/logstash # Not test
 
-     ## Demo sites ##
-    - demo-sites/opigno-lms
-#    - demo-sites/knowledge
-    - demo-sites/example_drupal7
-    - demo-sites/example_drupal8

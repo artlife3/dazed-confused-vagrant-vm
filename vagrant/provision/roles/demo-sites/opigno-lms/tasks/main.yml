@@ -28,7 +28,7 @@
 
 - name: Drupal settings
   become_user: vagrant
-  command:
+  shell:
     drush site-install {{ site_profile }}
     --account-name={{ site_user }}
     --account-pass={{ site_user_password }}
@@ -39,5 +39,4 @@
     --db-su-pw={{ mysql_root_passwd }}
     --account-mail={{ account_mail }}
     --site-name={{ site_name }}
-    --locale={{ site_locale }}
   when: exists_db_flag.changed

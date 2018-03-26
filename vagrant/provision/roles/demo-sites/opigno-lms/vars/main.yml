@@ -13,5 +13,5 @@ mysql_root_user: root
 mysql_root_passwd: root
 account_mail: example@example.com
 site_name: "Opigno LMS D7"
-site_locale: en
+#site_locale: en
 site_profile: opigno_lms
