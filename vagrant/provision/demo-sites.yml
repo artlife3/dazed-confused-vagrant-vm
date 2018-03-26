@@ -2,7 +2,7 @@
   become: yes
   become_user: root
   roles:
-    - demo-sites/opigno-lms
+   - demo-sites/opigno-lms
 #    - demo-sites/knowledge
     - demo-sites/example_drupal7
     - demo-sites/example_drupal8

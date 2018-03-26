@@ -1,5 +1,8 @@
+
+#- include: tasks/php_ini.yml
+
 - name: Existence of directory
-  stat: path={{ httpd_document_root }}/{{ sites_dir }}
+  stat: path={{ httpd_document_root }}/{{ site_dir }}
   register: archive
 
 - name: Download
@@ -11,12 +14,30 @@
   when: not archive.stat.exists
 
 - name: Rename
-  command: mv {{ httpd_document_root }}/{{ extracted_file_name }} {{ httpd_document_root }}/{{ sites_dir }}
+  command: mv {{ httpd_document_root }}/{{ extracted_file_name }} {{ httpd_document_root }}/{{ site_dir }}
   when: not archive.stat.exists
 
 - name: Remove archive
   file: path=/tmp/{{ download_file }} state=absent
   when: not archive.stat.exists
 
-- include: tasks/php_ini.yml
-- include: tasks/drush.yml
+- name: Create a new database
+  become_user: vagrant
+  mysql_db: name={{ site_database }} state=present
+  register: exists_db_flag
+
+- name: Drupal settings
+  become_user: vagrant
+  command:
+    drush site-install {{ site_profile }}
+    --account-name={{ site_user }}
+    --account-pass={{ site_user_password }}
+    --db-url=mysql://{{ site_database_user }}:{{ site_database_passwd }}@localhost/{{ site_database }}
+    --root={{ httpd_document_root }}/{{ site_dir }}
+    --yes
+    --db-su={{ mysql_root_user }}
+    --db-su-pw={{ mysql_root_passwd }}
+    --account-mail={{ account_mail }}
+    --site-name={{ site_name }}
+    --locale={{ site_locale }}
+  when: exists_db_flag.changed

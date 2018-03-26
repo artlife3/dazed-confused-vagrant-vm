@@ -1,6 +1,6 @@
-site_dir: example2
+site_dir: example2-drupal8
 site_version: drupal-8
-site_database: example2_d8
+site_database: example2_drupal8
 site_database_user: root
 site_database_passwd: root
 site_user: admin

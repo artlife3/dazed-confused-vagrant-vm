@@ -1,6 +1,6 @@
-site_dir: example1
+site_dir: example1-drupal7
 site_version: drupal-7.x
-site_database: example1_d7
+site_database: example1_drupal7
 site_database_user: root
 site_database_passwd: root
 site_user: admin
