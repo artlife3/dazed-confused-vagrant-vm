@@ -9,7 +9,7 @@ ansible_playbook: "provision/vagrant_build.yml"
 ansible_version: "2.4.2.0"
 mount_file_system: ext4
 memory: 2048 # 2GB
-disk_size: "10GB" # 40GB
+disk_size: "20GB" # 40GB
 cpu_execution_cap: 80 # 80%
 synced_folders_type: "nfs" #
 ansible_verbose: "vv"

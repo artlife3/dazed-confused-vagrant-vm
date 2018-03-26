@@ -54,7 +54,7 @@
 ## Required Spec
 
 * Free Memory Size: 2GB - 4GB
-* HDD Disk free size: 10GB Over
+* HDD Disk free size: 20GB or more
 * Provider is Virtualbox only
 
 ## How to insall
