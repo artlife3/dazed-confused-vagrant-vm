@@ -202,6 +202,12 @@ $ cd dazed-confused-vagrant-vm/vagrant/provision
 $ ansible-playbook -i hosts/localhost vagrant_build.yml
 ```
 
+### When you want to add Demo site(Configured).
+
+```
+$ ansible-playbook -i hosts/localhost demo-sites.yml
+```
+
 ----
 
 
