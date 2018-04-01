@@ -17,3 +17,5 @@
   notify: Restart kibana
   tags: settings
 
+- name: Enable service [ Kibana ]
+  service: name=kibana enabled=yes

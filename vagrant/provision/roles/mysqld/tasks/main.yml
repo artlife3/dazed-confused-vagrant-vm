@@ -73,3 +73,6 @@
         group={{ group }}
         mode=644
   become_user: vagrant
+
+- name: Enable service [ Mysqld ]
+  service: name=mysqld enabled=yes

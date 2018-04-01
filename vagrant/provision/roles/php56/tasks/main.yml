@@ -89,3 +89,5 @@
       replace: 'proxy:fcgi://127.0.0.1:{{ php56_fpm_port }}'
   notify: restart webserver
 
+- name: Enable service [ php56-php-fpm ]
+  service: name="{{ php_fpm_daemon }}" enabled=yes

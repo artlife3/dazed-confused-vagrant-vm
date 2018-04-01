@@ -17,3 +17,6 @@
 - name: Disable PHP56-PHP-FPM
   service: name=php56-php-fpm state=stopped enabled=no
   ignore_errors: true
+
+- name: Enable service [ php-fpm ]
+  service: name=php-fpm enabled=yes

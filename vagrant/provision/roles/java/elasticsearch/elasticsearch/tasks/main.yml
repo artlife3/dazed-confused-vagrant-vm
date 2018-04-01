@@ -80,3 +80,6 @@
 
 - name: Elasticsearch helth check
   debug: msg="curl -X GET 'http://localhost:9200/_cluster/health?pretty'"
+
+- name: Enable service [ Elasticsearch ]
+  service: name=elasticsearch enabled=yes

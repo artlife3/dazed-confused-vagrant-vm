@@ -115,4 +115,5 @@
   notify: Restart httpd
   tags: settings
 
-
+- name: Enable service [ httpd ]
+  service: name=httpd enabled=yes

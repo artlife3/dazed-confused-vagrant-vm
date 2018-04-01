@@ -100,3 +100,5 @@
   notify: Restart httpd
   tags: settings
 
+- name: Enable service [ Tomcat8 ]
+  service: name=tomcat8 enabled=yes

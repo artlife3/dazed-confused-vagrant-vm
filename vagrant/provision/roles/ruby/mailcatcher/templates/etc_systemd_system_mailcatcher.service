@@ -3,7 +3,7 @@ Description=Mailcatcher Service
 
 [Service]
 Type=simple
-ExecStart={{ rbenv_path }}/rbenv/shims/mailcatcher --foreground --smtp-port {{ mailcatcher_smtp_port }} --http-ip=0.0.0.0 --http-port {{ mailcatcher_port }} -f > {{ log_dir }}/mailcatcher/mailcatcher.log
+ExecStart={{ rbenv_path }}/rbenv/shims/mailcatcher --foreground --smtp-port {{ mailcatcher_smtp_port }} --http-ip=127.0.0.1 --http-port {{ mailcatcher_port }} -f > {{ log_dir }}/mailcatcher/mailcatcher.log
 
 [Install]
 WantedBy=multi-user.target

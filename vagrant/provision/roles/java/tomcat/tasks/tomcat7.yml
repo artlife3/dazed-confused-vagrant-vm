@@ -99,3 +99,7 @@
   notify: Restart httpd
   tags: settings
 
+- name: Enable service [ Tomcat7 ]
+  service: name=tomcat7 enabled=yes
+
+

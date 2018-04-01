@@ -33,3 +33,6 @@
 - name: Be sure Memcached is running and enabled
   service: name=memcached state=running enabled=yes
   tags: install
+
+- name: Enable service [ Memcached ]
+  service: name=memcached enabled=yes

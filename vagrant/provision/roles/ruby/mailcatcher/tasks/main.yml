@@ -59,3 +59,6 @@
             dest={{ httpd_conf_dir }}/conf.d/mailcatcher.conf
   notify: Restart httpd
   tags: settings
+
+- name: Enable service [ Mailcatcher ]
+  service: name="mailcatcher" enabled=yes state=started

@@ -1,6 +1,6 @@
 - name: Restart kibana
-  service: name=kibana state=restarted enabled=yes
+  service: name=kibana state=restarted
 
 - name: Restart httpd
-  service: name={{ httpd }} state=restarted enabled=yes
+  service: name={{ httpd }} state=restarted
   
