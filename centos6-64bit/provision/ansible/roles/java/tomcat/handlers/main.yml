@@ -1,8 +1,0 @@
-- name: Restart tomcat8
-  service: name=tomcat8 state=restarted enabled=yes
-
-- name: Restart tomcat7
-  service: name=tomcat7 state=restarted enabled=yes
-
-- name: Restart httpd
-  service: name={{ httpd }} state=restarted enabled=yes

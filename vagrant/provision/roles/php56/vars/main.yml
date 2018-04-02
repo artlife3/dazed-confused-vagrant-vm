@@ -1,0 +1,12 @@
+---
+php_webserver_daemon: "httpd"
+
+php_conf_paths:
+  - /opt/remi/php56/root/etc
+php_fpm_daemon: php56-php-fpm
+php_fpm_conf_path: "/etc/"
+php_fpm_pool_conf_path: "/opt/remi/php56/root/etc/php-fpm.d/www.conf"
+
+php_fpm_pool_user: apache
+php_fpm_pool_group: apache
+php56_fpm_port: 9056

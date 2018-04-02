@@ -1,0 +1,18 @@
+- name: Plugins | Download redmine_advanced_roadmap_v2
+  become_user: "{{ owner }}"
+  git:
+    repo=https://github.com/Coren/redmine_advanced_roadmap_v2.git
+    dest={{ redmine_dir }}/plugins/advanced_roadmap_v2
+  register: redmine_plugins_flag
+
+- name: Plugins | redmine:plugins:migrate
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rake redmine:plugins:migrate
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  when:
+    redmine_plugins_flag.changed
+  notify: Restart httpd

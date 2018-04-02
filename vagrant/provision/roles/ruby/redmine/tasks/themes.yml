@@ -1,0 +1,21 @@
+- name: Themes | Download farend_basic
+  become_user: "{{ owner }}"
+  git:
+    repo=https://github.com/farend/redmine_theme_farend_basic.git
+    dest={{ redmine_dir }}/public/themes/farend_basic
+
+- name: Themes | Download redmine-theme-gitmike-design
+  become_user: "{{ owner }}"
+  git:
+    repo=https://github.com/artlife3/redmine-theme-gitmike-design.git
+    dest={{ redmine_dir }}/public/themes/redmine-theme-gitmike-design
+
+- name: Settings | Switch theme
+  become_user: "{{ owner }}"
+  command:
+    bundle exec rails r 'Setting["ui_theme"]="{{ redmine_ui_theme }}"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "{{ ruby_environment_path }}"
+    RAILS_ENV: production
+  notify: Restart httpd

@@ -1,0 +1,8 @@
+#- include: tasks/git_config.yml
+
+#- vars:
+#  branch_name: hotfix/22619_powermedia_sso
+- name: "All sites 最新化"
+  shell: "cd {{ work_directory }}/{{ item }} && git fetch -a && git checkout {{ MAIN_BRANCH }} && git pull origin {{ MAIN_BRANCH }}"
+#  shell: "cd {{ work_directory }}/{{ item }} git am {{ work_directory }}/extranet/22619_patch.diff"
+  with_items: '{{ SITES_LIST }}'

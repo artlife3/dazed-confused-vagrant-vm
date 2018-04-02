@@ -1,4 +1,0 @@
-- name: Restart mysqld
-  become_user: vagrant
-  service: name=mysqld state=restarted
-

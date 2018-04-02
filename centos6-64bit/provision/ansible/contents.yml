@@ -1,7 +1,0 @@
-- hosts: webservers
-  become: yes
-  become_user: vagrant
-  roles:
-    - contents/example_drupal7
-    - contents/example_drupal8
-

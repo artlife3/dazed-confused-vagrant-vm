@@ -1,0 +1,22 @@
+- name: Change the vhosts
+  replace:
+    dest: "/etc/httpd/conf.d/vhost.conf"
+    regexp: '{{ item.regexp}}'
+    replace: '{{ item.replace }}'
+  with_items: 
+    - regexp: 'proxy:fcgi://127.0.0.1:90..'
+      replace: 'proxy:fcgi://127.0.0.1:{{ php_fpm_port }}'
+  notify: 
+    - restart webserver
+    - restart php-fpm
+
+- name: Disable PHP55-PHP-FPM
+  service: name=php55-php-fpm state=stopped enabled=no
+  ignore_errors: true
+
+- name: Disable PHP56-PHP-FPM
+  service: name=php56-php-fpm state=stopped enabled=no
+  ignore_errors: true
+
+- name: Enable service [ php-fpm ]
+  service: name=php-fpm enabled=yes

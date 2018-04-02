@@ -1,0 +1,22 @@
+- name: Create ssh/config
+  file: path=/home/{{ owner }}/.ssh/config
+         state=touch
+         owner={{ owner }}
+         group={{ group }}
+         mode=600
+
+- name: Add to ssh/config
+  lineinfile:
+    dest=/home/{{ owner }}/.ssh/config
+    line={{ item }}
+  with_items:
+    - 'Host {{ ip_address }}'
+    - '  HostName 127.0.0.1'
+    - '  Port 22'
+    - '  UserKnownHostsFile /dev/null'
+    - '  StrictHostKeyChecking no'
+    - '  PasswordAuthentication no'
+    - '  IdentityFile /home/vagrant/.vagrant.d/insecure_private_key'
+    - '  IdentitiesOnly yes'
+    - '  LogLevel FATAL'
+    - '  ForwardAgent yes'

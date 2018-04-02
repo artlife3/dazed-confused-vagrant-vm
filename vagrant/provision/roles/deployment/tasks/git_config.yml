@@ -1,0 +1,8 @@
+- git_config: scope=global name=user.name value="{{ gitconfig_user_name }}"
+- git_config: scope=global name=user.email value="{{ gitconfig_user_email }}"
+- git_config: scope=global name=color.ui value=true
+- git_config: scope=global name=http.sslVerify value=false
+#- git_config: scope=global name=grep.lineNumber value=true
+#- git_config: scope=global name=alias.find value="grep -H --heading --break"
+#- git_config: scope=global name=core.editor value="vi -u NONE -N"
+

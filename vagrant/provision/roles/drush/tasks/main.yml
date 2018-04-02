@@ -1,0 +1,19 @@
+- name: Git clone Drush
+  git: 
+    repo: https://github.com/drush-ops/drush.git
+    dest: "{{ tools_dir }}/drush"
+    version: "{{ drush_version }}"
+  become_user: "{{ owner }}"
+  ignore_errors: true
+
+- name: Composer insall for Drush
+  composer:
+    command: install
+    working_dir: "{{ tools_dir }}/drush/"
+  become_user: "{{ owner }}"
+
+- name: Create symbolic link for drush
+  file:
+    src: "{{ tools_dir }}/drush/drush"
+    dest: "/usr/sbin/drush"
+    state: link

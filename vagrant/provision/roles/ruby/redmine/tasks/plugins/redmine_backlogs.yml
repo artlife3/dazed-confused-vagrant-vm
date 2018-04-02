@@ -1,0 +1,54 @@
+- name: Plugins | Git clone redmine_backlogs checkout origin/feature/redmine3
+  become_user: "{{ owner }}"
+  git:
+    repo=https://github.com/backlogs/redmine_backlogs.git
+    dest={{ redmine_dir }}/plugins/redmine_backlogs
+    version=origin/feature/redmine3
+    force=yes
+  register: redmine_plugins_flag
+
+- name: Plugins | Change the redmine_backlogs/Gemfile nokogiri
+  become_user: "{{ owner }}"
+  replace: dest="{{ redmine_dir }}/plugins/redmine_backlogs/Gemfile"
+           regexp='gem "nokogiri"'
+           replace='#gem "nokogiri"'
+
+- name: Plugins | Change the redmine_backlogs/Gemfile capybara
+  become_user: "{{ owner }}"
+  replace: dest="{{ redmine_dir }}/plugins/redmine_backlogs/Gemfile"
+           regexp='gem "capybara", "~> 1"'
+           replace='#gem "capybara", "~> 1"'
+
+- name: Plugins | gem install holidays --version 1.0.3
+  gem: name=holidays state=present version=1.0.3
+       executable=/opt/rh/rbenv/shims/gem user_install=False
+
+- name: Plugins | gem install holidays
+  gem: name=holidays state=present
+       executable=/opt/rh/rbenv/shims/gem user_install=False
+
+- name: Plugins | Install dependent
+  yum: name={{ item }}
+  with_items:
+    - libxml2
+    - libxml2-devel
+    - libxslt
+    - libxslt-devel
+
+- name: Plugins | bundle install --without development test
+  become_user: "{{ owner }}"
+  bundler:
+    state: present
+    exclude_groups: "development test"
+    chdir: "{{ redmine_dir }}"
+    executable: /opt/rh/rbenv/shims/bundle
+  notify: Restart httpd
+
+#- name: Plugins | RAILS_ENV=production bundle exec rake redmine:backlogs:install
+#  become_user: "{{ owner }}"
+#  command:
+#    bundle exec rake redmine:backlogs:install RAILS_ENV=production
+#    chdir={{ redmine_dir }}
+#  environment:
+#    PATH: "{{ ruby_environment_path }}"
+#    RAILS_ENV: production

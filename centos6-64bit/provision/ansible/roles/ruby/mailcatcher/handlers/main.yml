@@ -1,6 +1,0 @@
-- name: Restart mailcatcher
-  service: name=mailcatcher state=restarted enabled=yes
-
-- name: Restart httpd
-  service: name={{ httpd }} state=restarted enabled=yes
-  

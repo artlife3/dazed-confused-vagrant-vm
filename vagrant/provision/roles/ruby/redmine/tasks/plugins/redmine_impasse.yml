@@ -1,0 +1,7 @@
+- name: Plugins | Download redmine_impasse 
+  become_user: "{{ owner }}"
+  git:
+    repo=https://github.com/kawasima/redmine_impasse.git
+    dest={{ redmine_dir }}/plugins/redmine_impasse
+  register: redmine_plugins_flag
+  notify: Restart httpd

@@ -1,0 +1,65 @@
+- name: Create Tools folder
+  file: path={{ tools_dir }}
+         state=directory
+         owner={{ owner }}
+         group={{ group }}
+         mode=775
+  tags: settings
+
+- name: Transfer [git-completion]
+  copy: src={{ files_path }}/git-completion/
+               dest={{ tools_dir }}/git-completion
+  tags: settings
+
+- name: Transfer [~/.bach_profile]
+  template: src={{ templates_path }}/bash_profile
+        dest=/home/{{ owner }}/.bash_profile
+        owner={{ owner }}
+        group={{ group }}
+        mode=644
+  become: no
+  tags: settings
+
+
+#- name: Transfer [~/.bashrc]
+#  template: src={{ templates_path }}/bashrc
+#        dest=/home/{{ owner }}/.bashrc
+#        owner={{ owner }}
+#        group={{ group }}
+#        mode=644
+#  become: no
+#  tags: settings
+
+- name: Transfer [~/.vimrc]
+  template: src={{ templates_path }}/vimrc
+        dest=/home/{{ owner }}/.vimrc
+        owner={{ owner }}
+        group={{ group }}
+        mode=644
+  become: no
+  tags: settings
+
+# symbolic link
+
+# - name: Create html directory
+#   file: path={{ httpd_document_root }} state=directory owner={{ apache_user }} group={{ apache_group }}
+#   ignore_errors: true
+
+- name: Create html symbolic link
+  file:
+    src: "{{ httpd_document_root }}"
+    dest: "/home/{{ owner }}/html"
+    state: link
+
+- name: Create html/admin symbolic link
+  file:
+    src: "{{ httpd_document_root }}/admin"
+    dest: "/home/{{ owner }}/admin"
+    force: yes
+    state: link
+
+- name: Create log symbolic link
+  file:
+    src: "{{ log_dir }}"
+    dest: "/home/{{ owner }}/log"
+    state: link

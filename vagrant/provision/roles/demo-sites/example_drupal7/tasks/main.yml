@@ -1,0 +1,47 @@
+- name: Existence of Drupal directory
+  stat: path={{ httpd_document_root }}/{{ site_dir }}
+  register: sites
+
+- name: Download Drupal
+  shell: "cd {{ httpd_document_root }} &&
+         drush dl {{ site_version }}
+         --drupal-project-rename={{ site_dir }}"
+  when: not sites.stat.exists
+
+- name: Create a new database
+  become_user: vagrant
+  mysql_db: name={{ site_database }} state=present
+  register: exists_db_flag
+
+- name: Existence of Drush
+  stat: path="/usr/sbin/drush"
+  register: exist_drush
+
+# - name: Copy settings.php
+#   copy:
+#     remote_src: true
+#     src: "{{ httpd_document_root }}/{{ site_dir }}/sites/default/default.settings.php"
+#     dest: "{{ httpd_document_root }}/{{ site_dir }}/sites/default/settings.php"
+#   when: not sites.stat.exists
+
+- name: Download drupal translations
+  get_url: url="http://ftp.drupal.org/files/translations/7.x/drupal/{{ drupal7_version }}.ja.po"
+           dest={{ httpd_document_root }}/{{ site_dir }}/profiles/standard/translations/
+  when: not sites.stat.exists
+
+- name: Site setup Drupal
+  shell:
+    drush site-install {{ site_profile }}
+    --account-name={{ site_user }}
+    --account-pass={{ site_user_password }}
+    --db-url=mysql://{{ site_database_user }}:{{ site_database_passwd }}@localhost/{{ site_database }} 
+    --root={{ httpd_document_root }}/{{ site_dir }}
+    --yes
+    --db-su={{ mysql_root_user }}
+    --db-su-pw={{ mysql_root_passwd }}
+    --account-mail={{ account_mail }}
+    --site-name={{ site_name }}
+    --locale={{ site_locale }}
+  when:
+    - not exists_db_flag.failed
+    - exist_drush.stat.exists

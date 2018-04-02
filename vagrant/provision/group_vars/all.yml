@@ -1,0 +1,110 @@
+# User setting
+mycolor: $'32m'
+
+# Common
+opt_dir: /opt/rh
+templates_path: ../templates
+files_path: ../files
+env_dir: vagrant
+env_mode: vagrant
+owner: vagrant
+group: vagrant
+permission: "ugo+rw"
+permission_file: 0666
+permission_dir: 0777
+time_zone: Tokyo/Asia
+log_dir: /var/log
+tools_dir: /opt/rh/tools
+
+# For JAVA
+java_versions: java-1.8.0-openjdk-devel.x86_64
+java_home: /usr/java/jdk1.7.0_80
+
+# For Tomcat
+tomact_dir: "{{ opt_dir }}/tomcat"
+tomcat_user: vagrant
+tomcat_group: vagrant
+tomcat_name: tomcat8
+tomcat_Xms: 128M
+tomcat_Xmx: 1024M
+tomcat_maxThreads: 100
+
+# For Elasticsearch
+elastic_conf_dir: /etc/elasticsearch
+elastic_user: vagrant
+elastic_group: vagrant
+
+# Httpd
+apache_user: vagrant
+apache_group: vagrant
+httpd_conf_dir: /etc/httpd
+httpd_document: /var/www/vagrant
+httpd_document_root: "{{ httpd_document }}/html"
+httpd_log_dir: "{{ log_dir }}/httpd"
+httpd_version: httpd
+httpd: httpd
+ssl_certificate_path: "{{ opt_dir }}/ssl-client-auth"
+ssl_certificate_file: "{{ opt_dir }}/ssl-client-auth/dazed.vagrant.vm.crt"
+ssl_certificate_key_file: "{{ opt_dir }}/ssl-client-auth/server.key"
+ssl_certificate_chain_file: "{{ opt_dir }}/ssl-client-auth/root_ca.crt"
+httpd_module_path: /usr/lib64/httpd/modules
+
+# For Ruby
+rbenv_path: /opt/rh
+ruby_environment_path: "/bin:{{ rbenv_path }}/rbenv/shims:/usr/bin"
+ruby_version: 2.4.1
+
+# For Redmine
+redmine_svn_url: http://svn.redmine.org/redmine/branches/3.3-stable
+redmine: redmine
+redmine_dir: "{{ opt_dir }}/{{ redmine }}"
+redmine_font_path: /usr/share/fonts/truetype/takao-gothic/TakaoPGothic.ttf
+redmine_db_name: redmine
+redmine_db_user: redmine_user
+redmine_db_passwd: redmine_passwd
+
+# For MailCatcher
+mailcatcher_port: 1080
+mailcatcher_smtp_port: 1025
+
+# PHP
+php_memory_limit: 512M
+php_timezone: "Asia/Tokyo"
+php_required_modules: [
+  'php',
+  'php-fpm',
+  'php-cli',
+  'php-common',
+  'php-devel',
+  'php-gd',
+  'php-intl',
+  'php-mbstring',
+  'php-pdo',
+  'php-mysqlnd',
+  'php-pear',
+  'php-xml',
+  'php-mcrypt',
+  'php-soap'
+]
+php_required_pecl_modules: [
+  'php-pecl-imagick',
+  'php-opcache',
+  'php-pecl-memcache',
+  'php-pecl-memcached',
+  'php-pecl-apcu',
+  'php-pecl-xdebug'
+]
+php_version: 71 # Example: 71, 70, 56, 55
+phpfpm_port: 9000
+php_disable_functions: "pcntl_exec" # pcntl_exec(drush 8.1.16),pcntl_fork
+
+# MySQL
+mysq_user: mysql
+mysq_group: mysql
+mysql_root_user: root
+mysql_root_passwd: root
+
+# Drush
+drush_version: "8.1.16" # 8.1.16(pcntl_exec)
+
+

@@ -1,0 +1,20 @@
+sites_dir:
+  opigno
+download_url:
+  https://ftp.drupal.org/files/projects/opigno_lms-7.x-1.25-core.zip
+download_file:
+  opigno.zip
+extracted_file_name:
+  opigno_lms-7.x-1.25
+db_name:
+  opigno
+site_name:
+  Opigno LMS
+account-name:
+  admin
+account-pass:
+  admin
+account-mail:
+  a-iwasaki@ostechnology.co.jp
+site-mail:
+  a-iwasaki@ostechnology.co.jp

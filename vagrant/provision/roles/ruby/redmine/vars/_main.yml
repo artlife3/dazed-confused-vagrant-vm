@@ -1,0 +1,29 @@
+load_default_data_lang:
+  en
+ui_theme:
+#  alternate,classic,farend_basic,redmine-theme-gitmike-design
+  alternate
+repositories_encodings:
+  "UTF-8,CP932,EUC-JP"
+default_language:
+  en
+display_username_format:
+  lastname_firstname
+thumbnails_enabled:
+  1
+gravatar_enabled:
+  1
+#Mystery man,Wavatars,Identicons,Monster ids,Retro
+gravatar_default:
+  "Mystery man"
+default_projects_public:
+  0
+clone_sites:
+- iwasaki
+- tanimine
+- takahashi
+- morino
+- neo
+- tanimine
+
+

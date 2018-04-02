@@ -1,0 +1,8 @@
+- hosts: all
+  become: yes
+  vars_files:
+    - group_vars/all.yml
+    - group_vars/localhost/all.yml
+  roles:
+    - php55
+

@@ -1,0 +1,14 @@
+---
+php_webserver_daemon: "httpd"
+
+php_conf_paths:
+  - /etc
+php_fpm_daemon: php-fpm
+php_fpm_conf_path: "/etc/"
+php_fpm_pool_conf_path: "/etc/php-fpm.d/www.conf"
+
+php_fpm_pool_user: apache
+php_fpm_pool_group: apache
+php55_fpm_port: 9055
+php56_fpm_port: 9056
+php_fpm_port: 9000

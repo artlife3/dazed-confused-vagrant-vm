@@ -1,0 +1,13 @@
+gitconfig_user_name: a-iwasaki
+gitconfig_user_email: a-iwasaki@ostechnology.co.jp
+SITES_LIST: 
+  - eu
+  - extranet
+  - public
+  - cn
+  - me
+  - cskms
+  - la
+MAIN_BRANCH: master
+work_directory: /var/www/html
+

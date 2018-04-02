@@ -1,0 +1,17 @@
+download_url: https://ftp.drupal.org/files/projects/opigno_lms-7.x-1.25-core.zip
+download_file: opigno.zip
+extracted_file_name: opigno_lms-7.x-1.25
+
+site_dir: opigno-lms
+site_version: drupal-7.x
+site_database: opigno_lms
+site_database_user: root
+site_database_passwd: root
+site_user: admin
+site_user_password: admin
+mysql_root_user: root
+mysql_root_passwd: root
+account_mail: example@example.com
+site_name: "Opigno LMS D7"
+#site_locale: en
+site_profile: standard
